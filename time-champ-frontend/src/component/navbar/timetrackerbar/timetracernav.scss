@@ -1,0 +1,25 @@
+.timetracernavlist {
+    display: flex;
+    .list{
+        display: flex;
+    }
+}
+
+.timetracernavitems {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    .timetracernavicon {
+        color: #2f3c7e;
+    }
+    .navtext {
+        color: #2f3c7e;
+        padding-top: 3px;
+    }
+}
+
+.timetracernavitems:hover {
+    background-color: #C6B666;
+    border-bottom: 1px solid #2f3c7e;
+}
+

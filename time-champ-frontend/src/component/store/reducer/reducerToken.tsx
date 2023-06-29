@@ -24,6 +24,9 @@ const ReducerToken = createSlice({
             state.refresh_token = action.payload.data.refresh_token
             state.access_token_expiry = action.payload.data.access_token_Expires_in
             state.refresh_token_expiry = action.payload.data.refresh_token_Expires_in
+        },
+        removeToken: () => {
+            return initialState;
         }
     }
 })
@@ -31,5 +34,5 @@ const ReducerToken = createSlice({
 export const selectTokenProfile = (state: RootState) =>
   state.tokenReducer;
 
-export const { saveToken } = ReducerToken.actions;
+export const { saveToken,removeToken } = ReducerToken.actions;
 export default ReducerToken.reducer;

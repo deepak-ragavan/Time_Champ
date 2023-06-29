@@ -1,0 +1,29 @@
+.main {
+    display: flex;
+}
+
+.sidenav {
+    background-color: #FBEAEB;
+    height: 768px;
+    width: 95px;    
+}
+
+.navitems {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+}
+
+.vertical {
+    display: flex;
+    justify-content: center;
+    color: #2f3c7e;
+}
+
+.navdiscription {
+    display: flex;
+    justify-content: center;
+    color: #2f3c7e;
+}

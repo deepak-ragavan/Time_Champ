@@ -1,0 +1,55 @@
+.nav {
+    background-color: #FBEAEB;
+    display: flex;
+    align-items: flex-end;
+}
+
+.navlogo {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 5px;
+    padding: 15px;
+}
+
+.logo-nav {
+    height: 50px;
+}
+
+.appName-nav {
+    font-family: -webkit-body;
+    font-weight: bolder;
+    font-size: 40px;
+    bottom: 22px;
+    color: #274C77;
+    width: max-content;
+}
+
+.headerlist {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-bottom: 15px;
+}
+
+.navicon {
+    font-size: xx-large;    
+    color: #2f3c7e;
+    cursor: pointer;
+}
+
+.Active {
+    list-style-type: none;
+}
+
+.inActive {
+    list-style-type: none;
+}
+
+.logoutbutton {
+    border: none;
+}
+
+
+
