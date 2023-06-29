@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { selectTokenProfile } from "./store/reducer/reducerToken";
+import { selectTokenProfile } from "../store/reducer/reducerToken";
 import { useEffect } from "react";
-import useAxiosPrivate from "./hooks/useAxiosPrivate";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const Validate = () => {
     const token = useSelector(selectTokenProfile)

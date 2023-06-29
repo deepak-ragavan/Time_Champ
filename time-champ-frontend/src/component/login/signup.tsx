@@ -1,11 +1,11 @@
 import { useState,useRef } from "react"
 import './login.scss'
-import { SignupApi }  from './Api/loginApi'
+import { SignupApi }  from '../service/loginApi'
 import { useDispatch } from "react-redux"
 import { useNavigate,Link } from "react-router-dom"
-import { saveToken } from "./store/reducer/reducerToken"
+import { saveToken } from "../store/reducer/reducerToken"
 import { AxiosError } from "axios"
-import logo from '../time_tracer.png'
+import logo from '../../time_tracer.png'
 
 type msgType =  {
     error : string

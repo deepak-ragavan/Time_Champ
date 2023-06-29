@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import './login.scss'
 import { Link } from "react-router-dom"
-import { LoginApi }  from './Api/loginApi'
-import { saveToken } from "./store/reducer/reducerToken"
+import { LoginApi }  from '../service/loginApi'
+import { saveToken } from "../store/reducer/reducerToken"
 import { AxiosError } from "axios";
-import logo from '../time_tracer.png'
+import logo from '../../time_tracer.png'
 
 type msgType =  {
     error : string

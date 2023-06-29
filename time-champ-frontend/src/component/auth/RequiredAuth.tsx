@@ -1,11 +1,10 @@
 import { useLocation,Outlet, Navigate } from "react-router-dom";
-import UseAuth from './hooks/useAuth'
-import Navbar from "./navbar";
+import UseAuth from '../hooks/useAuth'
+import Navbar from "../sidebar/navbar";
 
 const RequiredAuth = () => {
     const token  = UseAuth();
     const location = useLocation();
-
     return (
         token?.access_token!==""
         ? <>
