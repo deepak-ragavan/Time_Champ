@@ -1,0 +1,66 @@
+.filter {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    box-shadow: 0px 0px 10px 7px rgb(0 0 0 / 5%);
+}
+
+#filtericon {
+    cursor: pointer;
+}
+
+.expandfilter {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    border: 1px solid #FBEAEB;
+    width: 100%;    
+}
+
+.filterlist {
+    padding: 0px 5px;
+    border-right: 1px solid #FBEAEB;
+}
+
+.row1 {
+    display: flex;
+    justify-content: space-around;
+}
+
+.row2 {
+    display: flex;  
+}
+
+.cardData {
+    width: 100%;
+    margin: 5px;
+}
+
+.showfilterdata {
+    width: 100%;
+}
+
+.showfilterdata {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 5px;
+   
+}
+
+.restartbutton {
+    border: none;
+    background: unset;
+}
+
+// .showdate {
+//     border: none;
+//     border-radius: 20px;
+//     background-color: lightgrey;
+//     padding: 10px;
+//     width: 17%; 
+//     display: flex;
+//     justify-content: space-evenly;
+// }

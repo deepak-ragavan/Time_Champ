@@ -1,18 +1,23 @@
 import { Routes,Route } from "react-router-dom"
-import Home from "../home/home"
+import Project from "../project/project"
 import TimeTracer from "../timetracer/timeTracer"
 import Hr from "../hr/hr"
 import NavBar from "../navbar/navbar"
+import Summary from "../summary/summary"
+import TimeTracerNav from "../navbar/timetrackerbar/timetracernav"
 
 const PrivateRoute = () => {
     return (
         <>
             <Routes>
                 <Route element={<NavBar />}>
-                    <Route path='/home' element={<Home />} />
                     <Route path='/timetracer' element={<TimeTracer />} />
+                    <Route path='/project' element={<Project />} />
                     <Route path='/hr' element={<Hr/>} />
-                </Route>
+                    <Route element={<TimeTracerNav />}>
+                        <Route path="/summary" element={<Summary/>} />
+                    </Route>
+                </Route>    
             </Routes>
         </>
     )

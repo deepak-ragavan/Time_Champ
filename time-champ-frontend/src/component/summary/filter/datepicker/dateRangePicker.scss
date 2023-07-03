@@ -1,0 +1,18 @@
+.downarrow {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown {
+    cursor: pointer;
+}
+
+.dateRangePicker {
+    position: absolute;
+    top: 34px;
+    z-index: 1;
+}
+
+.calendarWrap {
+    position: relative;
+}

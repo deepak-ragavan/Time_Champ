@@ -1,0 +1,18 @@
+.departmentDropDown {
+    position: absolute;
+    top: 34px;
+    z-index: 1;
+}
+
+.deparmentDropdownicon {
+    cursor: pointer;
+}
+
+.downarrow {
+    display: flex;
+    align-items: center;
+}
+
+.departmentWrap {
+    position: relative;
+}

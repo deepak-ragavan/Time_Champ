@@ -1,7 +1,20 @@
+.timetracer{
+    width: 100%;
+}
+
+.timetracernav {
+    border-bottom: 1px solid #f5d6d6;
+}
+
 .timetracernavlist {
     display: flex;
     .list{
         display: flex;
+    }
+
+    .Active {
+        background-color: #C6B666;
+        border-bottom: 2px solid #2f3c7e;
     }
 }
 
@@ -16,10 +29,5 @@
         color: #2f3c7e;
         padding-top: 3px;
     }
-}
-
-.timetracernavitems:hover {
-    background-color: #C6B666;
-    border-bottom: 1px solid #2f3c7e;
 }
 

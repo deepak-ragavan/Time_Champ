@@ -28,7 +28,7 @@ const Login = () => {
             dispatch(saveToken(response));
             setEmail('')
             setPassword('')
-            navigate("/home")
+            navigate("/summary")
         } catch (error) {
             const err = error as AxiosError;
             if(!err?.response) {

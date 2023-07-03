@@ -26,7 +26,7 @@ const Signup = () => {
             console.log("signupin")
             const response = await SignupApi({Email:email,Password:password})
             dispatch(saveToken(response));
-            navigate("/home")
+            navigate("/summary")
         } catch (error) {
             const err = error as AxiosError;
             if(!err?.response) {
