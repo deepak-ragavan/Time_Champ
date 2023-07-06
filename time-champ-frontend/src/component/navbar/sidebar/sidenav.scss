@@ -1,11 +1,10 @@
 .main {
     display: flex;
+    height: calc(100vh - 80px);
 }
 
 .sidenav {
-    background-color: #FBEAEB;
-    height: 768px;
-    width: 95px;    
+    background-color: #FBEAEB; 
 }
 
 .navitems {
@@ -26,4 +25,5 @@
     display: flex;
     justify-content: center;
     color: #2f3c7e;
+    white-space: nowrap;
 }

@@ -1,5 +1,12 @@
+.chartContainer {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
 .piechart {
-    display: flex;
+    min-width: 50%;
+    min-height: 50%;
+    padding: 5px;
 }
 
 .piecontainer {

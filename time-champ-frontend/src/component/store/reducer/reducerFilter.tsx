@@ -2,24 +2,26 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 export interface IFilterData {
-    fromDate: string;
-    toDate: string;
+    fromDate: Date;
+    toDate: Date;
     branch: Array<String>;
     department: Array<String>;
     role: Array<String>;
     user: Array<String>;
     search:string;
+    isresetFilter:boolean;
 }
 const defaultDate = new Date().getDate()+" "+new Date().toLocaleString('default', { month: 'long' })+","+new Date().getFullYear();
   
 const initialState: IFilterData = {
-    fromDate: defaultDate,
-    toDate: defaultDate,
+    fromDate: new Date(),
+    toDate: new Date(),
     branch: [],
     department: [],
     role: [],
     user: [],
-    search:""
+    search:"",
+    isresetFilter:false
 };
 
 const ReducerFilter = createSlice({
@@ -43,10 +45,10 @@ const ReducerFilter = createSlice({
             state.role = action.payload
         },
         saveUser:(state,action) => {
-            state.user = action.payload.user
+            state.user = action.payload
         },
         saveSearch:(state,action) => {
-            state.search = action.payload.search
+            state.search = action.payload
         },
         removeBranch:(state) => {
             state.branch = []
@@ -63,8 +65,15 @@ const ReducerFilter = createSlice({
         removeSearch:(state) => {
             state.search = ""
         },
-        removeFilterData: () => {
-            return initialState;
+        removeFilterData: (state) => {
+            state.fromDate = initialState.fromDate
+            state.toDate = initialState.toDate
+            state.branch = initialState.branch
+            state.department = initialState.department
+            state.role = initialState.role
+            state.user = initialState.user
+            state.search = initialState.search
+            state.isresetFilter = true;
         }
     }
 })

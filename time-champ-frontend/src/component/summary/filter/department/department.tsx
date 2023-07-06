@@ -1,15 +1,15 @@
 import './department.scss'
-import React, { useState,useRef,useEffect } from "react";
+import React, { useState,useRef, useEffect } from "react";
 import { MultiSelect } from 'react-multi-select-component';
-import { useDispatch } from 'react-redux';
-import { saveDepartment } from '../../../store/reducer/reducerFilter';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveDepartment, selectFilterData } from '../../../store/reducer/reducerFilter';
 
 const Department: React.FC = () => {
   const dispatch = useDispatch()
 
-  const [open, setOpen] = useState(false);
+  const filterData = useSelector(selectFilterData)
   const refOne = useRef<HTMLDivElement | null>(null);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<departmentOptions[]>([]);
 
   type departmentOptions = {
     label:string,
@@ -23,39 +23,29 @@ const Department: React.FC = () => {
     { label: "Sales", value: "Sales" },
   ];
 
-  useEffect(() => {
-    // Hide on outside click
-    const hideOnClickOutside = (e:any) => {
-      if( refOne.current && !refOne.current.contains(e.target) ) {
-        setOpen(false)
-      }
-      const values = selected.map((val:departmentOptions) => val.value)
-      dispatch(saveDepartment(values))
+  const handleOnChangeMultiSelect = (items:departmentOptions[]) => {
+      const values = items.map((val: departmentOptions) => val.value);
+      dispatch(saveDepartment(values));
+  };
+
+  useEffect(()=>{
+    if(filterData.department){
+      const selectedValue = filterData.department.map((stringValue) =>
+      options.find((option) => option.value === stringValue));
+      setSelected(selectedValue as departmentOptions[]);
     }
 
-    document.addEventListener('click', hideOnClickOutside);
-
-    return () => {
-        document.removeEventListener('click', hideOnClickOutside);
-    };
-  },[dispatch,selected])     
+  },[filterData])
 
   return (
     <div className="departmentWrap" ref={refOne}>
-       <div onClick={() => setOpen(!open)} className='downarrow'>
-            <span className="material-icons-round dropdown">arrow_drop_down</span>
-            <span className="navtext">Department</span>  
-        </div>
-
       <div className='departmentDropDown'>
-        {open && (
             <MultiSelect
               options={options}
               value={selected}
-              onChange={setSelected}
+              onChange={(values:departmentOptions[]) => handleOnChangeMultiSelect(values)}
               labelledBy={"Select"}
             />       
-        )}
       </div>
     </div>
   );

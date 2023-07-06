@@ -1,4 +1,6 @@
-
+.dataContainer {
+    margin-right: 10px;
+}
 .dataField {
     border: none;
     border-radius: 20px;
@@ -7,3 +9,15 @@
     display: flex;
     justify-content: space-evenly;
 }
+
+.datashow {
+    border: none;
+    border-radius: 20px;
+    background-color: lightgrey;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+    padding: 7px;
+}
+

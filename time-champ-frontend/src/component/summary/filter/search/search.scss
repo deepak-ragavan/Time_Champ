@@ -1,0 +1,27 @@
+.searchContainer {
+    position: relative;
+}
+
+.searchInput {
+    position: absolute;
+    top: 5px;
+    left: -12px;
+    z-index: 1;
+    width: 100%;
+    min-width: 200px;
+}
+
+.boxlayout {
+    position: relative;
+    outline: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px ;
+    padding: 10px;
+    flex-direction: column;
+}
+
+.placeholder {
+    font-weight: 300;
+    font-size: smaller;
+}

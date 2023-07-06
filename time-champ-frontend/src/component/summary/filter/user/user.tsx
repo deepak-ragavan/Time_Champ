@@ -1,9 +1,9 @@
 const User = () => {
     return (
-        <div className="user">
-            <div className='downarrow'>
-                <span id="dropdown" className="material-icons-round dropdown">arrow_drop_down</span>
-                <span className="navtext">User</span>  
+        <div className="userContainer">
+            <div className="userDropdown">
+                
+
             </div>
         </div>
     )

@@ -13,16 +13,14 @@ const Piechart: React.FC<Pieprops> = ({ heading,headingClassName }) => {
         <div className="piechart">
             <div className='piecontainer'>
                 <h4 className={headingClassName}>{heading}</h4>
+                <div className='chartContainer'>
                 <Chart 
                     type="pie"
-                    width={700}
-                    height={400}
-
                     series={[23,43,50,54,65]}
                     options={{
                         labels:["intellij","Eclipse","vscode","chrome","files",]
-                    }}
-                ></Chart>  
+                    }}></Chart>  
+                </div>
             </div>          
         </div>
     )

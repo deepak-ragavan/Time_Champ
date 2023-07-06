@@ -1,3 +1,19 @@
+@media only screen and (max-width: 990px) {
+    .row1 {
+        flex-direction: column;
+    }
+
+    .row2 {
+        flex-direction: column;
+    }
+
+    .nav {
+        width: 100%;
+    
+    }
+}
+
+
 .filter {
     display: flex;
     flex-direction: column;
@@ -9,6 +25,7 @@
 
 #filtericon {
     cursor: pointer;
+    padding: 5px;
 }
 
 .expandfilter {
@@ -44,16 +61,26 @@
 
 .showfilterdata {
     display: flex;
-    justify-content: flex-start;
-    gap: 10px;
+    flex-flow: row wrap;
     padding: 5px;
-   
 }
 
-.restartbutton {
+button {
     border: none;
     background: unset;
 }
+
+.restartbutton {
+    padding: 5px;
+}
+
+.downarrow {
+    padding: 5px;
+}
+
+// .chart {
+//     width: 100%;
+// }
 
 // .showdate {
 //     border: none;

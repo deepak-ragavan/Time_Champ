@@ -18,8 +18,7 @@
 
 .container {
     border: 1px solid black;
-    width: 100%;
-    height: 290px;
+    padding: 20px 0px;
     border-radius: 10px;
     background-color: antiquewhite;
 }
@@ -95,6 +94,8 @@ a {
 
 .loginDiv{
     width: calc(52% - 260px);
+    width: 100%;
+    max-width: 500px;
 }
 
 .mb-3{
