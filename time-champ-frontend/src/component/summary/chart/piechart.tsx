@@ -1,7 +1,6 @@
 import Chart from 'react-apexcharts';
 import './piechart.scss'
-import { type } from 'os';
-import React from 'react';
+ import React from 'react';
 
 type Pieprops = {
     heading : string,
