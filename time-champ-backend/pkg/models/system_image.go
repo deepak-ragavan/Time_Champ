@@ -1,11 +1,16 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type SystemImage struct {
-	ID        int `gorm:"primary_key, AUTO_INCREMENT"`
-	Name      string
-	ImageUrl  string
-	CreatedAt time.Time
-	UserID    int `gorm:"column:user_id"`
+	gorm.Model
+	Name      string    `json:"name"`
+	ImageUrl  string    `json:"imageUrl"`
+	CreatedAt time.Time `json:"createdAt"`
+	UserID    uint      `json:"userId" gorm:"column:user_id"`
+	User      User      `json:"user"`
 }

@@ -1,6 +1,4 @@
 .cardview {
-    border: 1px solid;
-    border-radius: 5px;
     display: flex;
     flex-direction: column;
 }
@@ -29,14 +27,35 @@
 .row {
     display: flex;
     justify-content: space-between;
+    padding: 5px;
 }
 
 .cl-1 {
     display: flex;
     justify-content: flex-start;
+    gap: 5px;
+    align-items: center;
 }
 
 .cl-2 {
     display: flex;
     justify-content: flex-end;
+    gap: 5px;
+    align-items: center;
+}
+
+.defaultApplogo {
+    background: tomato;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+}
+
+.NoContent {
+    display: flex;
+    justify-content: center;
 }

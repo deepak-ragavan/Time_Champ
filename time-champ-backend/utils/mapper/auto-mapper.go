@@ -3,6 +3,7 @@ package mapper
 import (
 	"fmt"
 	"reflect"
+	"github.com/tracker/pkg/constant"
 )
 
 func Map(source, dest interface{}) {
@@ -63,8 +64,7 @@ func mapSlice(sourceVal, destVal reflect.Value, loose bool) {
 		mapValues(sourceVal.Index(j), val, loose)
 		target.Index(j).Set(val)
 	}
-
-	if length == 0 {
+	if length == constant.ZERO {
 		verifyArrayTypesAreCompatible(sourceVal, destVal, loose)
 	}
 	destVal.Set(target)

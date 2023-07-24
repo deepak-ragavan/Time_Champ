@@ -1,0 +1,47 @@
+.UsersList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 7px rgba(0,0,0,0.1);
+}
+
+.productivityData {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    gap: 20px;
+}
+
+.data {
+    display: flex;
+    gap: 50px;
+}
+
+.NoContent {
+    display: flex;
+}
+
+.users {
+    display: flex;
+    justify-content: space-around;
+    
+}
+.usersButton {
+    width: 100%;
+    border: 1px solid;
+    background: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.weeklyData {
+    padding: 20px 0 0 20px;
+    background: white;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 7px rgba(0,0,0,0.1);
+}

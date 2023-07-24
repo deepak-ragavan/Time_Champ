@@ -1,7 +1,7 @@
 package initializers
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -14,7 +14,7 @@ var err error
 func ConnectToDB() {
 	DB, err = gorm.Open(mysql.Open(os.Getenv("DNS")), &gorm.Config{})
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		panic("Cannot connect to DB")
 	}
 }

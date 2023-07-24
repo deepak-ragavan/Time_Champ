@@ -3,6 +3,6 @@ package enum
 type Status string
 
 const (
-	ORIGINAL Status = "original"
-	APPROVED Status = "approved"
+	ORIGINAL Status = "Original"
+	APPROVED Status = "Approved"
 )

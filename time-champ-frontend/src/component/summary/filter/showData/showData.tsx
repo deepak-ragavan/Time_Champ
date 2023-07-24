@@ -1,26 +1,28 @@
-import { useDispatch } from 'react-redux'
 import './showData.scss'
 import React from 'react'
-import { removeBranch, removeDepartment, removeRole, removeSearch } from '../../../store/reducer/reducerFilter'
 
 type showDataProps = {
     dataKey:string,
     value:string,
+    setSelected:(val:any)=>void
 }
 
-const ShowData : React.FC<showDataProps> = ({dataKey,value}) => {
+const ShowData : React.FC<showDataProps> = ({dataKey,value,setSelected}) => {
     const dataValue = value
     const fixedData = ["From Date","To Date"]
-    const dispatch = useDispatch()
     const clearData = () => {
         if(dataKey==="Branch") {
-            dispatch(removeBranch())
+            setSelected([])
         } else if(dataKey==="Department") {
-            dispatch(removeDepartment())
+            setSelected([])
         } else if(dataKey==="Role") {
-            dispatch(removeRole())
+            setSelected([])
         } else if(dataKey==="Search") {
-            dispatch(removeSearch())
+            setSelected("")
+        } else if(dataKey==="User") {
+            setSelected(null)
+        } else if(dataKey==="LineManager") {
+            setSelected([])
         }
     }
     return (

@@ -16,12 +16,18 @@
     outline: 0;
     background-color: #fff;
     border: 1px solid #ccc;
-    border-radius: 4px ;
-    padding: 10px;
+    border-radius: 4px;
+    padding: 15px;
+    display: flex;
     flex-direction: column;
 }
 
 .placeholder {
     font-weight: 300;
     font-size: smaller;
+}
+
+.search {
+    padding: 5px;
+    border-radius: 5px;
 }

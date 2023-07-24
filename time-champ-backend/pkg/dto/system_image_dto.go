@@ -2,10 +2,11 @@ package dto
 
 import "time"
 
-type SystemImageDto struct {
-	ID     int
-	Name   string
-	S3Url  string
-	Date   time.Time
-	UserID int 
+type SystemImage struct {
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	ImageUrl  string    `json:"imageUrl"`
+	CreatedAt time.Time `json:"createdAt"`
+	UserID    uint      `json:"-" gorm:"column:user_id"`
+	User      User      `json:"user"`
 }

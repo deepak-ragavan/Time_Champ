@@ -2,7 +2,12 @@ package enum
 
 type Role string
 
+var Permission = []string{"Super-Admin", "Admin", "Manager", "Team-Lead", "User"}
+
 const (
-	ADMIN Role = "admin"
-	USER  Role = "user"
+	SUPER_ADMIN Role = "Super-Admin"
+	ADMIN       Role = "Admin"
+	MANAGER     Role = "Manager"
+	TEAM_LEAD   Role = "Team-Lead"
+	USER        Role = "User"
 )

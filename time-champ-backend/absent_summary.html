@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 645px;
+            margin: 0 auto;
+            padding: 29px;
+            padding-top: 10px;
+            border: 0px solid;
+            border-radius: 13px;
+            font-family: roboto;
+            background-color: #010e3a;
+        }
+
+        .header {
+            vertical-align: top;
+            background-color: rgb(247, 184, 112);
+            border-radius: 4px 4px 0px 0px;
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: 15px;
+            text-align: center;
+            margin-bottom: 3px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            padding-top: 21px;
+        }
+        .titlesub {
+            font-size: 17px;
+            font-weight: bold;
+            color: #070707;
+        }
+        .backgroud {
+            font-family: Helvetica, Arial, sans-serif;
+            margin-bottom: 2px;
+            font-size: 19px;
+            line-height: 24px;
+            background-color: #ffffff;
+            color: #82899a;
+            padding-left: 24px;
+            padding-right: 24px;
+            padding-top: 16px;
+            padding-bottom: 10px;
+        }
+        .contact-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .contact-section {
+            text-align: center;
+            margin-top: 2px;
+            background: rgb(247, 184, 112);
+            padding-top: 7px;
+            padding-bottom: 7px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 class="title">Sentinel</h2>
+            <h3 class="titlesub">Dear {{.Name}}</h3>
+        </div>
+        <div>
+            <div class="backgroud">
+                <div>
+                    <p style="text-align:justify; font-size:16px">{{.Top}}</p>
+                </div>
+                <div>
+                    <ul>
+                       {{.Middle}}
+                    </ul>
+                    <p></p>
+                </div>
+                <div>
+                    <p style="text-align:justify; font-size:16px">{{.Bottom}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="contact-section">
+            <p class="contact-text">For support Contact us</p>
+        </div>
+    </div>
+</body>
+
+</html>

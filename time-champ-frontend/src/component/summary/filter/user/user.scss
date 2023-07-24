@@ -1,0 +1,13 @@
+.userDropdown {
+    position: absolute;
+    top: 5px;
+    left: -12px;
+    z-index: 1;
+    width: 100%;
+    min-width: 200px;
+    background-color: white;
+}
+
+.userContainer {
+    position: relative;
+}

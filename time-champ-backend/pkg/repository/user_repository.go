@@ -1,24 +1,40 @@
 package repository
 
 import (
-	"github.com/tracker/initializers"
+	"github.com/tracker/pkg/dto"
+	"github.com/tracker/pkg/enum"
 	"github.com/tracker/pkg/models"
 	"gorm.io/gorm"
 )
 
-func GetUser(id int) (models.User, *gorm.DB) {
+func (db DbInstance) GetUser(id uint) (models.User, *gorm.DB) {
 	var user models.User
-	return user, initializers.DB.First(&user, id)
+	return user, db.Instance.First(&user, id)
 }
 
-func UpdateUser(user models.User, id int) (models.User, *gorm.DB) {
-	return user, initializers.DB.Save(&user)
+func (db DbInstance) GetChildUser(id uint) (dto.User, *gorm.DB) {
+	var user dto.User
+	return user, db.Instance.Preload("ChildUser").Preload("ChildUser").Find(&user, id)
 }
 
-func SaveUser(user models.User, id int) (models.User, *gorm.DB) {
-	return user, initializers.DB.Save(&user)
+func (db DbInstance) UpdateUser(user models.User, id uint) (models.User, *gorm.DB) {
+	return user, db.Instance.Save(&user)
 }
 
-func DeleteUser(user models.User, id int) (models.User, *gorm.DB) {
-	return user, initializers.DB.Delete(&user, id)
+func (db DbInstance) SaveUser(user models.User) (models.User, *gorm.DB) {
+	return user, db.Instance.Save(&user)
+}
+
+func (db DbInstance) DeleteUser(user models.User, id uint) *gorm.DB {
+	return db.Instance.Delete(&user, id)
+}
+
+func (db DbInstance) GetByMailId(mail string) (models.User, *gorm.DB) {
+	var User models.User
+	return User, db.Instance.Where("email = ? ", mail).First(&User)
+}
+func (db DbInstance) GetUserDetailsForSummaryReport() ([]dto.User, *gorm.DB) {
+	var results []dto.User
+	err := db.Instance.Where("role NOT LIKE ?", enum.SUPER_ADMIN).Select("id, name, email").Find(&results)
+	return results, err
 }

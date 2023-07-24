@@ -9,11 +9,8 @@ type branchOptions = {
   value:string
 } 
 
-const Branch: React.FC = () => {
-  const dispatch = useDispatch()
+const Branch: React.FC<{selectedBranch:branchOptions[],setSelectedBranch:(val:branchOptions[])=>void}> = ({selectedBranch,setSelectedBranch}) => {
   const refOne = useRef<HTMLDivElement | null>(null);
-  const [selected, setSelected] = useState<branchOptions[]>([]);
-  const filterData = useSelector(selectFilterData)
 
   const options = [
     { label: "Porur", value: "Porur" },
@@ -21,27 +18,13 @@ const Branch: React.FC = () => {
     { label: "Bangalore", value: "Bangalore" },
   ];
 
-  const handleOnChangeMultiSelect = (items:branchOptions[]) => {
-    const values = items.map((val: branchOptions) => val.value);
-    dispatch(saveBranch(values));
-  };
-
-useEffect(()=>{
-  if(filterData.branch){
-    const selectedValue = filterData.branch.map((stringValue) =>
-    options.find((option) => option.value === stringValue));
-    setSelected(selectedValue as branchOptions[]);
-  }
-
-},[filterData])
-
   return (
     <div className="branchWrap" ref={refOne}>
       <div className='branchDropDown' >
             <MultiSelect
               options={options}
-              value={selected}
-              onChange={(values:branchOptions[]) => handleOnChangeMultiSelect(values)}
+              value={selectedBranch}
+              onChange={(values:branchOptions[]) => setSelectedBranch(values)}
               labelledBy={"Select"}
             />       
       </div>

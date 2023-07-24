@@ -15,7 +15,7 @@ const TimeTracerNav = () => {
                     <CustomLink to="/timesheet">
                         <div className="timetracernavitems">    
                             <span className="material-icons-round timetracernavicon">punch_clock</span>
-                            <span className="navtext">Timesheet</span>  
+                            <span className="navtext">Attendance</span>  
                         </div>
                     </CustomLink>
                     <CustomLink to="/productivity">
@@ -24,25 +24,25 @@ const TimeTracerNav = () => {
                             <span className="navtext">Productivity</span>  
                         </div>
                     </CustomLink>
-                    <CustomLink to="/productivity">
+                    <CustomLink to="/timeline">
                         <div className="timetracernavitems">    
                             <span className="material-icons-round timetracernavicon">timeline</span>
                             <span className="navtext">Timeline</span>  
                         </div>
                     </CustomLink>
-                    <CustomLink to="/productivity">
+                    <CustomLink to="/screenshots">
                         <div className="timetracernavitems">    
                             <span className="material-icons-round timetracernavicon">screenshot_monitor</span>
                             <span className="navtext">Screenshots</span>  
                         </div>
                     </CustomLink>
-                    <CustomLink to="/productivity">
+                    <CustomLink to="/mydashboard">
                         <div className="timetracernavitems">    
                             <span className="material-icons-round timetracernavicon">apps</span>
                             <span className="navtext">My Dashboard</span>  
                         </div>
                     </CustomLink>
-                    <CustomLink to="/productivity">
+                    <CustomLink to="/reports">
                         <div className="timetracernavitems">    
                             <span className="material-icons-round timetracernavicon">summarize</span>
                             <span className="navtext">Reports</span>  

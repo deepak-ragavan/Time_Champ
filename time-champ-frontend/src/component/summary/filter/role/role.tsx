@@ -10,11 +10,8 @@ type roleOptions = {
 }
 
 
-const Role: React.FC = () => {
-  const dispatch = useDispatch()
+const Role: React.FC<{selectedRole:roleOptions[],setSelectedRole:(val:roleOptions[])=>void}> = ({selectedRole,setSelectedRole}) => {
   const refOne = useRef<HTMLDivElement | null>(null);
-  const [selected, setSelected] = useState<roleOptions[]>([]);
-  const filterData = useSelector(selectFilterData)
 
   const options = [
     { label: "Mac/Linux User", value: "Mac/Linux User" },
@@ -23,28 +20,14 @@ const Role: React.FC = () => {
     { label: "Super Admin", value: "Super Admin" },
     { label: "User", value: "User" },
   ];
-  
-  const handleOnChangeMultiSelect = (items:roleOptions[]) => {
-    const values = items.map((val: roleOptions) => val.value);
-    dispatch(saveRole(values));
-  };
-
-useEffect(()=>{
-  if(filterData.role){
-    const selectedValue = filterData.role.map((stringValue) =>
-    options.find((option) => option.value === stringValue));
-    setSelected(selectedValue as roleOptions[]);
-  }
-
-},[filterData])
 
   return (
     <div className="roleWrap" ref={refOne}>
       <div className='roleDropDown' >
             <MultiSelect
               options={options}
-              value={selected}
-              onChange={(values:roleOptions[]) => handleOnChangeMultiSelect(values)}
+              value={selectedRole}
+              onChange={(values:roleOptions[]) => setSelectedRole(values)}
               labelledBy={"Select"}
             />       
       </div>

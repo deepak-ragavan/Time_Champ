@@ -11,6 +11,10 @@
         width: 100%;
     
     }
+
+    .expandfilter {
+        flex-direction: column;
+    }
 }
 
 
@@ -48,11 +52,15 @@
 
 .row2 {
     display: flex;  
+    justify-content: space-around;
 }
 
 .cardData {
-    width: 100%;
     margin: 5px;
+    min-height: 350px;
+    min-width: 32%;
+    border: 1px solid;
+    border-radius: 5px;
 }
 
 .showfilterdata {

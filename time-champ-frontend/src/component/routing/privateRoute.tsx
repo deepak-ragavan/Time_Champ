@@ -6,6 +6,7 @@ import NavBar from "../navbar/navbar"
 import Summary from "../summary/summary"
 import TimeTracerNav from "../navbar/timetrackerbar/timetracernav"
 import Timesheet from "../timesheet/timesheet"
+import Productivity from "../productivity/productivity"
 
 const PrivateRoute = () => {
     return (
@@ -18,6 +19,7 @@ const PrivateRoute = () => {
                     <Route element={<TimeTracerNav />}>
                         <Route path="/summary" element={<Summary/>} />
                         <Route path="/timesheet" element={<Timesheet/>} />
+                        <Route path="/productivity" element={<Productivity />} />
                     </Route>
                 </Route>    
             </Routes>

@@ -1,81 +1,42 @@
 import React from 'react'
 import './cardview.scss'
+import { formatTime } from '../../helper/helper'
+
+type summaryData = {
+    appName:string,
+    spentTime:number,
+    appIconUrl:string,
+}
 
 type Cardprops = {
     heading : string,
     headingClassName:string
+    data : summaryData[]
 }
 
-const CardView: React.FC<Cardprops> = ({ heading,headingClassName }) => {
+
+const CardView: React.FC<Cardprops> = ({ heading,headingClassName,data }) => {
+
     return (
         <div className="cardview">
             <div className={headingClassName}>
                 <h4>{heading}</h4>
             </div>
             <div className="cardcontent">
-                <div className="row">
-                    <div className="cl-1">
-                        <span className="material-icons-round vertical">account_box</span>
-                        <p>Stackoverflow</p>
+                { data.length>0 ?
+                    (data.map((values) => (
+                        <div className="row">
+                        <div className="cl-1">
+                            <p className='defaultApplogo'>{values.appName.charAt(0)}</p>
+                            <p>{values.appName}</p>
+                        </div>
+                        <div className="cl-2">
+                            <p>{formatTime(values.spentTime)}</p>
+                        </div>
                     </div>
-                    <div className="cl-2">
-                        <p>53h 13m</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="cl-1">
-                        <span className="material-icons-round vertical">account_box</span>
-                        <p>Stackoverflow</p>
-                    </div>
-                    <div className="cl-2">
-                        <p>53h 13m</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="cl-1">
-                        <span className="material-icons-round vertical">account_box</span>
-                        <p>Stackoverflow</p>
-                    </div>
-                    <div className="cl-2">
-                        <p>53h 13m</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="cl-1">
-                        <span className="material-icons-round vertical">account_box</span>
-                        <p>Stackoverflow</p>
-                    </div>
-                    <div className="cl-2">
-                        <p>53h 13m</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="cl-1">
-                        <span className="material-icons-round vertical">account_box</span>
-                        <p>Stackoverflow</p>
-                    </div>
-                    <div className="cl-2">
-                        <p>53h 13m</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="cl-1">
-                        <span className="material-icons-round vertical">account_box</span>
-                        <p>Stackoverflow</p>
-                    </div>
-                    <div className="cl-2">
-                        <p>53h 13m</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="cl-1">
-                        <span className="material-icons-round vertical">account_box</span>
-                        <p>Stackoverflow</p>
-                    </div>
-                    <div className="cl-2">
-                        <p>53h 13m</p>
-                    </div>
-                </div>
+                    ))
+                    ) : (<p className='NoContent'>No data to display</p>)
+                }
             </div>
         </div>
     )

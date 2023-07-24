@@ -1,0 +1,44 @@
+.ProductivityDataContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.col-2 {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 13px 0;
+}
+
+  .dateFieldDesign {
+    position: relative;
+    background-color: tan;
+    padding: 5px;
+    isolation: isolate;
+}
+.dateFieldDesign:before {
+    height: 37px;
+    content: '';
+    left: 100%;
+    top: 50%;
+    aspect-ratio: 1;
+    background: tan;
+    position: absolute;
+    transform: translate(-50%, -50%) rotate(45deg);
+    z-index: -1;
+}
+
+.col-1{
+    padding-left: 5px;
+}
+
+.dayField {
+    margin-bottom: 5px;
+}
+
+.productivityChart {
+    width: 60px;
+    height: 30px;
+}
+  

@@ -1,37 +1,35 @@
 package repository
 
 import (
-	"github.com/tracker/initializers"
 	"github.com/tracker/pkg/models"
 	"gorm.io/gorm"
 )
 
-func GetUserActivity(id int) (models.UserActivity, error) {
+func (db DbInstance) GetUserActivity(id uint) (models.UserActivity, *gorm.DB) {
 	var userActivity models.UserActivity
-	err := initializers.DB.Model(&models.UserActivity{}).Preload("UserAttendance").Find(&userActivity).Error
+	return userActivity, db.Instance.Preload("userAttendance").First(&userActivity, id)
+}
+
+func (db DbInstance) UpdateUserActivity(userActivity models.UserActivity, id uint) *gorm.DB {
+	return db.Instance.Save(&userActivity)
+}
+
+func (db DbInstance) SaveUserActivity(userActivity models.UserActivity) (models.UserActivity, *gorm.DB) {
+	return userActivity, db.Instance.Save(&userActivity)
+}
+
+func (db DbInstance) DeleteUserActivity(userActivity models.UserActivity, id uint) *gorm.DB {
+	return db.Instance.Delete(&userActivity, id)
+}
+
+func (db DbInstance) GetUserActivityByUserAttendanceIDAndDate(id uint, date string) (models.UserActivity, *gorm.DB) {
+	var userActivity models.UserActivity
+	err := db.Instance.Where("userAttendance_id = ? AND end_time = ?", id, date).First(&userActivity)
 	return userActivity, err
 }
 
-func UpdateUserActivity(userActivity models.UserActivity, id int) *gorm.DB {
-	return initializers.DB.Save(&userActivity)
-}
-
-func SaveUserActivity(userActivity models.UserActivity) (models.UserActivity, *gorm.DB) {
-	return userActivity, initializers.DB.Save(&userActivity)
-}
-
-func DeleteUserActivity(userActivity models.UserActivity, id int) *gorm.DB {
-	return initializers.DB.Delete(&userActivity, id)
-}
-
-func GetUserActivityByUserAttendanceIDAndDate(id int, date string) (models.UserActivity, *gorm.DB) {
+func (db DbInstance) GetUserActivityByMaxDate(id uint) (models.UserActivity, *gorm.DB) {
 	var userActivity models.UserActivity
-	err := initializers.DB.Where("userAttendance_id = ? AND end_time = ?", id, date).First(&userActivity)
-	return userActivity, err
-}
-
-func GetUserActivityByMaxDate(id int) (models.UserActivity, *gorm.DB) {
-	var userActivity models.UserActivity
-	err := initializers.DB.Where("userAttendance_id = ?", id).Order("end_time desc").First(&userActivity)
+	err := db.Instance.Where("userAttendance_id = ?", id).Order("end_time desc").First(&userActivity)
 	return userActivity, err
 }

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel Report</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 645px;
+            margin: 0 auto;
+            padding: 29px;
+            padding-top: 10px;
+            border: 0px solid;
+            border-radius: 13px;
+            font-family: roboto;
+            background-color: #010e3a;
+            /* background-color: #dae5ea; */
+        }
+
+        .header {
+            vertical-align: top;
+            background-color: rgb(247, 184, 112);
+            /* background-color: #ecf9fb; */
+            border-radius: 4px 4px 0px 0px;
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: 15px;
+            text-align: center;
+            margin-bottom: 3px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            padding-top: 21px;
+        }
+
+        .titlesub {
+            font-size: 17px;
+            font-weight: bold;
+            color: #070707;
+            /* color: #149a9a; */
+        }
+
+        .contact-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .contact-section {
+            text-align: center;
+            margin-top: 2px;
+            background: rgb(247, 184, 112);
+            /* background: white; */
+            padding-top: 7px;
+            padding-bottom: 7px;
+        }
+
+        .backgroud {
+            font-family: Helvetica, Arial, sans-serif;
+            margin-bottom: 2px;
+            font-size: 16px;
+            line-height: 24px;
+            background-color: #ffffff;
+            color: #424651;
+            padding-left: 24px;
+            padding-right: 24px;
+            padding-top: 16px;
+            padding-bottom: 10px;
+        }
+
+        .backgroudli {
+            font-family: Helvetica, Arial, sans-serif;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-size: 16px;
+            line-height: 24px;
+            background-color: #ffffff;
+            color: #424651;
+            padding-left: 24px;
+            padding-right: 40px;
+            padding-top: 2px;
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border: none;
+            padding: 20px
+        }
+
+        td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 class="title">Sentinel</h2>
+            <h3 class="titlesub">Hi {{.Name}}, Here is your summary report for {{.Date}}</h3>
+        </div>
+        <div>
+            <div class="backgroud">
+                <table>
+                    <tr>
+                        <td style="color: #149a9a">Total Time</td>
+                        <td style="color: #77b3ed">Desk Time</td>
+                        <td style="color: #ed8282">Idle Time</td>
+                    </tr>
+                    <tr>
+                        <td>{{.TotalTime}}</td>
+                        <td>{{.DeskTime}}</td>
+                        <td>{{.IdeleTime}}</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #7fc382">Productive Time</td>
+                        <td style="color: #FFC000">Unproductive Time</td>
+                        <td style="color: #ccc">Neutral Time</td>
+
+                    </tr>
+                    <tr>
+                        <td>{{.ProductiveTime}}</td>
+                        <td>{{.UnproductiveTime}}</td>
+                        <td>{{.NeutralTime}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="backgroudli">
+            <h3 class="section-title-list">Most Used Applications &amp; Websites</h3>
+            <div>{{.List}}</div>
+        </div>
+        <div class="contact-section">
+            <p class="contact-text">For support, please don't hesitate to contact us.</p>
+        </div>
+    </div>
+</body>
+
+</html>

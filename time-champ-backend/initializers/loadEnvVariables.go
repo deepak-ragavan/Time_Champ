@@ -6,16 +6,24 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
+	"github.com/tracker/pkg/constant"
 )
 
 func LoadEnvVariables() {
-	dir, err := filepath.Abs("")
-	if err != nil {
-		log.Fatal(err)
-	}
-	path := strings.Replace((strings.Replace(dir, "\\", "/", -1)), "cmd", ".env", -1)
+	path, _ := Path(constant.ENV_FILE)
 	err = godotenv.Load(path)
 	if err != nil {
 		log.Fatal("Error loading .env file", err)
 	}
+}
+
+func Path(file string) (string, error) {
+	dir, err := filepath.Abs(constant.NULL)
+	if err != nil {
+		log.Fatal(err)
+		return constant.NULL, err
+	}
+	path := strings.Replace((strings.Replace(dir, constant.BACKSLASH, constant.FORWARD_SLASH, constant.ONE)),
+		constant.CMD, file, -constant.ONE)
+	return path, err
 }

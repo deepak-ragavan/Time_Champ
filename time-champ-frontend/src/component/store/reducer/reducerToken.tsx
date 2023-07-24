@@ -6,6 +6,7 @@ export interface IUserProfile {
     refresh_token: string;
     access_token_expiry: number;
     refresh_token_expiry: number;
+    id:number
 }
   
 const initialState: IUserProfile = {
@@ -13,6 +14,7 @@ const initialState: IUserProfile = {
     refresh_token: "",
     access_token_expiry: 0,
     refresh_token_expiry: 0,
+    id:0,
 };
 
 const ReducerToken = createSlice({
@@ -24,6 +26,7 @@ const ReducerToken = createSlice({
             state.refresh_token = action.payload.data.refresh_token
             state.access_token_expiry = action.payload.data.access_token_Expires_in
             state.refresh_token_expiry = action.payload.data.refresh_token_Expires_in
+            state.id = action.payload.data.id
         },
         removeToken: () => {
             return initialState;

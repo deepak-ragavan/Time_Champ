@@ -11,23 +11,24 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/tracker/initializers"
+	"github.com/tracker/pkg/constant"
+	"github.com/tracker/pkg/constant/message"
 	"github.com/tracker/pkg/dto"
-	"github.com/tracker/pkg/enum"
 	"github.com/tracker/pkg/models"
 )
 
 func Logout(c *gin.Context) {
 	metadata, err := ExtractTokenMetadata(c.Request)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		c.JSON(http.StatusUnauthorized, gin.H{message.ERROR: message.UNAUTHORIZED})
 		return
 	}
 	delErr := DeleteTokens(metadata)
 	if delErr != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": delErr.Error()})
+		c.JSON(http.StatusUnauthorized, gin.H{message.ERROR: delErr.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged out"})
+	c.JSON(http.StatusOK, gin.H{message.MESSAGE: message.SUCCESSFUL_LOGOUT_MESSAGE})
 }
 
 func ExtractTokenMetadata(r *http.Request) (*dto.AccessDetails, error) {
@@ -52,21 +53,22 @@ func ExtractTokenMetadata(r *http.Request) (*dto.AccessDetails, error) {
 	}
 	return nil, err
 }
+
 func DeleteTokens(authD *dto.AccessDetails) error {
 	//get the refresh uuid
 	var user models.User
-	affect := initializers.DB.First(&user, int(authD.UserId), authD.AccessUuid)
+	affect := initializers.DB.First(&user, uint(authD.UserId), authD.AccessUuid)
 	if user.AccessUuid != authD.AccessUuid {
 		return errors.New(" Token expired")
 	}
-	if affect.RowsAffected == 0 {
-		return errors.New("user not found")
+	if affect.RowsAffected == constant.ZERO {
+		return errors.New(message.USER_NOT_FOUND)
 	}
-	user.AccessUuid = enum.NULL
-	user.RefreshUuid = enum.NULL
+	user.AccessUuid = constant.NULL
+	user.RefreshUuid = constant.NULL
 	errAccess := initializers.DB.Save(&user)
-	if errAccess.RowsAffected == 0 {
-		return errors.New(" Unauthorized ")
+	if errAccess.RowsAffected == constant.ZERO {
+		return errors.New(message.UNAUTHORIZED)
 	}
 	return nil
 }
@@ -92,12 +94,4 @@ func ExtractToken(r *http.Request) string {
 		return strArr[1]
 	}
 	return ""
-}
-
-func Validate(c *gin.Context) {
-	user, err := c.Get("user")
-	if !err {
-		return
-	}
-	c.JSON(http.StatusOK, user)
 }
