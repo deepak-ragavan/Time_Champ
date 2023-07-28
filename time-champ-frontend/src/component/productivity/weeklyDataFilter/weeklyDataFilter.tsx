@@ -40,7 +40,7 @@ const WeeklyCalendar : React.FC<{currentWeek:moment.Moment,setCurrentWeek:(val:m
   return (
     <div className='calendercontainer'>
       <button className='previ' onClick={previousWeek}><span className="material-icons-outlined">chevron_left</span></button>
-      {!isMixedWeek && <p>{currentWeekMonth} - {currentWeek.format('YYYY')} W{currentWeekNumber}</p>} {isMixedWeek && <p>{currentWeekMonth} - {currentWeek.format('YYYY')} - {mixedWeekAnotherMonth} - {currentWeek.format('YYYY')}  </p>}
+      {!isMixedWeek && <p>{currentWeekMonth} - {currentWeek.format('YYYY')} W{currentWeekNumber}</p>} {isMixedWeek && <p> {currentWeek.startOf("week").format('D MMM - YYYY')} - {currentWeek.endOf("week").format('D MMM - YYYY')}  </p>}
       <button className='previ' onClick={nextWeek}><span className="material-icons-outlined">chevron_right</span></button>
     </div>
   );

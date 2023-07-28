@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Work Sans';
 }
 
 body {
@@ -15,7 +16,16 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    monospace,'nootDrop';
 }
 
+@font-face {
+  font-family: nootDrop;
+  src: url('./font/Nootdorp\ Italic\ Demo.otf');
+}
+
+@font-face {
+  font-family: remix;
+  src: url('./font/Remix.ttf');
+}
 

@@ -11,6 +11,7 @@ const Header = () => {
 
     const handlelogout = () => {
         dispatch(removeToken())
+        // localStorage.removeItem("tokenDetails")
         navigate("/login")
     }
     return <div className="nav">

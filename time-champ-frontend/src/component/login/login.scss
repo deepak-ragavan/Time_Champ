@@ -10,17 +10,16 @@
     height: 50px;
 }
 .appName {
-    font-family: ui-serif;
+    font-family: 'remix';
     font-weight: bolder;
     font-size: 40px;
     font-variant: petite-caps;
+    color: #fff;
 }
 
 .container {
-    border: 1px solid black;
-    padding: 20px 0px;
-    border-radius: 10px;
-    background-color: antiquewhite;
+    padding: 20px 20px;
+    height: 100%;
 }
 
 .button__text {
@@ -67,15 +66,16 @@
 
 .divButton {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
 .divLink {
     display: flex;
     justify-content: center;
-    padding: 10px;
+    padding: 15px;
     gap: 5px;
+    color: #fff;
 }
 
 a {
@@ -88,14 +88,84 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 768px;
-    background-image: linear-gradient(to left, rgba(255,0,0,0), rgba(255,0,0,1));
+    //min-height: 768px;
+    background-image: url('../../design.jpg');
+    background-size: cover;
+    overflow: auto;
+    height: 100vh;
+    isolation: isolate;
+    padding: 20px;
+    .after,
+    .before{
+        width: 200px;
+        height: 200px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-image: linear-gradient(45deg, #460012, #ff0042);
+        border-radius: 50%;
+        transform: translate(-30px, -60px);
+        z-index: -1;
+        &::before{
+            content: "";
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            right: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.3333333333);
+            bottom: -30px;
+            background-image: linear-gradient(45deg, #fccfd9, #ff0042);
+            border-radius: 50%;
+        }
+        &::after{
+            content: '';
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            right: -10px;
+            border: 1px solid rgba(255, 255, 255, 0.3333333333);
+            bottom: 80px;
+            background-image: linear-gradient(45deg, #fccfd9, #ff0042);
+            border-radius: 50%;
+        }
+    }
+    .after{
+        left: auto;
+        top: auto;
+        right: 0;
+        bottom: 0;
+        transform: translate(30px, 60px);
+        &::before{
+            left: -60px;
+            top: 30px;
+            right: auto;
+            bottom: auto;
+        }
+        &::after{
+            left: 10px;
+            top: -80px;
+            right: auto;
+            bottom: auto;
+        }
+    }
+    @media (max-width: 590px) {
+        .loginContainer{
+            grid-template-columns: 1fr;
+            .sideImage{
+                display: none;
+            }
+        }
+    }
 }
 
 .loginDiv{
     width: calc(52% - 260px);
     width: 100%;
     max-width: 500px;
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    background-image: linear-gradient(0deg, #c40033, #ff0042);
 }
 
 .mb-3{
@@ -116,14 +186,52 @@ a {
     height: 31px;
 }
 
-.form-control{
-    height: 31px;
-    width: calc(100% - 110px);
-    padding-left: 5px;
-    border-left: none;
-    border: 1px solid #000000;
-    margin-bottom: 15px;
-    outline: none;
+.form-control {
+    width: 100%;
+    max-width: 390px;
+    .MuiInputBase-root{
+        &.Mui-focused{
+            .MuiOutlinedInput-notchedOutline {
+                border-color: #fff;
+            }
+        }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: #ffffff;
+            transition: none;
+        }
+        &:hover{
+            .MuiOutlinedInput-notchedOutline{
+                border-color: #ccc;
+            }
+        }
+    }
+    .MuiInputBase-input{
+        color: #FFF;
+        &:-webkit-autofill{
+            -webkit-box-shadow: none;
+            background-color: transparent;
+            &-selected{
+                -webkit-box-shadow: none;
+                background-color: transparent;
+            }
+        }
+    }
+    .MuiFormLabel-root{
+        color: #fff;
+        &.Mui-focused{
+            color: #FFF;
+        }
+    }
+    .MuiOutlinedInput-notchedOutline {
+        border-color: #ffffff;
+        span{
+            color: #FFFFFF;
+        }
+    }
 }
 
 .button {
@@ -135,4 +243,102 @@ a {
 }
 
 
+.sideImage {
+    padding: 20px;
+}
 
+.googleSignIn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    gap: 20px;
+}
+
+.loginText {
+    color: #fff;
+}
+
+.centerTextContainer {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    isolation: isolate;
+    margin: 20px;
+}
+
+.centerTextContainer::before {
+    content: "";
+    height: 0;
+    width: calc(50% - 26px);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+    border-bottom: 1px solid white;
+}
+
+.centerTextContainer::after {
+    content: "";
+    height: 0;
+    width: calc(50% - 26px);
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+    border-bottom: 1px solid white;
+}
+
+.centerText {
+    padding: 0 10px;
+    color: #fff;
+}
+
+.googleSignInButton {
+    width: 100%;
+    max-width: 390px;
+    justify-content: space-between !important;
+    color: white !important;
+    border-color: antiquewhite !important;
+}
+
+.loginButton {
+    background: #ffffff !important;
+    color: #FF0042 !important;
+    width: 100%;
+    margin-top: 10px !important;
+    max-width: 390px;
+    align-items: center;
+}
+
+.forgotPasswordContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.forgotPassword {
+    display: flex;
+    margin-right: 25px;
+    padding: 10px;  
+    color: #fff;
+}
+
+.signupButton {
+    color: #fff;
+}
+
+.loginSideImage {
+    width: 100%;
+}
+
+.loginContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    background: #FFFFFF;
+    height: fit-content;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: -4px 8px 25px rgba(0,0,0,0.1);
+    max-width: 1000px;
+    width: 100%;
+}

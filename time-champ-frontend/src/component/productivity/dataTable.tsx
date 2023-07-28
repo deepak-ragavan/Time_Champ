@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import "./dataTable.scss"
 import DataContainer from "./datacontainer"
 
@@ -16,16 +16,22 @@ type productivityProps = {
     productivity:productivityDataProps[]
 }
 
-const DataTable : React.FC<{datas:productivityProps[],showIdleTimeData:boolean,weekDatesArray:string[]}> = ({datas,showIdleTimeData,weekDatesArray}) => {
+const DataTable : React.FC<{datas:productivityProps[],showIdleTimeData:boolean}> = ({datas,showIdleTimeData}) => {
+    console.log(datas,"incomeData")
     const [selected, setSelected] = useState(datas[0].name);
     const data = useMemo(() => {
         console.log("selected",selected, datas)
         const test = datas.find((temp:productivityProps)=> { return temp.name === selected })
+        console.log(test,"memooooooo")
         if(test){
             return test.productivity
         }
         return []
     },[selected, datas])
+
+    useEffect(()=>{
+        setSelected(datas[0].name)
+    },[datas])
     console.log(data,"datatableee")
     return (
         <div className="productivityData">
@@ -42,7 +48,7 @@ const DataTable : React.FC<{datas:productivityProps[],showIdleTimeData:boolean,w
             <div className="weeklyData">
                 <div className="data">
                     {
-                        data ? <DataContainer datas={data} showIdleTimeData={showIdleTimeData} weekDatesArray={weekDatesArray} />
+                        data ? <DataContainer datas={data} showIdleTimeData={showIdleTimeData} />
                              : (<p className='NoContent'>No data to display</p>)
                     }
                 </div>

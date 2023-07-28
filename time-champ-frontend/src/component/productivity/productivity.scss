@@ -1,6 +1,17 @@
 .productivity {
   overflow: auto;
+  max-height: calc(100vh - 127px);
 }
+
+.productivity::-webkit-scrollbar {
+  width: 8px;
+}
+
+.productivity::-webkit-scrollbar-thumb {
+  border-radius: 9px;
+  background: #1b4d75;
+}
+
 .productivityFilter {
     border: 1px solid #f5d6d6;
     margin-top: 3px;
@@ -11,7 +22,6 @@
 }
 
 .productivityDataContainer {
-  height: 100vh;
   background: #f4f5f6;
   padding: 20px;
 }

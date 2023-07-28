@@ -53,21 +53,21 @@ const Productivity = () => {
     useEffect(()=> {
         getProductivityData()
         console.log("insideUseEffevct")
-    },[currentWeek])
+    },[currentWeek,selectedUser])
 
 
     const getArrayOfWeekDates = () => {
         const fromDate = currentWeek.clone().startOf('week')
         const toDate = currentWeek.clone().endOf('week')
-        const datesOfWeek = [];
+        const datesOfWeek:string[] = [];
         let currentDate = fromDate;
         while (currentDate <= toDate) {
-          datesOfWeek.push(currentDate.format('YYYY-MM-DD'));
+          datesOfWeek.push(currentDate.format('YYYY-MM-DD').toString());
           currentDate = currentDate.clone().add(1, 'day');
         }
         return datesOfWeek;
       }
-      const weekDatesArray = getArrayOfWeekDates();
+      
       
 
     const getUserDataForFilter = async () => {
@@ -86,9 +86,9 @@ const Productivity = () => {
 
     const getProductivityData = async () => {
         try {
-            const fromDate = currentWeek.clone().startOf('week').toDate()
-            const toDate = currentWeek.clone().endOf('week').toDate()
-             const response = await axiosPrivate.get("/user-attendance/productivity",{params:{userId:userId,fromDate:moment(fromDate).format('YYYY-MM-DD'), toDate:moment(toDate).format('YYYY-MM-DD')}});
+             const selectedUserId = selectedUser!==null?selectedUser.id:userId;
+             const weekDatesArray = getArrayOfWeekDates().toString();
+             const response = await axiosPrivate.get("/user-attendance/productivity",{params:{userId:selectedUserId,weekDates:weekDatesArray}});
              const productivityData = response?.data
              setData(productivityData);
        } catch(error) {
@@ -159,7 +159,7 @@ const Productivity = () => {
                     </div>
                 </div> 
         <div className='productivityDataContainer'>
-             {data ? <DataTable datas={data} showIdleTimeData={showIdleTimeData} weekDatesArray={weekDatesArray} /> : <div>Loading...</div>}
+             {data ? <DataTable datas={data} showIdleTimeData={showIdleTimeData} /> : <div>Loading...</div>}
         </div>
 
     </div>

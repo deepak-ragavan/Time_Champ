@@ -13,11 +13,11 @@ type productivityDataProps = {
     StartTime:string,
     EndTime: string,
   }
-const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:boolean,weekDatesArray:string[]}> = ({datas,showIdleTimeData,weekDatesArray}) => {
+const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:boolean}> = ({datas,showIdleTimeData}) => {
     console.log("datas inside", datas)
     return (
         <>
-            <div className="ProductivityDataContainer">
+            {/* <div className="ProductivityDataContainer">
                 {
                     weekDatesArray.map((date) => (
                         <div className="dateFieldDesign">
@@ -32,21 +32,36 @@ const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:bo
                         </div>
                     ))
                 }
-            </div>
+            </div> */}
             <div className="ProductivityDataContainer">
                 {
                     datas!==null ? datas.map((value) => (
                         <div className="col-2">
-                            <div className="productivityChart">
-                                    <StackedBar Productive={milliSecTOSeconds(value.Productive)} Unproductive={milliSecTOSeconds(value.Unproductive)} 
-                                    Neutral={milliSecTOSeconds(value.Neutral)} Idle={milliSecTOSeconds(value.Idle)} showIdleTimeData={showIdleTimeData}/>
+                            <div className="dateFieldDesign">
+                                <div className="col-1">
+                                    <div className="dayField">
+                                        <p>{moment(value.StartTime).format("dddd")}</p>
+                                    </div>
+                                    <div className="dateField">
+                                        <p>{moment(value.StartTime).format("D-MMM")}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="StartEndTime">
-                                <p>{moment(value.StartTime).format('LT')+"-"+moment(value.EndTime).format('LT')}</p>
-                            </div>
-                            <div className="TotalWorkingHours">
-                                        <p>{moment.utc(value.Working).format('H[h] m[m] s[s]')}</p>
-                            </div>
+                            {
+                                value.Working>0 && 
+                                <>
+                                    <div className="productivityChart">
+                                        <StackedBar Productive={milliSecTOSeconds(value.Productive)} Unproductive={milliSecTOSeconds(value.Unproductive)} 
+                                        Neutral={milliSecTOSeconds(value.Neutral)} Idle={milliSecTOSeconds(value.Idle)} showIdleTimeData={showIdleTimeData}/>
+                                    </div>
+                                    <div className="StartEndTime">
+                                        <p>{moment(value.StartTime).format('LT')+"-"+moment(value.EndTime).format('LT')}</p>
+                                    </div>
+                                    <div className="TotalWorkingHours">
+                                            <p>{moment.utc(value.Working).format('H[h] m[m] s[s]')}</p>
+                                    </div>
+                                </> 
+                            }
                     </div>
                     )) : (<p className='NoContent'>No data to display</p>)
                 }

@@ -7,8 +7,7 @@
 .col-2 {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 13px 0;
+    gap: 60px;
 }
 
   .dateFieldDesign {
@@ -16,6 +15,7 @@
     background-color: tan;
     padding: 5px;
     isolation: isolate;
+    width: 100px;
 }
 .dateFieldDesign:before {
     height: 37px;
