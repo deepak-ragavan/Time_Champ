@@ -10,12 +10,17 @@
     gap: 60px;
 }
 
-  .dateFieldDesign {
+.dateFieldDesign {
     position: relative;
-    background-color: tan;
+    background-color: #bce8ff;
     padding: 5px;
     isolation: isolate;
     width: 100px;
+    min-width: 100px;
+    &.noData {
+        background-color: #dcdcdc;
+        color: #464646;
+    }
 }
 .dateFieldDesign:before {
     height: 37px;
@@ -23,10 +28,15 @@
     left: 100%;
     top: 50%;
     aspect-ratio: 1;
-    background: tan;
+    background-color: #bce8ff;
     position: absolute;
     transform: translate(-50%, -50%) rotate(45deg);
     z-index: -1;
+}
+
+.noData:before {
+    background-color: #dcdcdc;
+    color: #464646;
 }
 
 .col-1{

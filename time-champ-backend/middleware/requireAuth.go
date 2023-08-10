@@ -31,15 +31,19 @@ func RequireAuth(c *gin.Context) {
 
 func FetchAuth(authD *dto.AccessDetails) (models.User, error) {
 	var user models.User
-	affect := initializers.DB.First(&user, "access_uuid = ?", authD.AccessUuid)
-	if affect.RowsAffected == constant.ZERO {
-		return models.User{}, errors.New(message.UNAUTHORIZED)
+	var desktopUser models.User
+	if authD.AccessUuid != constant.NULL {
+		affect := initializers.DB.First(&user, "access_uuid = ?", authD.AccessUuid)
+		if affect.RowsAffected != constant.ZERO && authD.UserId == int64(user.ID) {
+			return user, nil
+		}
+	} else if authD.DesktopUuid != constant.NULL {
+		aff := initializers.DB.First(&desktopUser, "desktop_uuid = ?", authD.DesktopUuid)
+		if aff.RowsAffected != constant.ZERO && authD.UserId == int64(desktopUser.ID) {
+			return desktopUser, nil
+		}
 	}
-
-	if authD.UserId != int64(user.ID) {
-		return models.User{}, errors.New(message.UNAUTHORIZED)
-	}
-	return user, nil
+	return models.User{}, errors.New(" Token expired")
 }
 
 func GetUserObject(c *gin.Context) (uint, error) {
@@ -51,6 +55,14 @@ func GetUserObject(c *gin.Context) (uint, error) {
 	if !err {
 		c.JSON(http.StatusUnauthorized, gin.H{message.ERROR: message.UNAUTHORIZED_USER})
 		return 0, errors.New(message.UNAUTHORIZED_USER)
+	}
+	if user.(models.User).IsDeleted {
+		c.JSON(http.StatusUnauthorized, gin.H{message.ERROR: message.USER_DELEDED})
+		return 0, errors.New(message.USER_DELEDED)
+	}
+	if user.(models.User).IsBlocked {
+		c.JSON(http.StatusUnauthorized, gin.H{message.ERROR: message.USER_BLOCKED})
+		return 0, errors.New(message.USER_BLOCKED)
 	}
 	id := user.(models.User).ID
 	return id, nil

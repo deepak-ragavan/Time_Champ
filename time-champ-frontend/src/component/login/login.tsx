@@ -13,7 +13,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TextField from "@mui/material/TextField"
 type msgType =  {
-    error : string
+    Error : string
 }
 
 const Login = () => {
@@ -29,7 +29,6 @@ const Login = () => {
         event.preventDefault();
         try {
             const response = await LoginApi({Email:email,Password:password})
-            // localStorage.setItem("tokenDetails",JSON.stringify(response.data))
             dispatch(saveToken(response))
             setEmail('')
             setPassword('')
@@ -40,7 +39,7 @@ const Login = () => {
                 setErrmsg("No Server Response")
             } else if(err.response?.status===400) {
                 const msg = err?.response?.data as msgType
-                setErrmsg(msg.error)
+                setErrmsg(msg.Error)
             } else if(err.response?.status===401) {
                 setErrmsg("unAuthorized")
             } else {
@@ -54,13 +53,13 @@ const Login = () => {
 
     return <div className="rootlogin">
                 <div className="before"></div>
+                <div className={errmsg ? "divError" : "offscreen"}>
+                    <p ref={errRef} aria-live="assertive" className="errmsg">{errmsg}</p>
+                    <span onClick={() => setErrmsg("")} className="material-icons-round close-icon">close</span>
+                </div>
                 <div className="loginContainer">
                     <div className="loginDiv">
                         <div className="container">
-                            <div className={errmsg ? "divError" : "offscreen"}>
-                                <p ref={errRef} aria-live="assertive" className="errmsg">{errmsg}</p>
-                                <span onClick={() => setErrmsg("")} className="material-icons-round close-icon">close</span>
-                            </div>
                             <div className="logoDiv">
                                 <img alt="logo" src={logo} className="logo"></img>
                                 <h3 className="appName">Sentinel</h3>
@@ -77,15 +76,10 @@ const Login = () => {
                             
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <TextField className="form-control" id="outlined-basic" size="small" margin="dense" label="Email" variant="outlined" onChange={e => setEmail(e.target.value)} />
-                                    {/* <span className="material-icons-round icon">person</span>
-                                    <input type="email" placeholder="Email" className="form-control" name="email" id="email" onChange={e => setEmail(e.target.value)} /> */}
+                                    <TextField inputProps={{ inputMode: 'email' }} className="form-control" id="outlined-basic" size="small" margin="dense" label="Email" variant="outlined" onChange={e => setEmail(e.target.value)} />
                                 </div>
                                 <div className="mb-3">
                                     <TextField className="form-control" id="outlined-basic" size="small" margin="dense" label="Password" variant="outlined" onChange={(e) => setPassword(e.target.value)} />
-                                {/* <span className="material-icons-round icon">lock</span>
-                                    <input type="password" placeholder="Password" className="form-control" name="password" id="password"
-                                        onChange={(e) => setPassword(e.target.value)} pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Password must be at least 8 characters long and contain at least one letter, one number, and one special character (@, $, !, %, *, #, ?, or &)." required /> */}
                                 </div>
                                 <div className="forgotPasswordContainer">
                                     <Link className="forgotPassword" to={`/forgotPassword`}>Forgot your password?</Link>

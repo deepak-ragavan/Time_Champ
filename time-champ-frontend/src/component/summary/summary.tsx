@@ -14,6 +14,7 @@ import moment from"moment";
 import Search from "./filter/search/search";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { selectTokenProfile } from "../store/reducer/reducerToken";
+import MultiSelectDropDown from "../common/multiSelectDropDown";
 
 type summaryData = {
     appName:string,
@@ -46,6 +47,27 @@ const initalState = {
     deskTime: 0,
 }
 
+const branchOptions = [
+    { label: "Porur", value: "Porur" },
+    { label: "Navalur", value: "Navalur" },
+    { label: "Bangalore", value: "Bangalore" },
+];
+
+const departmentOptions = [
+    { label: "Administration ", value: "Administration" },
+    { label: "Finance", value: "Finance" },
+    { label: "IT", value: "IT" },
+    { label: "Sales", value: "Sales" },
+];
+
+const roleOptions = [
+    { label: "Super Admin", value: "Super-Admin" },
+    { label: "Manager", value: "Manager" },
+    { label: "Admin", value: "Admin" },
+    { label: "Team Lead", value: "Team-Lead" },
+    { label: "User", value: "User" },
+];
+
 
 const Summary = () => {
     const [open, setOpen] = useState(false);
@@ -57,9 +79,9 @@ const Summary = () => {
           key: 'selection'
         }
     ]);
-    const [selectedBranch, setSelectedBranch] = useState<filterOptions[]>([]);
-    const [selectedRole, setSelectedRole] = useState<filterOptions[]>([]);
-    const [selectedDepartment, setSelectedDepartment] = useState<filterOptions[]>([]);
+    const [selectedBranch, setSelectedBranch] = useState<string>('');
+    const [selectedRole, setSelectedRole] = useState<string>('');
+    const [selectedDepartment, setSelectedDepartment] = useState<string>('');
     const [searchtext,setSearchText] = useState("")
     const userId = useSelector(selectTokenProfile).id;
     const [productiveData,setProductiveData] = useState<summaryData[]>([]);
@@ -74,6 +96,8 @@ const Summary = () => {
 
     const fetchSummaryData = async () => {
         try {
+            // const userIds = user?.map((value)=> value.id)
+            // userIds?.toString()
             const response = await axiosPrivate.get("/app-activity/status",{params:{userId:userId,fromDate:moment(range[0].startDate).format('YYYY-MM-DD'), toDate:moment(range[0].endDate).format('YYYY-MM-DD') ,searchText:searchtext}});
             setProductiveData(response?.data?.productive || []);
             setUnProductiveData(response?.data?.unproductive || []);
@@ -153,9 +177,9 @@ const Summary = () => {
             }
         ])
         setSearchText("")
-        setSelectedBranch([])
-        setSelectedDepartment([])
-        setSelectedRole([])
+        setSelectedBranch('')
+        setSelectedDepartment('')
+        setSelectedRole('')
         setSelectedUser(null)
     }
 
@@ -182,21 +206,21 @@ const Summary = () => {
                                 <span className="material-icons-round dropdown">arrow_drop_down</span>
                                 <span className="navtext">Branch</span>
                             </button>
-                            {(filterDropdown[1] === true) && <Branch selectedBranch={selectedBranch} setSelectedBranch={setSelectedBranch} />}
+                            {(filterDropdown[1] === true) && <MultiSelectDropDown selectedOption={selectedBranch} setSelectedOption={setSelectedBranch} options={branchOptions} isShowLabel={false} placeholder="Branch" />}
                         </li>
                         <li className="filterlist">
                             <button onClick={() => selectDropDown(2)} className='downarrow'>
                                 <span className="material-icons-round dropdown">arrow_drop_down</span>
                                 <span className="navtext">Department</span>
                             </button>
-                            {(filterDropdown[2] === true) && <Department selectedDepartment={selectedDepartment} setSelectedDepartment={setSelectedDepartment} />}
+                            {(filterDropdown[2] === true) && <MultiSelectDropDown selectedOption={selectedDepartment} setSelectedOption={setSelectedDepartment} options={departmentOptions} isShowLabel={false} placeholder="Department" />}
                         </li>
                         <li className="filterlist">
                             <button onClick={() => selectDropDown(3)} className='downarrow'>
                                 <span className="material-icons-round dropdown">arrow_drop_down</span>
                                 <span className="navtext">Role</span>
                             </button>
-                            {(filterDropdown[3] === true) && <Role  selectedRole={selectedRole} setSelectedRole={setSelectedRole}/>}
+                            {(filterDropdown[3] === true) && <MultiSelectDropDown  selectedOption={selectedRole} setSelectedOption={setSelectedRole} options={roleOptions} isShowLabel={false} placeholder="Role" />}
                         </li>
                         <li className="filterlist">
                             <button onClick={() => selectDropDown(4)} className='downarrow'>
@@ -219,9 +243,9 @@ const Summary = () => {
                 <div className="showfilterdata">
                     <ShowData dataKey="From Date" value={moment(range[0].startDate).format(`DD MMMM, YYYY`)} setSelected={setRange} />
                     <ShowData dataKey="To Date" value={moment(range[0].endDate).format(`DD MMMM, YYYY`)} setSelected={setRange} />
-                    <ShowData dataKey="Branch" value={selectedBranch.map((val: filterOptions) => val.value).toString()} setSelected={setSelectedBranch} />
-                    <ShowData dataKey="Department" value={selectedDepartment.map((val: filterOptions) => val.value).toString()} setSelected={setSelectedDepartment} />
-                    <ShowData dataKey="Role" value={selectedRole.map((val: filterOptions) => val.value).toString()} setSelected={setSelectedRole} />
+                    <ShowData dataKey="Branch" value={selectedBranch} setSelected={setSelectedBranch} />
+                    <ShowData dataKey="Department" value={selectedDepartment} setSelected={setSelectedDepartment} />
+                    <ShowData dataKey="Role" value={selectedRole} setSelected={setSelectedRole} />
                     <ShowData dataKey="User" value={selectedUser!==null?selectedUser.name:""} setSelected={setSelectedUser} />
                     <ShowData dataKey="Search" value={searchtext} setSelected={setSearchText} />
                 </div>
@@ -230,17 +254,17 @@ const Summary = () => {
         <div className="summaryData">
             <div className="row1">
                     <Piechart heading="Top 5 Websites & Applications" headingClassName="chartheading1" data={chartData} topFiveApp={topFiveWebsite} />
-                    <Piechart heading="Time Productivity" headingClassName="chartheading2" data={chartData} topFiveApp={topFiveWebsite} />
+                    <Piechart heading="Time Productivity" headingClassName="chartheading1" data={chartData} topFiveApp={topFiveWebsite} />
             </div>
             <div className="row2">
                 <div className="cardData">
                     <CardView heading="Productive Apps & Websites" headingClassName="cardheading" data={productiveData} />
                 </div>
                 <div className="cardData">
-                    <CardView heading="Unproductive Apps & Websites" headingClassName="cardheading1" data={unProductiveData} />
+                    <CardView heading="Unproductive Apps & Websites" headingClassName="cardheading" data={unProductiveData} />
                 </div>
                 <div className="cardData">
-                    <CardView heading="Netural Apps & Websites" headingClassName="cardheading2" data={neturalData} />
+                    <CardView heading="Netural Apps & Websites" headingClassName="cardheading" data={neturalData} />
                 </div>
             </div>
         </div>

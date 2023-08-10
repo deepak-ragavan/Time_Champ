@@ -38,8 +38,9 @@ func ExtractTokenMetadata(r *http.Request) (*dto.AccessDetails, error) {
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
-		accessUuid, ok := claims["access_uuid"].(string)
-		if !ok {
+		accessUuid, okk := claims["access_uuid"].(string)
+		desktopUuid, ok := claims["desktop_uuid"].(string)
+		if !ok && !okk {
 			return nil, err
 		}
 		userId, err := strconv.ParseUint(fmt.Sprintf("%.f", claims["user_id"]), 10, 64)
@@ -47,30 +48,39 @@ func ExtractTokenMetadata(r *http.Request) (*dto.AccessDetails, error) {
 			return nil, err
 		}
 		return &dto.AccessDetails{
-			AccessUuid: accessUuid,
-			UserId:     int64(userId),
+			AccessUuid:  accessUuid,
+			DesktopUuid: desktopUuid,
+			UserId:      int64(userId),
 		}, nil
 	}
 	return nil, err
 }
 
 func DeleteTokens(authD *dto.AccessDetails) error {
-	//get the refresh uuid
 	var user models.User
-	affect := initializers.DB.First(&user, uint(authD.UserId), authD.AccessUuid)
-	if user.AccessUuid != authD.AccessUuid {
+	var desktopUser models.User
+	affect := initializers.DB.Where("id = ? And access_uuid = ?", authD.UserId, authD.AccessUuid).First(&user)
+	aff := initializers.DB.Where("id = ? And desktop_uuid = ?", authD.UserId, authD.DesktopUuid).First(&desktopUser)
+	if user.AccessUuid != authD.AccessUuid && desktopUser.DesktopUuid != authD.DesktopUuid {
 		return errors.New(" Token expired")
 	}
-	if affect.RowsAffected == constant.ZERO {
-		return errors.New(message.USER_NOT_FOUND)
+	if affect.RowsAffected != constant.ZERO && authD.AccessUuid != constant.NULL {
+		user.AccessUuid = constant.NULL
+		user.RefreshUuid = constant.NULL
+		errAccess := initializers.DB.Save(&user)
+		if errAccess.RowsAffected == constant.ZERO {
+			return errors.New(message.UNAUTHORIZED)
+		}
+		return nil
+	} else if aff.RowsAffected != constant.ZERO && authD.DesktopUuid != constant.NULL {
+		desktopUser.DesktopUuid = constant.NULL
+		err := initializers.DB.Save(&desktopUser)
+		if err.RowsAffected == constant.ZERO {
+			return errors.New(message.UNAUTHORIZED)
+		}
+		return nil
 	}
-	user.AccessUuid = constant.NULL
-	user.RefreshUuid = constant.NULL
-	errAccess := initializers.DB.Save(&user)
-	if errAccess.RowsAffected == constant.ZERO {
-		return errors.New(message.UNAUTHORIZED)
-	}
-	return nil
+	return errors.New(" Token expired")
 }
 
 func VerifyToken(r *http.Request) (*jwt.Token, error) {
@@ -93,5 +103,5 @@ func ExtractToken(r *http.Request) string {
 	if len(strArr) == 2 {
 		return strArr[1]
 	}
-	return ""
+	return constant.NULL
 }

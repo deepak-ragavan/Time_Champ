@@ -66,7 +66,6 @@ func Refresh(c *gin.Context) {
 		return
 	}
 	refreshToken := mapToken["refresh_token"]
-
 	//verify the token
 	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
 		//Make sure that the token method conform to "SigningMethodHMAC"
@@ -97,14 +96,12 @@ func Refresh(c *gin.Context) {
 		}
 		userId, err := strconv.ParseUint(fmt.Sprintf("%.f", claims["user_id"]), 10, 64)
 		user, af := repository.DB().GetUser(uint(userId))
-
 		if err != nil && af.RowsAffected == constant.ZERO {
 			c.JSON(http.StatusUnprocessableEntity, gin.H{
 				message.ERROR: "Error occurred",
 			})
 			return
 		}
-
 		ts, createErr := CreateToken(user)
 		if createErr != nil {
 			c.JSON(http.StatusForbidden, gin.H{message.ERROR: createErr.Error()})
@@ -134,4 +131,23 @@ func FetchRefresh(refresh_uuid string) (models.User, error) {
 		return models.User{}, errors.New(message.UNAUTHORIZED)
 	}
 	return user, nil
+}
+
+func CreateTokenForDesktop(user models.User) (*dto.TokenDetails, error) {
+	userid := user.ID
+	td := &dto.TokenDetails{}
+	td.DesktopUuid = uuid.NewV4().String() + strconv.Itoa(int(userid))
+	var err error
+	//Creating Access Token
+	atClaims := jwt.MapClaims{}
+	atClaims["authorized"] = true
+	atClaims["desktop_uuid"] = td.DesktopUuid
+	atClaims["user_id"] = userid
+	atClaims["role"] = user.Role
+	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
+	td.AccessToken, err = at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
+	if err != nil {
+		return nil, err
+	}
+	return td, nil
 }

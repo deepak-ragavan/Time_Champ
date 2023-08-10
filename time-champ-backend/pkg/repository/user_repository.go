@@ -33,6 +33,7 @@ func (db DbInstance) GetByMailId(mail string) (models.User, *gorm.DB) {
 	var User models.User
 	return User, db.Instance.Where("email = ? ", mail).First(&User)
 }
+
 func (db DbInstance) GetUserDetailsForSummaryReport() ([]dto.User, *gorm.DB) {
 	var results []dto.User
 	err := db.Instance.Where("role NOT LIKE ?", enum.SUPER_ADMIN).Select("id, name, email").Find(&results)

@@ -16,7 +16,7 @@ type AppActivity struct {
 	SpentTime         time.Duration          `json:"spentTime"`
 	AppActivityStatus enum.AppActivityStatus `json:"appActivityStatus"`
 	UserID            uint                   `json:"-" gorm:"column:user_id"`
-	User              User                   `json:"user"`
+	User              *User                  `json:"user,omitempty"`
 }
 
 type AppActivitySpendTimeDto struct {

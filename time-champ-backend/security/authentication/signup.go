@@ -7,6 +7,7 @@ import (
 
 	emailverifier "github.com/AfterShip/email-verifier"
 	"github.com/gin-gonic/gin"
+	"github.com/mitchellh/mapstructure"
 	"github.com/tracker/initializers"
 	"github.com/tracker/pkg/constant"
 	"github.com/tracker/pkg/constant/message"
@@ -30,30 +31,33 @@ func Signup(c *gin.Context) {
 	}
 	check := validateMailId(body.Email, c)
 	if check != string(rune(http.StatusOK)) {
-		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: check})
+		c.JSON(http.StatusUnprocessableEntity, gin.H{message.ERROR: check})
 		return
 	}
 	domain, domainErr := ExtractDomainFromEmail(body.Email)
 	if domainErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.EMAIL_REGISTRATION_FAILED})
+		c.JSON(http.StatusUnprocessableEntity, gin.H{message.ERROR: message.EMAIL_REGISTRATION_FAILED})
 		return
 	}
 	domaindetails, _ := repository.DB().GetDomainByName(domain)
 	if domaindetails.ID == constant.ZERO {
-		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.INVALID_DOMAIN_ERROR})
+		c.JSON(http.StatusNotFound, gin.H{message.ERROR: message.INVALID_DOMAIN_ERROR})
 		return
 	}
 	//Hash the password
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), constant.HASHED_PASSWORD_ITERATIONS)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.PASSWORD_HASHING_FAILED})
+		c.JSON(http.StatusInternalServerError, gin.H{message.ERROR: message.PASSWORD_HASHING_FAILED})
 		return
 	}
 	//create the user
-	user := models.User{Email: body.Email, Password: string(hash), Role: enum.USER, DomainID: domaindetails.ID}
+	var user models.User
+	mapstructure.Decode(body, &user)
+	user.Password = string(hash)
+	user.Role = enum.USER
+	user.DomainID = domaindetails.ID
 	result := initializers.DB.Create(&user)
-
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.USER_CREATION_FAILED})
 		return
@@ -74,40 +78,33 @@ func validateMailId(emailId string, c *gin.Context) string {
 
 	ret, err := verifier.Verify(emailId)
 	if err != nil {
-
 		return message.EMAIL_REGISTRATION_FAILED
 	}
-
 	// needs @ and . for starters
 	if !ret.Syntax.Valid {
-
 		return message.INVALID_EMAIL_SYNTAX
 	}
 	if ret.Disposable {
-
 		return message.DISPOSABLE_EMAIL_NOT_ALLOWED
 	}
-	if ret.Suggestion != "" {
-
+	if ret.Suggestion != constant.NULL {
 		return "email address is not reachable, looking for " + ret.Suggestion + " instead?"
 	}
 	// possible return string values: yes, no, unkown
 	if ret.Reachable == "no" {
-
 		return message.UNREACHABLE_EMAIL_ADDRESS
 	}
 	// check MX records so we know DNS setup properly to recieve emails
 	if !ret.HasMxRecords {
-
 		return message.INVALID_EMAIL_DOMAIN_SETUP
 	}
 	return string(rune(http.StatusOK))
-
 }
+
 func ExtractDomainFromEmail(email string) (string, error) {
 	parts := strings.Split(email, constant.ATSYMBOL)
 	if len(parts) != constant.TWO {
-		return "", fmt.Errorf("invalid email address: %s", email)
+		return constant.NULL, fmt.Errorf("invalid email address: %s", email)
 	}
 	domain := parts[constant.ONE]
 	return domain, nil

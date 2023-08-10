@@ -1,8 +1,6 @@
 import { MultiSelect } from 'react-multi-select-component';
 import './lineManager.scss'
-import { useEffect, useRef, useState } from 'react';
-import { saveBranch, selectFilterData } from '../store/reducer/reducerFilter';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRef } from 'react';
 
 type lineManagerOptions = {
     label:string,

@@ -10,5 +10,5 @@ type UrlActivity struct {
 	EndTime   time.Time     `json:"endTime"`
 	SpentTime time.Duration `json:"spentTime"`
 	UserID    uint          `json:"-"`
-	User      User          `json:"user"`
+	User      *User         `json:"user,omitempty"`
 }

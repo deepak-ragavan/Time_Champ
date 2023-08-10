@@ -1,6 +1,12 @@
 .chartContainer {
     min-height: 300px;
     margin: auto;
+    .apexcharts-legend-marker {
+        background: none !important;
+    }
+   
+    
+    
 }
 .piechart {
     min-width: 50%;
@@ -9,22 +15,25 @@
 }
 
 .piecontainer {
-    border: 1px solid;
-    border-radius: 5px;
+    border-radius: 20px;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: -4px 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .chartheading1 {
-    background: darkgrey;
-    color: white;
-    border-bottom: 1px solid;
+    color: #009FFD;
+    border-bottom: 3px solid #009FFD;
     padding: 10px;
 }
 
-.chartheading2 {
-    background: #282c34;
-    color: white;
-    border-bottom: 1px solid;
-    padding: 10px;
+.NoDataFound {
+    width: 100%;
+    max-width: 300px;
 }
 
+.NoDataFoundImageContainer {
+    display: flex;
+    justify-content: center;
+}
     

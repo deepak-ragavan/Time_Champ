@@ -1,0 +1,42 @@
+.filterNavContainer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    max-width: 300px;
+    overflow-x: hidden;
+    transition: 0.5s;
+    box-shadow: -4px 8px 25px rgba(0, 0, 0, 0.1);
+    &.Active {
+        width: 0;
+    }
+    .departmentDropDown {
+        width: 100%;
+        max-width: 250px;
+        top: 0; 
+        left: 0; 
+        z-index: 0;
+    }
+}
+
+.filterList {
+    padding-left: 10px;
+    .userDropdown {
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100%;
+        max-width: 250px;
+        margin: 8px;    
+        background: none;
+    }
+}
+
+.filterCloseIcon {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+}

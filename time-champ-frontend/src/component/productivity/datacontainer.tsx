@@ -37,7 +37,7 @@ const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:bo
                 {
                     datas!==null ? datas.map((value) => (
                         <div className="col-2">
-                            <div className="dateFieldDesign">
+                            <div className={value.Working>0 ? "dateFieldDesign" : "dateFieldDesign noData"}>
                                 <div className="col-1">
                                     <div className="dayField">
                                         <p>{moment(value.StartTime).format("dddd")}</p>
@@ -48,7 +48,7 @@ const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:bo
                                 </div>
                             </div>
                             {
-                                value.Working>0 && 
+                                value.Working>0 ? 
                                 <>
                                     <div className="productivityChart">
                                         <StackedBar Productive={milliSecTOSeconds(value.Productive)} Unproductive={milliSecTOSeconds(value.Unproductive)} 
@@ -60,7 +60,7 @@ const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:bo
                                     <div className="TotalWorkingHours">
                                             <p>{moment.utc(value.Working).format('H[h] m[m] s[s]')}</p>
                                     </div>
-                                </> 
+                                </> : <p className='NoContent'>No data to display</p>
                             }
                     </div>
                     )) : (<p className='NoContent'>No data to display</p>)

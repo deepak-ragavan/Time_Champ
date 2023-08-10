@@ -12,7 +12,9 @@ const CustomLink = ({ to,children,...props }: CustomLinkProps) => {
 
     return (
         <li className={isActive ? "Active list" : "inActive list"}>
-            <Link to={to}{...props}>{children}</Link>
+            {
+                to!=="" ? (<Link to={to}{...props}>{children}</Link>) : <>{children}</>
+            }
         </li>
     )
 }

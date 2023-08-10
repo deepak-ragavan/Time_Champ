@@ -5,19 +5,20 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	cronjobs "github.com/tracker/common/cron_jobs"
 	"github.com/tracker/initializers"
 	"github.com/tracker/middleware"
 	"github.com/tracker/pkg/constant"
 	"github.com/tracker/pkg/controller"
 	"github.com/tracker/pkg/enum"
-	utils "github.com/tracker/utils/cron"
 )
 
 func init() {
 	initializers.LoadEnvVariables()
 	initializers.ConnectToDB()
 	initializers.SyncDatabase()
-	utils.RunCron()
+	cronjobs.RunCron()
+	cronjobs.UpdateUserActivityCron()
 }
 
 func main() {
@@ -47,8 +48,9 @@ func router(r *gin.Engine) {
 	controller.LoadUserController(user)
 	controller.LoadUserActivityController(user)
 	controller.LoadUserAttendanceController(user)
-	controller.LoadSystemImageController(user)
 	controller.LoadAppActivityController(user)
 	controller.LoadUrlActivityController(user)
 	controller.LoadDomainController(user)
+	controller.LoadTrackerChartDetailsController(user)
+	controller.LoadScreenshotDetailsController(user)
 }

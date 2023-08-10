@@ -12,11 +12,11 @@ const ShowData : React.FC<showDataProps> = ({dataKey,value,setSelected}) => {
     const fixedData = ["From Date","To Date"]
     const clearData = () => {
         if(dataKey==="Branch") {
-            setSelected([])
+            setSelected('')
         } else if(dataKey==="Department") {
-            setSelected([])
+            setSelected('')
         } else if(dataKey==="Role") {
-            setSelected([])
+            setSelected('')
         } else if(dataKey==="Search") {
             setSelected("")
         } else if(dataKey==="User") {
@@ -29,11 +29,11 @@ const ShowData : React.FC<showDataProps> = ({dataKey,value,setSelected}) => {
         <>
              {
                     dataValue !=="" && ( fixedData.includes(dataKey) 
-                    ? <div className="dataContainer"><p className="dataField">{dataKey}:{value}</p></div>
+                    ? <div className="dataContainer"><span className="dataField">{dataKey}:{value}</span></div>
                     :  <div className="dataContainer">
                             <div className='datashow'> 
-                                <p>{dataKey}:{value}</p>  
-                                <button onClick={clearData}><span className="material-icons-round">close</span></button>
+                                <span>{dataKey}:{value}</span>  
+                                <button onClick={clearData}><span className="material-icons-round reset">close</span></button>
                             </div>
                         </div>
                     )

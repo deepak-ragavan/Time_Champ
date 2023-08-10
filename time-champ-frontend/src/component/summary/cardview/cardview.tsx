@@ -1,6 +1,7 @@
 import React from 'react'
 import './cardview.scss'
 import { formatTime } from '../../helper/helper'
+import NoDataFound from '../../../2953962.jpg'
 
 type summaryData = {
     appName:string,
@@ -35,7 +36,7 @@ const CardView: React.FC<Cardprops> = ({ heading,headingClassName,data }) => {
                         </div>
                     </div>
                     ))
-                    ) : (<p className='NoContent'>No data to display</p>)
+                    ) : (<div className='NoDataFoundImageContainer'><img className='NoDataFound' src={NoDataFound}></img></div>)
                 }
             </div>
         </div>

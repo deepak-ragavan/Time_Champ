@@ -5,6 +5,7 @@ type TokenDetails struct {
 	RefreshToken string
 	AccessUuid   string
 	RefreshUuid  string
+	DesktopUuid  string
 	AtExpires    int64
 	RtExpires    int64
 }

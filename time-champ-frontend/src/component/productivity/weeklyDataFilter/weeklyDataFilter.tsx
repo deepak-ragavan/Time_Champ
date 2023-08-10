@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
 import './weeklyDataFilter.scss'
 
@@ -6,16 +6,17 @@ const WeeklyCalendar : React.FC<{currentWeek:moment.Moment,setCurrentWeek:(val:m
   
   const [currentWeekNumber,setCurrentWeekNumber] = useState(Math.ceil(currentWeek.clone().endOf('week').date()/7));
   const [currentWeekMonth,setCurrentWeekMonth] = useState(currentWeek.format("MMM"))
-  const [mixedWeekAnotherMonth,setMixedWeekAnotherMonth] = useState(currentWeek.format("MMM"));
   const [isMixedWeek,setIsMixedWeek] = useState(false);
 
+  useEffect(()=>{
+    getWeekDetails(currentWeek)
+  },[])
   const getWeekDetails = (thisWeek:moment.Moment) => {
       let startOfWeekMonth = thisWeek.clone().startOf('week').clone().startOf('month').month() + 1
       let endOfWeekMonth = thisWeek.clone().endOf('week').clone().startOf('month').month() + 1
       if(startOfWeekMonth!==endOfWeekMonth) {
         setIsMixedWeek(true);
         setCurrentWeekMonth(thisWeek.clone().startOf('week').endOf('month').format('MMM'))
-        setMixedWeekAnotherMonth(thisWeek.clone().endOf('week').endOf('month').format('MMM'))
       } else {
         setIsMixedWeek(false);
         const endOfWeek = thisWeek.clone().endOf('week').date();

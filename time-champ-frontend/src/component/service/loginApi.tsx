@@ -9,9 +9,7 @@ type userData =  {
 }
 
 export const LoginApi = async (data : userData) =>{
-    return await apiClient.post("/login",data)
-
-        
+    return await apiClient.post("/login",data)     
 }
 
 export const SignupApi = async (data : userData) =>{
@@ -25,4 +23,16 @@ export const RefreshTokenApi = async (refreshToken:string) =>{
     } catch(error: any) {
        console.log(error.message);
     }
+}
+
+export const ForgotPasswordApi = async (email : string) =>{
+    return await apiClient.get("/send-otp",{params:{email:email}})     
+}
+
+export const VerifyOtpAndChangePassword = async (email:string,otp : string) =>{
+    return await apiClient.get("/verify-otp",{params:{email:email,otp:otp}})     
+}
+
+export const ChangePasswordApi = async (email:string,password:string,confirmPassword:string) => {
+    return await apiClient.post("/resetpassword",{email:email,password:password,confirmPassword:confirmPassword})
 }

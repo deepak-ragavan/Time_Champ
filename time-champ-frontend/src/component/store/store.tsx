@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import reducerToken from "./reducer/reducerToken";
-import reducerFilter from "./reducer/reducerFilter";
-import reducerProductivity from "./reducer/reducerProductivity";
 import storage from "redux-persist/lib/storage"; 
 import { persistReducer } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
+import reducerOtpTimer from "./reducer/reducerOtpTimer";
+import reducerUserEmail from "./reducer/reducerUserEmail";
 
 const persistConfig = {
   key: 'root', // The key for the root of the storage
@@ -14,8 +14,8 @@ const persistConfig = {
 
 const reducer = combineReducers({
   tokenReducer: reducerToken,
-  filterReducer: reducerFilter,
-  productivityReducer: reducerProductivity
+  otpTimerReducer: reducerOtpTimer,
+  userEmailReducer: reducerUserEmail
 })
 
 const persistedReducer = persistReducer(persistConfig,reducer);

@@ -10,5 +10,5 @@ import (
 func LoadManagerController(manager *gin.RouterGroup) {
 	manager.Use(middleware.RequireAuth, middleware.Authorization(enum.MANAGER))
 	manager.POST("/validate", service.Validate)
-
+	manager.POST("/app-icons", service.SaveIcons)
 }

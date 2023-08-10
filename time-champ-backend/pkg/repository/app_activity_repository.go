@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"time"
+
 	"github.com/tracker/pkg/constant"
 	"github.com/tracker/pkg/dto"
 	"gorm.io/gorm"
@@ -52,17 +54,27 @@ func (db DbInstance) GetSpendTimeByAppName(userId uint, appName string) ([]dto.A
 	return appSpendTime, err
 }
 
-func (db DbInstance) GetLastAppActivityData(userId uint, date string) (dto.AppActivity, *gorm.DB) {
+func (db DbInstance) GetLastAppActivityData(userId uint, start time.Time, end time.Time) (dto.AppActivity, *gorm.DB) {
 	var appActivity dto.AppActivity
-	err := db.Instance.Where("user_id = ? AND start_time LIKE ?", userId, date+"%").Last(&appActivity)
+	err := db.Instance.Where("user_id = ? AND start_time between ? and ?", userId, start, end).Last(&appActivity)
 	return appActivity, err
 }
 
-func (db DbInstance) GetAppActivityByActivityStatus(userId uint, status string, fromDate string, toDate string, searchText string, limit int) ([]dto.AppActivitySpendTimeDto, *gorm.DB) {
+func (db DbInstance) GetAppActivityByActivityStatus(userIds []string, branch []string, role []string, department []string, status string, fromDate string, toDate string, searchText string, limit int) ([]dto.AppActivitySpendTimeDto, *gorm.DB) {
 	var result []dto.AppActivitySpendTimeDto
 	query := db.Instance.Table("app_activities").
-		Select("app_name AS AppName, SUM(spent_time) AS SpentTime, image_url AS ImageUrl").
-		Where(" user_id = ? and app_activity_status = ? and end_time != ? and date(start_time) between ? and ? and app_name LIKE ? ", userId, status, constant.DATE_TIME, fromDate, toDate, ("%" + searchText + "%")).
+		Select("app_activities.app_name AS AppName, SUM(app_activities.spent_time) AS SpentTime, app_activities.image_url AS ImageUrl").
+		Joins("RIGHT JOIN users ON app_activities.user_id = users.id")
+	if branch[constant.ZERO] != constant.NULL {
+		query.Where("users.branch In ?", branch)
+	}
+	if role[constant.ZERO] != constant.NULL {
+		query.Where("users.role In ?", role)
+	}
+	if department[constant.ZERO] != constant.NULL {
+		query.Where("users.department In ?", department)
+	}
+	query.Where("app_activities.user_id In ? and app_activity_status = ? and end_time != ? and start_time between ? and ? and app_name LIKE ? ", userIds, status, constant.DATE_TIME, fromDate, toDate, ("%" + searchText + "%")).
 		Group("app_name, image_url").Order("SpentTime desc")
 	if limit > constant.ZERO {
 		query.Limit(limit)
@@ -71,15 +83,36 @@ func (db DbInstance) GetAppActivityByActivityStatus(userId uint, status string, 
 	return result, query
 }
 
+func (db DbInstance) GetTotalAppActivityStatus(userIds []string, branch []string, role []string, department []string, fromDate string, toDate string) ([]dto.GetUserActivitySummaryDto, *gorm.DB) {
+	var appActivity []dto.GetUserActivitySummaryDto
+	query := db.Instance.Table("app_activities").
+		Select("app_activities.app_activity_status AS Status, SUM(app_activities.spent_time) AS Counts").
+		Joins("RIGHT JOIN users ON app_activities.user_id = users.id")
+	if branch[constant.ZERO] != constant.NULL {
+		query.Where("users.branch In ?", branch)
+	}
+	if role[constant.ZERO] != constant.NULL {
+		query.Where("users.role In ?", role)
+	}
+	if department[constant.ZERO] != constant.NULL {
+		query.Where("users.department In ?", department)
+	}
+	query.Where("app_activities.user_id In ? and start_time between ? and ?", userIds, fromDate, toDate).
+		Group("app_activity_status").
+		Scan(&appActivity)
+	return appActivity, query
+}
+
 func (db DbInstance) GetTotalAppActivity(userId uint, fromDate string, toDate string) ([]dto.GetUserActivitySummaryDto, *gorm.DB) {
 	var appActivity []dto.GetUserActivitySummaryDto
 	err := db.Instance.Table("app_activities").
 		Select("app_activity_status AS Status, SUM(spent_time) AS Counts").
-		Where("user_id = ? and date(start_time) between ? and ?", userId, fromDate, toDate).
+		Where("user_id = ? and start_time between ? and ?", userId, fromDate, toDate).
 		Group("app_activity_status").
 		Scan(&appActivity)
 	return appActivity, err
 }
+
 func (db DbInstance) GetAppSummary(fromDate string, toDate string) ([]dto.AppActivitySummaryDTO, *gorm.DB) {
 	var results []dto.AppActivitySummaryDTO
 	err := db.Instance.Raw(`select x.* ,JSON_ARRAYAGG(AppName) as AppList from(

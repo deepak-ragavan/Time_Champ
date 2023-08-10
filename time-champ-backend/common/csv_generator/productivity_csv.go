@@ -9,13 +9,13 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tracker/common/mail"
 	"github.com/tracker/middleware"
 	"github.com/tracker/pkg/constant"
 	"github.com/tracker/pkg/constant/message"
 	"github.com/tracker/pkg/dto"
 	"github.com/tracker/pkg/repository"
 	"github.com/tracker/pkg/service"
-	"github.com/tracker/utils/mail"
 )
 
 func ProductivityReport(c *gin.Context) {

@@ -16,11 +16,9 @@ const PrivateRoute = () => {
                     <Route path='/timetracer' element={<TimeTracer />} />
                     <Route path='/project' element={<Project />} />
                     <Route path='/hr' element={<Hr/>} />
-                    <Route element={<TimeTracerNav />}>
-                        <Route path="/summary" element={<Summary/>} />
-                        <Route path="/timesheet" element={<Timesheet/>} />
-                        <Route path="/productivity" element={<Productivity />} />
-                    </Route>
+                    <Route path="/summary" element={<Summary/>} />
+                    <Route path="/timesheet" element={<Timesheet/>} />
+                    <Route path="/productivity" element={<Productivity />} />
                 </Route>    
             </Routes>
         </>

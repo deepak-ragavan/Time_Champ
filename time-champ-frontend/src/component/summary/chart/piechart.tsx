@@ -1,6 +1,7 @@
 import Chart from 'react-apexcharts';
 import './piechart.scss'
 import React from 'react';
+import NoDataFound from '../../../2953962.jpg'
 
 
 
@@ -70,7 +71,7 @@ const Piechart: React.FC<Pieprops> = ({ heading,headingClassName,data,topFiveApp
                         labels:label,
                     }}
                     ></Chart>  
-                ) : (<p className='NoContent'>No data to display</p>)
+                ) : (<div className='NoDataFoundImageContainer'><img className='NoDataFound' src={NoDataFound}></img></div>)
                 }
                 </div>
             </div>          

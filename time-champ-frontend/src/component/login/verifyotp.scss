@@ -1,0 +1,49 @@
+.otpContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    div {
+        gap: 10px;
+        input {
+            width: 25px !important;
+            height: 25px;
+            border-radius: 5px;
+            border: none;
+        }
+    }
+    
+}
+
+.resendotp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+    flex-direction: column;
+}
+
+.afterTimingEnd {
+    color: white;
+    font-weight: 600;
+}
+
+.resendOtpButton {
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.timing {
+    color: white;
+    font-weight: 600;
+}
+
+.diabaledLoginButton {
+    color: #FF0042 !important;
+    width: 100%;
+    margin-top: 10px !important;
+    max-width: 390px;
+    align-items: center;
+}

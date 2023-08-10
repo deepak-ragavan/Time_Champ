@@ -40,7 +40,7 @@ const DataTable : React.FC<{datas:productivityProps[],showIdleTimeData:boolean}>
                 {
                     datas.map((value) => (
                     <div className="users" onClick={()=>{setSelected(value.name)}}>
-                        <button className="usersButton">{value.name}</button>
+                        <button className={value.name===selected ? "usersButton Active" : "usersButton inActive" } >{value.name}</button>
                     </div>
                     ))
                 }

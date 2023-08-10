@@ -20,12 +20,19 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.FAILED_TO_READ_BODY})
 		return
 	}
-
 	//look up requested user
 	var user models.User
-	initializers.DB.First(&user, "email = ?", body.Email)
+	initializers.DB.First(&user, "email = ? ", body.Email)
 	if user.ID == constant.ZERO {
 		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.INVALID_EMAIL_OR_PASSWORD})
+		return
+	}
+	if user.IsDeleted {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.USER_DELEDED})
+		return
+	}
+	if user.IsBlocked {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.USER_BLOCKED})
 		return
 	}
 	//compare sent in pass with saved user pass hash
@@ -58,6 +65,20 @@ func CreateAuth(userid int64, td *dto.TokenDetails) error {
 	return nil
 }
 
+func CreateAuthForDesktop(userid int64, td *dto.TokenDetails) error {
+	var user models.User
+	affect := initializers.DB.First(&user, int(userid))
+	if affect.RowsAffected == constant.ZERO {
+		return errors.New(message.USER_NOT_FOUND)
+	}
+	user.DesktopUuid = td.DesktopUuid
+	errAccess := initializers.DB.Save(&user)
+	if errAccess.RowsAffected == constant.ZERO {
+		return errors.New(message.DESKTOP_UUID_NOT_FOUND)
+	}
+	return nil
+}
+
 func GenerateToken(user models.User) (map[string]any, error) {
 	ts, err := CreateToken(user)
 	if err != nil {
@@ -75,6 +96,54 @@ func GenerateToken(user models.User) (map[string]any, error) {
 		"refresh_token":            ts.RefreshToken,
 		"refresh_token_Expires_in": int(ts.RtExpires),
 		"id":                       user.ID,
+	}
+	return tokens, nil
+}
+
+func DesktopLogin(c *gin.Context) {
+	// get the email and pass off req body
+	var body models.User
+	if c.Bind(&body) != nil {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.FAILED_TO_READ_BODY})
+		return
+	}
+	//look up requested user
+	var user models.User
+	initializers.DB.First(&user, "email = ?", body.Email)
+	if user.ID == constant.ZERO {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.INVALID_EMAIL_OR_PASSWORD})
+		return
+	}
+	//compare sent in pass with saved user pass hash
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.INVALID_EMAIL_OR_PASSWORD})
+		return
+	}
+	tokens, err := GenerateTokenForDesktop(user)
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{message.ERROR: err.Error()})
+		return
+	}
+	//sent it back
+	c.JSON(http.StatusOK, tokens)
+}
+
+func GenerateTokenForDesktop(user models.User) (map[string]any, error) {
+	ts, err := CreateTokenForDesktop(user)
+	if err != nil {
+		return nil, errors.New(message.UNPROCESSABLE_ENTITY)
+	}
+
+	saveErr := CreateAuthForDesktop(int64(user.ID), ts)
+	if saveErr != nil {
+		return nil, errors.New(message.UNPROCESSABLE_ENTITY)
+	}
+	//sent it back
+	tokens := map[string]any{
+		"access_token": ts.AccessToken,
+		"id":           user.ID,
+		"user_name":    user.Name,
 	}
 	return tokens, nil
 }

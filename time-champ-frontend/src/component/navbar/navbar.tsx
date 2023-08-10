@@ -4,7 +4,6 @@ import SideNav from "./sidebar/sidenav"
 const NavBar = () => {
     return (
         <>
-            <Header/>
             <SideNav/>
         </>
     )

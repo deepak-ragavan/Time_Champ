@@ -1,6 +1,7 @@
 package dto
 
 type AccessDetails struct {
-	AccessUuid string
-	UserId     int64
+	AccessUuid  string
+	DesktopUuid string
+	UserId      int64
 }

@@ -1,12 +1,20 @@
 .UsersList {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 2px;
     align-items: flex-start;
     padding: 10px;
     background-color: white;
     border-radius: 10px;
+    width: 200px;
+    overflow: auto;
     box-shadow: 0 4px 7px rgba(0,0,0,0.1);
+    h4 {
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        color: rgb(31 47 115);
+    }
 }
 
 .productivityData {
@@ -26,16 +34,33 @@
 }
 
 .users {
-    display: flex;
-    justify-content: space-around;
+    padding-bottom: 5px;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    &:last-child {
+        border-bottom: none;
+    }
     
 }
 .usersButton {
     width: 100%;
-    border: 1px solid;
-    background: white;
+    font-size: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px 10px;
+    transition: all 0.25s ease;
+    border: none;
+    text-align: left;
+    overflow: hidden;
+    &:hover {
+        background-color: #eee;
+    }
+    &.Active {
+        background-color: #bce8ff;
+        box-shadow: -2px 4px 16px rgba(31,47,115,0.15);
+        padding: 7px 12px;
+    }
 }
 
 .weeklyData {
@@ -44,4 +69,5 @@
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 7px rgba(0,0,0,0.1);
+    overflow: auto;
 }

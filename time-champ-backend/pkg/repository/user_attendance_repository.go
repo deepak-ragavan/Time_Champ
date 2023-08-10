@@ -16,11 +16,11 @@ func (db DbInstance) GetUserAttendance(id uint) (dto.UserAttendance, error) {
 	return userAttendance, err
 }
 
-func (db DbInstance) UpdateUserAttendance(userAttendance models.UserAttendance) (models.UserAttendance, *gorm.DB) {
+func (db DbInstance) UpdateUserAttendance(userAttendance dto.UserAttendance) (dto.UserAttendance, *gorm.DB) {
 	return userAttendance, db.Instance.Preload("user").Save(&userAttendance)
 }
 
-func (db DbInstance) SaveUserAttendance(userAttendance models.UserAttendance) (models.UserAttendance, *gorm.DB) {
+func (db DbInstance) SaveUserAttendance(userAttendance dto.UserAttendance) (dto.UserAttendance, *gorm.DB) {
 	return userAttendance, db.Instance.Save(&userAttendance)
 }
 
@@ -28,27 +28,26 @@ func (db DbInstance) DeleteUserAttendance(userAttendance models.UserAttendance, 
 	return db.Instance.Delete(&userAttendance, id)
 }
 
-func (db DbInstance) GetUserCurrentDate(user_id uint) (models.UserAttendance, *gorm.DB) {
-	var userAttendance models.UserAttendance
+func (db DbInstance) GetUserCurrentDate(user_id uint) (dto.UserAttendance, *gorm.DB) {
+	var userAttendance dto.UserAttendance
 	err := db.Instance.Where("start_time LIKE ? AND user_id = ?", time.Now().Format(constant.DATE)+"%", user_id).Find(&userAttendance)
 	return userAttendance, err
 }
-
+func (db DbInstance) GetUserAttendanceDate(user_id uint,date time.Time) (dto.UserAttendance, *gorm.DB) {
+	var userAttendance dto.UserAttendance
+	err := db.Instance.Where("start_time LIKE ? AND user_id = ?", date.Format(constant.DATE)+"%", user_id).Find(&userAttendance)
+	return userAttendance, err
+}
 func (db DbInstance) GetTotalTimeByUserAttendanceIdAndActivitystatus(id uint, status string) (totalTime uint) {
 	result := db.Instance.Table("user_activities").Select("SUM(spent_time)").Where("activity_status = ? AND userAttendance_id = ?", status, id).Row()
 	result.Scan(&totalTime)
 	return totalTime
 }
 
-func (db DbInstance) GetUserAttendanceByDate(userID uint, date string) (models.UserAttendance, *gorm.DB) {
-	var userAttendances models.UserAttendance
-	query := db.Instance.Where("start_time LIKE ?", date+"%").Find(&userAttendances)
+func (db DbInstance) GetUserAttendanceByDate(userID uint, date string) (dto.UserAttendance, *gorm.DB) {
+	var userAttendances dto.UserAttendance
+	query := db.Instance.Where("user_id = ? and date(start_time) = ?", userID, date).Find(&userAttendances)
 	return userAttendances, query
-}
-
-func (db DbInstance) GetUserAttendanceByUserID(id uint) ([]models.UserAttendance, *gorm.DB) {
-	var userAttendances []models.UserAttendance
-	return userAttendances, db.Instance.Preload("User").Preload("UserActivity").Where("user_id = ?", id).Find(&userAttendances)
 }
 
 func GetUserAllAttendancesByID(id uint) ([]models.UserAttendance, *gorm.DB) {
@@ -72,11 +71,11 @@ func (db DbInstance) GetUserActivitySummary(userAttendanceID uint) ([]dto.GetUse
 		Scan(&userActivitySummary).Error
 	return userActivitySummary, err
 }
-func (db DbInstance) GetUserAttendanceReport(userAttendanceID uint, fromDate string, toDate string) ([]dto.UserAttendance, *gorm.DB) {
-	var userAttendanceDto []dto.UserAttendance
-	err := db.Instance.Preload("UserActivity").Where("user_id = ? and date(start_time) between ? and ?", userAttendanceID, fromDate, toDate).
-		Find(&userAttendanceDto)
-	return userAttendanceDto, err
+
+func (db DbInstance) GetUserAttendanceReport(userIds []uint, fromDate string, toDate string) ([]dto.UserAttendance, *gorm.DB) {
+	var attendances []dto.UserAttendance
+	err := db.Instance.Preload("User").Preload("UserActivity").Where("date(start_time) BETWEEN ? AND ? AND user_id IN (?)", fromDate, toDate, userIds).Find(&attendances)
+	return attendances, err
 }
 
 func (db DbInstance) GetProductivityReportCsv(userIDs []uint, fromDate string, toDate string) ([]dto.UserAttendanceForCsv, *gorm.DB) {
@@ -88,4 +87,9 @@ func (db DbInstance) GetProductivityReportCsv(userIDs []uint, fromDate string, t
 		Where("DATE(a.start_time) BETWEEN ? AND ?", fromDate, toDate).
 		Find(&csvReport)
 	return csvReport, err
+}
+func (db DbInstance) GetLastUserAttendanceData(user_id uint, startTime time.Time) (dto.UserAttendance, *gorm.DB) {
+	var userAttendance dto.UserAttendance
+	err := db.Instance.Where("start_time LIKE ? AND user_id = ?", startTime.Format(constant.DATE)+"%", user_id).Find(&userAttendance)
+	return userAttendance, err
 }

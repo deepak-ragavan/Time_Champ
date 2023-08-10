@@ -1,3 +1,7 @@
+.summary {
+    width: 100%;
+    overflow: auto;
+}
 @media only screen and (max-width: 990px) {
     .row1 {
         flex-direction: column;
@@ -43,6 +47,18 @@
 .filterlist {
     padding: 0px 5px;
     border-right: 1px solid #FBEAEB;
+    .multiselectDropDown {
+        position: relative;
+        width: 0;
+        .MuiFormControl-root {
+            position: absolute;
+            top: -4px;
+            left: -20px;
+            z-index: 1;
+            background: white;
+        }
+    }
+    
 }
 
 .row1 {
@@ -58,9 +74,10 @@
 .cardData {
     margin: 5px;
     min-height: 350px;
+    padding: 20px;
     min-width: 32%;
-    border: 1px solid;
-    border-radius: 5px;
+    border-radius: 20px;
+    box-shadow: -4px 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .showfilterdata {

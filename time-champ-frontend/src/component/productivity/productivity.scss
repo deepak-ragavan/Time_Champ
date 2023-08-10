@@ -1,6 +1,8 @@
 .productivity {
-  overflow: auto;
-  max-height: calc(100vh - 127px);
+  display: grid;
+  width: 100%;
+  grid-template-rows: min-content min-content 1fr;
+  max-height: calc(100vh - 30px);
 }
 
 .productivity::-webkit-scrollbar {
@@ -24,6 +26,8 @@
 .productivityDataContainer {
   background: #f4f5f6;
   padding: 20px;
+  height: 100%;
+  overflow: auto;
 }
 
 .switch {
@@ -96,10 +100,11 @@
 
 .productivityFilter{
     .expandfilter {
-        display: flex;
-        list-style: none;
-        width: 100%;
-        border: none;
+      display: flex;
+      list-style: none;
+      width: 100%;
+      border: none;
+      flex-wrap: wrap;
      }
 
      .filterlist {
@@ -110,5 +115,10 @@
      .navtext {
         padding: 5px;
      }
+}
+
+.weeklyCalender {
+  width: 100%;
+  max-width: 275px;
 }
  

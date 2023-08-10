@@ -1,8 +1,7 @@
 import './department.scss'
-import React, { useState,useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { MultiSelect } from 'react-multi-select-component';
-import { useDispatch, useSelector } from 'react-redux';
-import { saveDepartment, selectFilterData } from '../../../store/reducer/reducerFilter';
+
 
 type departmentOptions = {
   label:string,

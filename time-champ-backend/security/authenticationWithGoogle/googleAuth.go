@@ -43,7 +43,6 @@ func HandleGoogleLogin(w http.ResponseWriter, r *http.Request) {
 CallBackFromGoogle Function
 */
 func CallBackFromGoogle(w http.ResponseWriter, r *http.Request) {
-
 	state := r.FormValue("state")
 	if state != oauthStateStringGl {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)

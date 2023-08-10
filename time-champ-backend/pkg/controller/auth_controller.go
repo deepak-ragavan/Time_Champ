@@ -12,12 +12,14 @@ import (
 func AuthenticationController(r *gin.Engine) {
 	r.POST("/signup", authentication.Signup)
 	r.POST("/login", authentication.Login)
+	r.POST("/desktop/login", authentication.DesktopLogin)
 	r.POST("/logout", authentication.Logout)
 	r.POST("/refresh", authentication.Refresh)
 	r.GET("/", gin.WrapF(authenticationwithgoogle.HandleMain))
 	r.GET("/login-gl", gin.WrapF(authenticationwithgoogle.HandleGoogleLogin))
 	r.GET("/callback-gl", gin.WrapF(authenticationwithgoogle.CallBackFromGoogle))
-	r.POST("/forgotpassword", forgetpassword.ForgotPassword)
-	r.POST("/updatepassword", middleware.RequireAuth, middleware.Authorization(enum.USER), forgetpassword.UpdatePassword)
-	r.PATCH("/resetpassword", forgetpassword.ResetPassword)
+	r.GET("/send-otp", forgetpassword.SendOtpToMail)
+	r.GET("/verify-otp",forgetpassword.OtpValidation)
+	r.POST("/resetpassword", forgetpassword.ResetPassword)
+	r.PATCH("/updatepassword", middleware.RequireAuth, middleware.Authorization(enum.USER), forgetpassword.UpdatePassword)
 }

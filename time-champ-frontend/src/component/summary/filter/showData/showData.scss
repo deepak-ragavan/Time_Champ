@@ -4,20 +4,29 @@
 .dataField {
     border: none;
     border-radius: 20px;
-    background-color: lightgrey;
-    padding: 10px;
+    background-color: rgb(140 191 252 / 26%);
+    color: #2A2A72;
+    padding: 6px 12px;
     display: flex;
     justify-content: space-evenly;
+    font-size: small;
+    font-weight: 600;
 }
 
 .datashow {
     border: none;
     border-radius: 20px;
-    background-color: lightgrey;
+    background-color: rgb(140 191 252 / 26%);
+    color: #2A2A72;
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-    padding: 7px;
+    padding: 6px 12px;
+    font-size: small;
+    font-weight: 600;
+    .reset {
+        font-size: 15px;
+        color: #2A2A72;
+    }
 }
 

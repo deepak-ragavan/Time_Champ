@@ -1,10 +1,10 @@
 package service
 
 import (
-	"encoding/json"
 	"net/http"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +22,11 @@ func UpdateUserAttendance(c *gin.Context) {
 	if err != nil || userId == constant.ZERO {
 		return
 	}
-	id, _ := strconv.Atoi(c.Query("userId"))
+	id, paramErr := strconv.Atoi(c.Query("userId"))
+	if paramErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.QUERY_PARAM_CONVERSION_TO_INT_FAILED})
+		return
+	}
 	userAttendance, er := repository.DB().GetUserCurrentDate(uint(id))
 	if er.RowsAffected == constant.ZERO {
 		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.NO_VALUE_PRESENT})
@@ -42,7 +46,8 @@ func UpdateUserAttendance(c *gin.Context) {
 			userAttendance.Working = time.Duration(entry.Counts)
 		}
 	}
-	appActivity, er := repository.DB().GetTotalAppActivity(uint(id), time.Now().Format(constant.DATE), time.Now().Format(constant.DATE))
+	start, end := GetShiftStartTimeAndEndTime(time.Now(), constant.NULL)
+	appActivity, er := repository.DB().GetTotalAppActivity(uint(id), start.String(), end.String())
 	if er.RowsAffected <= constant.ZERO {
 		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.RECORD_NOT_FOUND})
 		return
@@ -72,30 +77,23 @@ func UpdateUserAttendance(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, userAtt)
 }
-func GetUserAttendanceByUserID(c *gin.Context) {
+
+func UserAttendanceReport(c *gin.Context) {
 	userId, err := middleware.GetUserObject(c)
 	if err != nil || userId == constant.ZERO {
 		return
 	}
-	id, _ := strconv.Atoi(c.Query("userId"))
-	userAttendanceList, er := repository.DB().GetUserAttendanceByUserID(uint(id))
-	if er.RowsAffected == constant.ZERO {
-		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: er.Error.Error()})
+	id, paramErr := strconv.Atoi(c.Query("userId"))
+	if paramErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.QUERY_PARAM_CONVERSION_TO_INT_FAILED})
 		return
 	}
-	c.JSON(http.StatusOK, userAttendanceList)
-}
-func GetUserAttendanceByMonthly(c *gin.Context) {
-	userId, err := middleware.GetUserObject(c)
-	if err != nil || userId == constant.ZERO {
-		return
-	}
-	id, _ := strconv.Atoi(c.Query("userId"))
 	fromDate := c.Query("fromDate")
 	toDate := c.Query("toDate")
-	userAttendanceList, er := repository.TX().GetUserAttendanceReport(uint(id), fromDate, toDate)
+	childsId, _ := GetChildUserIds(uint(id))
+	userAttendanceList, er := repository.TX().GetUserAttendanceReport(childsId, fromDate, toDate)
 	if er.RowsAffected == constant.ZERO {
-		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: er.Error.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.RECORD_NOT_FOUND})
 		return
 	}
 	c.JSON(http.StatusOK, userAttendanceList)
@@ -107,15 +105,18 @@ func GetUserAttendanceProductivity(c *gin.Context) {
 		return
 	}
 	var data []dto.Data
-	var weekDates []string
-	id, _ := strconv.Atoi(c.Query("userId"))
-	arrOfDate := c.Query("weekDates")
+	id, paramErr := strconv.Atoi(c.Query("userId"))
+	if paramErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.QUERY_PARAM_CONVERSION_TO_INT_FAILED})
+		return
+	}
+	weekDates := strings.Split(c.Query("weekDates"), constant.COMMA)
 	users, aff := GetUserData(uint(id))
 	if aff != constant.NULL {
 		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.RECORD_NOT_FOUND})
 		return
 	}
-	_ = json.Unmarshal([]byte(arrOfDate), &weekDates)
+
 	for _, user := range users {
 		data = append(data, SetUserAttendanceProductivity(user, weekDates))
 	}
@@ -151,6 +152,25 @@ func SetUserAttendanceProductivity(user dto.Users, weekDates []string) dto.Data 
 	return data
 }
 
+func GetUserAttendanceDetails(c *gin.Context) {
+	userId, err := middleware.GetUserObject(c)
+	if err != nil || userId == constant.ZERO {
+		return
+	}
+	id, paramErr := strconv.Atoi(c.Query("userId"))
+	if paramErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{message.ERROR: message.QUERY_PARAM_CONVERSION_TO_INT_FAILED})
+		return
+	}
+	date := c.Query("date")
+	userAttendance, aff := repository.DB().GetUserAttendanceByDate(uint(id), date)
+	if aff.RowsAffected == constant.ZERO {
+		c.JSON(http.StatusNotFound, gin.H{message.ERROR: message.RECORD_NOT_FOUND})
+		return
+	}
+	c.JSON(http.StatusOK, userAttendance)
+}
+
 func removeString(slice []string, target string) []string {
 	result := []string{}
 	for _, s := range slice {
@@ -160,3 +180,4 @@ func removeString(slice []string, target string) []string {
 	}
 	return result
 }
+

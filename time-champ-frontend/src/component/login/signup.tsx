@@ -50,13 +50,13 @@ const Signup = () => {
 
     return <div className="rootlogin">
                 <div className="before"></div>
+                <div className={errmsg ? "divError" : "offscreen"}>
+                    <p ref={errRef} aria-live="assertive" className="errmsg">{errmsg}</p>
+                    <span onClick={() => setErrmsg("")} className="material-icons-round close-icon">close</span>
+                </div>
                 <div className="loginContainer">
                     <div className="loginDiv">
                         <div className="container">
-                            <div className={errmsg ? "divError" : "offscreen"}>
-                                <p ref={errRef} aria-live="assertive" className="errmsg">{errmsg}</p>
-                                <span onClick={() => setErrmsg("")} className="material-icons-round close-icon">close</span>
-                            </div>
                             <div className="logoDiv">
                                 <img alt="logo" src={logo} className="logo"></img>
                                 <h3 className="appName">Sentinel</h3>

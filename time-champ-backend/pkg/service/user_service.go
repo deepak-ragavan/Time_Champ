@@ -47,7 +47,9 @@ func GetUserData(id uint) ([]dto.Users, string) {
 	}
 	users = append(users, SetUserData(userData))
 	for _, child := range userData.ChildUser {
-		users = append(users, SetUserData(child))
+		if !child.IsDeleted || !child.IsBlocked {
+			users = append(users, SetUserData(child))
+		}
 	}
 	return users, constant.NULL
 }
@@ -58,4 +60,13 @@ func SetUserData(userData dto.User) dto.Users {
 	user.Name = userData.Name
 	user.Role = userData.Role
 	return user
+}
+
+func GetChildUserIds(id uint) ([]uint, string) {
+	var listOfIds []uint
+	childList, _ := GetUserData(id)
+	for _, childId := range childList {
+		listOfIds = append(listOfIds, childId.ID)
+	}
+	return listOfIds, constant.NULL
 }

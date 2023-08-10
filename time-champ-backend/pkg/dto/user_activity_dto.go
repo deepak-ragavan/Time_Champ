@@ -16,5 +16,5 @@ type UserActivity struct {
 	ActivityStatus   enum.UserActivityStatus `json:"activityStatus"`
 	Status           enum.Status             `json:"status"`
 	UserAttendanceID uint                    `json:"-" gorm:"column:userAttendance_id"`
-	UserAttendance   UserAttendance          `json:"userAttendance"`
+	UserAttendance   *UserAttendance         `json:"userAttendance,omitempty"`
 }
