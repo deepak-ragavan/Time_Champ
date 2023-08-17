@@ -1,0 +1,131 @@
+.screenshotContent {
+  padding: 30px;
+  padding-right: 0;
+}
+
+.Time {
+  margin: 0;
+  padding: 0;
+  margin-left: 6px;
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+  .material-icons-outlined {
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+.Round {
+  border: 1px solid #333;
+  min-width: 14px;
+  height: 14px;
+  border-radius: 10px;
+  align-self: flex-end;
+}
+
+.hourTimePeriodContainer {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+  }
+  
+  .hourTimePeriod {
+    font-size: 14px;
+  }
+
+  .totalTimeWorked {
+    color: #86878d;
+  }
+
+  .imageContainer {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-left: 12px;
+    border-left: 1px solid #333;
+    padding: 30px;
+    padding-right: 0;
+  }
+
+  .imageChild {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .imageName {
+    border: 1px solid #ebecf0;
+    border-radius: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #ebecf0;
+  }
+  
+  .screenshotImage {
+    width: 100%;
+    max-width: 150px;
+    height: 100%;
+    max-height: 90px;
+    border-radius: 10px;
+  }
+
+  .imageStyle {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+  }
+  
+  .imageTime {
+    padding: 10px;
+    width: 150px;
+    border: 1px solid #ebecf0;
+  }
+
+  .fullScreenImageOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.3);
+  }
+
+  .closeFullScreenButton {
+    cursor: pointer;
+    text-align: right;
+    color: #ffff;
+    font-size: 32px;
+    padding-right: 50px;
+    padding-top: 25px;
+  }
+
+  .fullScreenImage {
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100vw - 10%);
+    height: calc(100vh - 10%);
+  }
+
+ .bottomImageList {
+  display: flex;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  height: calc(100vh - 90%);
+  background-color: #333;
+  gap:10px;
+ }
+
+ .bottomImageStyle {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+ }

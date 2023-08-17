@@ -1,0 +1,113 @@
+.ScreenshotDetailsNav {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  row-gap: 20px;
+}
+
+.arrowBox {
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #f5d6d6;
+  border-radius: 5px;
+  cursor: pointer;
+  .material-icons-outlined {
+    font-size: 18px;
+  }
+}
+
+.ScreenshotTime {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.boxdisable {
+  background-color: #86878d;
+}
+
+.boxdisable:hover {
+  cursor: not-allowed;
+}
+
+.dateConatiner {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    height: 30px;
+    align-items: center;
+    border: 1px solid #f5d6d6;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+    .material-icons-outlined {
+      cursor: pointer;
+    }
+  }
+
+  .calenderContainer {
+    position: absolute;
+    top: 29px;
+    left: 150px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .timeContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+  }
+  
+  .timeSelect {
+    border: 0;
+    background-color: #ffffff;
+  }
+  
+  .timeSelect:focus-visible {
+    border: 0;
+    outline: 0;
+  }
+  
+  .ScreenshotUser {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .userDetails {
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid #f5d6d6;
+    border-radius: 5px;
+  }
+
+  .screenshotFilter {
+    border: 1px solid #f5d6d6;
+    border-radius: 5px;
+    padding: 15px;
+    color: #f5d6d6;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .iconSize{
+    font-size: 30px;
+    cursor: pointer;
+    
+  }
+  .iconSize:hover{
+    color: pink;
+  }
