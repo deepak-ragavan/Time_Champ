@@ -7,6 +7,7 @@ import Summary from "../summary/summary"
 import TimeTracerNav from "../navbar/timetrackerbar/timetracernav"
 import Timesheet from "../timesheet/timesheet"
 import Productivity from "../productivity/productivity"
+import MyDashboard from "../myDashboard/myDashboard"
 
 const PrivateRoute = () => {
     return (
@@ -19,6 +20,7 @@ const PrivateRoute = () => {
                     <Route path="/summary" element={<Summary/>} />
                     <Route path="/timesheet" element={<Timesheet/>} />
                     <Route path="/productivity" element={<Productivity />} />
+                    <Route path="/mydashboard" element={<MyDashboard />} />
                 </Route>    
             </Routes>
         </>
