@@ -1,15 +1,32 @@
 
-.filterButtonContainer {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  width: 100%;
+.dashCardContainer {
+  border-radius: 20px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: -4px 8px 25px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.4rem
 }
+.dashMain {
+  background: #f4f5f6;
+  padding: 20px;
+  height: 100%;
+  overflow: auto;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
 
+}
 .filterContainer {
+  background: #ffffff;
   display: flex;
 
 }
 .dashboard{
+  padding: 20px;
+  height: 100%;
   overflow: auto;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+
 }
