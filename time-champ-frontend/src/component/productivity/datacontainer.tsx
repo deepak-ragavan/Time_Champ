@@ -14,7 +14,6 @@ type productivityDataProps = {
     EndTime: string,
   }
 const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:boolean}> = ({datas,showIdleTimeData}) => {
-    console.log("datas inside", datas)
     return (
         <>
             {/* <div className="ProductivityDataContainer">

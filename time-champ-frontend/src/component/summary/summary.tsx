@@ -98,7 +98,7 @@ const Summary = () => {
         try {
             // const userIds = user?.map((value)=> value.id)
             // userIds?.toString()
-            const response = await axiosPrivate.get("/app-activity/status",{params:{userId:userId,fromDate:moment(range[0].startDate).format('YYYY-MM-DD'), toDate:moment(range[0].endDate).format('YYYY-MM-DD') ,searchText:searchtext}});
+            const response = await axiosPrivate.get("/app-activity/status",{params:{userIds:userId,fromDate:moment(range[0].startDate).format('YYYY-MM-DD'), toDate:moment(range[0].endDate).format('YYYY-MM-DD') ,searchText:searchtext}});
             setProductiveData(response?.data?.productive || []);
             setUnProductiveData(response?.data?.unproductive || []);
             setNeturalData(response?.data?.neutral || []);
@@ -115,7 +115,7 @@ const Summary = () => {
     const fetchSummaryTotalProductivityData = async () => {
         try {
             const selectedUserId = selectedUser!==null?selectedUser.id:userId;
-            const response = await axiosPrivate.get("/app-activity/total-app-activity",{params:{userId:selectedUserId,fromDate:moment(range[0].startDate).format('YYYY-MM-DD'), toDate:moment(range[0].endDate).format('YYYY-MM-DD')}});
+            const response = await axiosPrivate.get("/app-activity/total-app-activity",{params:{userIds:selectedUserId,fromDate:moment(range[0].startDate).format('YYYY-MM-DD'), toDate:moment(range[0].endDate).format('YYYY-MM-DD')}});
             let chartDataObject = {
                 productive : response?.data.productive === null ? 0 : response?.data.productive,
                 unproductive : response?.data.unproductive === null ? 0 : response?.data.unproductive,

@@ -1,25 +1,12 @@
-import { MicOutlined } from '@mui/icons-material'
 import './multiSelectDropDown.scss' 
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, SelectChangeEvent } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from '@mui/material';
 
 type filterOptions = {
     label:string,
     value:string
  } 
 const MultiSelectDropDown: React.FC<{selectedOption:string,setSelectedOption:(value:string)=>void,options:filterOptions[], isShowLabel:boolean, placeholder:string}> = ({selectedOption, setSelectedOption, options, isShowLabel, placeholder}) => {
-    // const handleChange = (event: SelectChangeEvent<typeof selectedValues>) => {
-    //     const {
-    //       target: { value },
-    //     } = event;
-    //     console.log(event.target.value.toString())
-    //     setSelectedValues(
-    //       // On autofill we get a stringified value.
-    //       typeof value === 'string' ? value.split(',') : value,
-    //     );
-    //     setSelectedOption(selectedValues.toString())
-    //     console.log(selectedOption)
-    //   };
+
     
     return <div className='multiselectDropDown'>
         {isShowLabel ? 

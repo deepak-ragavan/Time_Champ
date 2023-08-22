@@ -1,0 +1,38 @@
+
+.filterButtonContainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+}
+
+.filterContainer {
+    display: flex;
+    border: 1px solid #bce8ff;
+    margin-bottom: 5px;
+}
+
+.attendanceContainer {
+    background: #f4f5f6;
+    padding: 20px;
+    height: calc( 100% - 79px );
+    overflow: auto;
+    display: flex;
+    gap: 20px;
+}
+
+
+.attendanceDataContainer {
+    background: white;
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: calc(100% - 138px);
+    &.dateRange {
+        width: 100%;
+    }
+}
+
+.chartData {
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+}

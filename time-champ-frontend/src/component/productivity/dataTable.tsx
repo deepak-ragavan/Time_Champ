@@ -13,34 +13,34 @@ type productivityDataProps = {
 }
 type productivityProps = {
     name:string,
+    id:number
     productivity:productivityDataProps[]
 }
 
-const DataTable : React.FC<{datas:productivityProps[],showIdleTimeData:boolean}> = ({datas,showIdleTimeData}) => {
-    console.log(datas,"incomeData")
-    const [selected, setSelected] = useState(datas[0].name);
+type userProps = {
+    id: number,
+    name: string,
+    role: string
+}
+
+const DataTable : React.FC<{datas:productivityProps[],showIdleTimeData:boolean,selectedUserDropDown:userProps,setSelectedUserDropDown:(value:userProps)=>void,users:userProps[]}> = ({datas,showIdleTimeData,selectedUserDropDown,setSelectedUserDropDown,users}) => {
     const data = useMemo(() => {
-        console.log("selected",selected, datas)
-        const test = datas.find((temp:productivityProps)=> { return temp.name === selected })
-        console.log(test,"memooooooo")
+        const test = datas.find((temp:productivityProps)=> { return temp.name === selectedUserDropDown.name })
         if(test){
+            document.querySelector("#user"+selectedUserDropDown.id.toString())?.scrollIntoView();
             return test.productivity
         }
         return []
-    },[selected, datas])
+    },[selectedUserDropDown])
 
-    useEffect(()=>{
-        setSelected(datas[0].name)
-    },[datas])
-    console.log(data,"datatableee")
     return (
         <div className="productivityData">
             <div className="UsersList">
                 <h4>Users</h4>
                 {
                     datas.map((value) => (
-                    <div className="users" onClick={()=>{setSelected(value.name)}}>
-                        <button className={value.name===selected ? "usersButton Active" : "usersButton inActive" } >{value.name}</button>
+                    <div className="users" id={"user"+value.id.toString()} onClick={()=>{setSelectedUserDropDown(users.find((user:userProps)=>user.id===value.id)!)}}>
+                        <button className={value.name===selectedUserDropDown.name ? "usersButton Active" : "usersButton inActive" } >{value.name}</button>
                     </div>
                     ))
                 }

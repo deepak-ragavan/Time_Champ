@@ -13,6 +13,7 @@ import ShowData from '../summary/filter/showData/showData'
 
 type productivity = {
     name:string,
+    id:number,
     productivity:productivityDataType[]
 }
 
@@ -53,7 +54,7 @@ const Productivity = () => {
     useEffect(()=> {
         getProductivityData()
         console.log("insideUseEffevct")
-    },[currentWeek,selectedUser])
+    },[currentWeek])
 
 
     const getArrayOfWeekDates = () => {
@@ -73,6 +74,7 @@ const Productivity = () => {
     const getUserDataForFilter = async () => {
         try {
             const response = await axiosPrivate.get("/users",{params:{userId:userId}});
+            setSelectedUser(response.data.find((users:userProps)=> users.id===userId))
             setUser(response.data);
         } catch(error) {
             setUser(null)
@@ -107,7 +109,7 @@ const Productivity = () => {
         })
         setFilterDropdown([...filterDropdown]);
     }
-    console.log(data)
+
     return (
     <div className="productivity">
         <div className="productivityFilter">
@@ -155,11 +157,10 @@ const Productivity = () => {
                     <div className="showfilterdata">
                         <ShowData dataKey="Role" value={selectedRole.map((val: filterOptions) => val.value).toString()} setSelected={setSelectedRole} />
                         <ShowData dataKey="LineManager" value={selectedLineManager.map((val: filterOptions) => val.value).toString()} setSelected={setSelectedLineManager} />
-                        <ShowData dataKey="User" value={selectedUser!==null?selectedUser.name:""} setSelected={setSelectedUser} />
                     </div>
                 </div> 
         <div className='productivityDataContainer'>
-             {data ? <DataTable datas={data} showIdleTimeData={showIdleTimeData} /> : <div>Loading...</div>}
+             {data && selectedUser && user ? <DataTable datas={data} showIdleTimeData={showIdleTimeData} selectedUserDropDown={selectedUser} setSelectedUserDropDown={setSelectedUser} users={user} /> : <div>Loading...</div>}
         </div>
 
     </div>

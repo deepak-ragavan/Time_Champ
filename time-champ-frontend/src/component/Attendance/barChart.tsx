@@ -1,4 +1,5 @@
 import ReactApexChart from "react-apexcharts";
+import './barchart.scss'
 
 const BarChart = () => {
     const series = [{
@@ -15,7 +16,7 @@ const BarChart = () => {
           height: 350,
           stacked: true,
           toolbar: {
-            show: true
+            show: false
           },
           zoom: {
             enabled: true
@@ -48,14 +49,10 @@ const BarChart = () => {
         },
         xaxis: {
           type: 'category',
-          categories: ['7.00 - 9.00', '9.00 - 11.00', '11.00 - 13.00', '13.00 - 15.00',
-          '15.00 - 17.00', '17.00 - 19.00', '19.00 - 21.00', '21.00 - 23.00', '23.00 - 01.00',
-          '01.00 - 03.00', '03.00 - 05.00', '05.00 - 07.00',
-        ],
-        },
-        legend: {
-          position: 'right',
-          offsetY: 40
+          categories: ['06 AM - 08 AM', '08 AM - 10 AM', '10 AM - 12 PM', '12 PM - 14 PM',
+          '14 PM - 16 PM', '16 PM - 18 PM', '18 PM - 20 PM', '20 PM - 22 PM', '22 PM - 00 AM',
+          '00 AM - 02 AM', '02 AM - 04 AM', '04 AM - 06 AM',
+          ],
         },
         fill: {
           opacity: 1
