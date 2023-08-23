@@ -1,13 +1,15 @@
 import './main.scss'
 import moment from "moment";
-import React, { Suspense, useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
-import Loading from "./loading";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { selectTokenProfile } from "../store/reducer/reducerToken";
 import ScreenshotNav from "./screenshotNav/screensotNav";
-// import ScreenshotContent from "./screenshotContent/content";
+import ScreenshotContent from "./screenshotContent/content";
 import ScreenshotChart from "./screenshotChart/screenshotChart";
+
+
+
 
 const Screenshots: React.FC = () => {
 
@@ -21,9 +23,9 @@ const Screenshots: React.FC = () => {
   const currentDate = moment(new Date(presentMoment)).format("YYYY-MM-DD");
   const [userDetails, setUserDetails] = useState([]);
   const [verifiedCurrentDate, setVerifiedCurrentDate] = useState(false);
-  const [chartView, setChartView] = useState({showChart:false,chartType:'bar'});
+  const [chartView, setChartView] = useState({ showChart: false, chartType: 'bar' });
   const [chartData, setChartData] = useState<screenshotChartData[]>([]);
-  const ScreenshotContent = React.lazy(()=>import("./screenshotContent/content"))
+
 
 
   const handleBackwardDate = () => {
@@ -125,13 +127,13 @@ const Screenshots: React.FC = () => {
   }
 
   const getChartDatas = async (userId: string | number) => {
-    try{
+    try {
       const mouseAndKeyActivity = await axiosPrivate.get('/tracker-chartdetails/getMouseAndKeyActvity', { params: { userId: userId, date: currentDate } });
-      const chartData:screenshotChartData[] = mouseAndKeyActivity.data;
-      chartData.sort((a, b) =>Date.parse(a.startTime) - Date.parse(b.startTime));
+      const chartData: screenshotChartData[] = mouseAndKeyActivity.data;
+      chartData.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
       setChartData(chartData);
     }
-    catch(err){
+    catch (err) {
       setChartData([]);
     }
   }
@@ -148,6 +150,7 @@ const Screenshots: React.FC = () => {
 
 
   return (
+
     <div className="screenshotContainer">
       <h2>Screenshots</h2>
       <ScreenshotNav
@@ -163,16 +166,16 @@ const Screenshots: React.FC = () => {
         setChartView={setChartView}
       />
       {chartView.showChart && <ScreenshotChart setChartView={setChartView} chartType={chartView} chartData={chartData} />}
-      <Suspense fallback={<Loading />}>
-        <ScreenshotContent
-          handleBackwardTime={handleBackwardTime}
-          hourIntervel={hourIntervel}
-          handleForwardTime={handleForwardTime}
-          modifiedScreenshotData={modifiedScreenshotData}
-        />
-      </Suspense>
+      <ScreenshotContent
+        handleBackwardTime={handleBackwardTime}
+        hourIntervel={hourIntervel}
+        handleForwardTime={handleForwardTime}
+        modifiedScreenshotData={modifiedScreenshotData}
+      />
     </div>
+
   );
+
 };
 
 export default Screenshots;

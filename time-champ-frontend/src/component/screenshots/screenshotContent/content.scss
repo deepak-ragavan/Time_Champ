@@ -48,6 +48,9 @@
     padding-right: 0;
   }
 
+  .noBorder{
+    border: 0;
+  }
   .imageChild {
     display: flex;
     flex-direction: column;
@@ -75,10 +78,12 @@
   }
 
   .imageStyle {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
     object-fit: contain;
-    border-radius: 10px;
+    border-radius: 10px
   }
   
   .imageTime {
@@ -87,45 +92,9 @@
     border: 1px solid #ebecf0;
   }
 
-  .fullScreenImageOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.3);
-  }
-
-  .closeFullScreenButton {
-    cursor: pointer;
-    text-align: right;
-    color: #ffff;
-    font-size: 32px;
-    padding-right: 50px;
-    padding-top: 25px;
-  }
-
-  .fullScreenImage {
-    transform: translate(-50%, -50%);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: calc(100vw - 10%);
-    height: calc(100vh - 10%);
-  }
-
- .bottomImageList {
-  display: flex;
-  color: white;
-  position: fixed;
-  bottom: 0;
-  height: calc(100vh - 90%);
-  background-color: #333;
-  gap:10px;
+ .Nodata {
+  max-width: 500px;
+  max-height: 500px;
+  transform: translate(70%,0%);
  }
 
- .bottomImageStyle {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
- }

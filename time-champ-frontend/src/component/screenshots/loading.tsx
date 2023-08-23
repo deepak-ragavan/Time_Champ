@@ -1,8 +1,8 @@
 import React from 'react'
-
+import './loading.scss'
 const Loading = () => {
   return (
-    <div>🌀 Loading.....</div>
+    <div className='LoadingContainer'>🌀Loading...</div>
   )
 }
 
