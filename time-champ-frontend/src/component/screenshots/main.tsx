@@ -10,7 +10,6 @@ import ScreenshotChart from "./screenshotChart/screenshotChart";
 
 
 
-
 const Screenshots: React.FC = () => {
 
   const [presentMoment, setPresentMoment] = useState(moment().format("ddd, MMM DD, YYYY"));
@@ -152,7 +151,6 @@ const Screenshots: React.FC = () => {
   return (
 
     <div className="screenshotContainer">
-      <h2>Screenshots</h2>
       <ScreenshotNav
         handleBackwardDate={handleBackwardDate}
         verifiedCurrentDate={verifiedCurrentDate}
@@ -166,12 +164,14 @@ const Screenshots: React.FC = () => {
         setChartView={setChartView}
       />
       {chartView.showChart && <ScreenshotChart setChartView={setChartView} chartType={chartView} chartData={chartData} />}
-      <ScreenshotContent
-        handleBackwardTime={handleBackwardTime}
-        hourIntervel={hourIntervel}
-        handleForwardTime={handleForwardTime}
-        modifiedScreenshotData={modifiedScreenshotData}
-      />
+      <div className='screenshotContentMain'>
+        <ScreenshotContent
+          handleBackwardTime={handleBackwardTime}
+          hourIntervel={hourIntervel}
+          handleForwardTime={handleForwardTime}
+          modifiedScreenshotData={modifiedScreenshotData}
+        />
+      </div>
     </div>
 
   );

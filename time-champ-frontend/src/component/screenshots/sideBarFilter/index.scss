@@ -1,0 +1,46 @@
+.sideBarFilterButton {
+    height: 30px;
+}
+
+.sideBarFilterNavContainer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    max-width: 300px;
+    overflow-x: hidden;
+    transition: 0.5s;
+    box-shadow: -4px 8px 25px rgba(0, 0, 0, 0.1);
+    &.Active {
+        width: 0;
+    }
+}
+
+.sideBarFilterList {
+    padding: 10px;
+    display:flex;
+    flex-direction: column;
+    gap: 20px;
+    // .userDropdown {
+    //     top: 0;
+    //     left: 0;
+    //     z-index: 0;
+    //     width: 100%;
+    //     max-width: 250px;
+    //     margin: 8px;    
+    //     background: none;
+    // }
+}
+
+.sideBarFilterCloseIcon {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sideBarFilterChild{
+    
+}

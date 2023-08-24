@@ -43,7 +43,7 @@ const ScreenshotImage = (props: any) => {
                         </div>
                     )
                 })
-                : <><img src={NoDataFound} alt='No data Found....' className="Nodata" /></>}
+                : <div className="noDataContainer"><img src={NoDataFound} alt='No data Found....' className="Nodata" /></div>}
             {createPortal(showImageFullScreen && <FullScreen modifiedScreenshotData={modifiedScreenshotData} fullScreenImageDatum={fullScreenImageDatum} fullscreenImage={fullscreenImage}/>,document.body)}
         </div>
     )

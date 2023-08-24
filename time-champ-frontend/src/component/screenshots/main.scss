@@ -1,3 +1,13 @@
 .screenshotContainer {
     overflow: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+.screenshotContentMain {
+    background: #f4f5f6;
+    padding: 30px;
+    height:100%;
+    overflow: auto;
 }
