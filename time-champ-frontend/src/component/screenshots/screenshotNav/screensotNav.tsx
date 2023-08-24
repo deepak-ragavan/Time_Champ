@@ -60,17 +60,6 @@ const ScreenshotNav: React.FC<ScreenshotNavProps> = (props: ScreenshotNavProps) 
                     analytics
                 </span>
                 <SideBarFilter>
-                    {/* <div className="userDetails"> */}
-                        {/* <span className="material-icons-round">account_circle</span> */}
-                        {/* <select className="timeSelect" onChange={setUserID}>
-                            {userDetails.length !== 0 &&
-                                userDetails.map((user: userList) => {
-                                    return (
-                                        <option key={user.id} value={user.id}>{user.name}</option>
-                                    )
-                                })
-                            }
-                        </select> */}
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label" >Users</InputLabel>
                             <Select
@@ -87,7 +76,6 @@ const ScreenshotNav: React.FC<ScreenshotNavProps> = (props: ScreenshotNavProps) 
                                 }
                             </Select>
                         </FormControl>
-                    {/* </div> */}
                 </SideBarFilter>
             </div>
         </div>
