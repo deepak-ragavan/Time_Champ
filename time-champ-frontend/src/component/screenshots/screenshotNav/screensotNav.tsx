@@ -1,6 +1,8 @@
 import React from 'react'
 import "./screenshotNav.scss";
 import DatePicker from '../../common/datePicker';
+import SideBarFilter from '../sideBarFilter';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 const ScreenshotNav: React.FC<ScreenshotNavProps> = (props: ScreenshotNavProps) => {
     const { presentMoment, setPresentMoment, setUserID, userDetails, setChartView } = props
@@ -20,19 +22,24 @@ const ScreenshotNav: React.FC<ScreenshotNavProps> = (props: ScreenshotNavProps) 
                 })}>
                     analytics
                 </span>
-                <div className="userDetails">
-                    <span className="material-icons-round">account_circle</span>
-                    <select className="timeSelect" onChange={setUserID}>
-                        {userDetails.length !== 0 &&
-                            userDetails.map((user: userList) => {
-                                return (
-                                    <option key={user.id} value={user.id}>{user.name}</option>
-                                )
-                            })
-                        }
-                    </select>
-                </div>
-                <div className="screenshotFilter">Filters</div>
+                <SideBarFilter>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label" >Users</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                onChange={setUserID}
+        
+                                label="Users"
+                            >
+                                {
+                                    userDetails.length !== 0  && userDetails.map((value) => (
+                                        <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
+                </SideBarFilter>
             </div>
         </div>
     )
