@@ -3,6 +3,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: 'Work Sans';
+  user-select: none;
 }
 a{
   text-decoration: none;

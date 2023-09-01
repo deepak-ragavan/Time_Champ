@@ -6,7 +6,7 @@ import NoDataFound from '../../../2953962.jpg'
 type summaryData = {
     appName:string,
     spentTime:number,
-    appIconUrl:string,
+    appIcon:string,
 }
 
 type Cardprops = {
@@ -28,7 +28,16 @@ const CardView: React.FC<Cardprops> = ({ heading,headingClassName,data }) => {
                     (data.map((values) => (
                         <div className="row">
                         <div className="cl-1">
-                            <p className='defaultApplogo'>{values.appName.charAt(0)}</p>
+                            {
+                                values.appIcon === null ?
+                                <p className='defaultApplogo'>{values.appName.charAt(0)}</p> :
+                                <img
+                                    src={`data:image/jpeg;base64,${values.appIcon}`}
+                                    alt=""
+                                    className="defaultApplogo"
+                                ></img>
+                            }
+                           
                             <p>{values.appName}</p>
                         </div>
                         <div className="cl-2">

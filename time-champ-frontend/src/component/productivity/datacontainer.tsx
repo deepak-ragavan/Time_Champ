@@ -1,19 +1,32 @@
 import "./datacontainer.scss"
 import moment from "moment";
-import React from "react"
+import React, { useMemo } from "react"
 import StackedBar from "./chart/stackedBars";
-import { milliSecTOSeconds } from "../helper/helper";
+import { nanoSecTOSeconds } from "../helper/helper";
 
 type productivityDataProps = {
-    Productive:number,
-    Unproductive:number,
-    Neutral:number,
-    Idle:number,
-    Working: number,
-    StartTime:string,
-    EndTime: string,
+    productive:number,
+    unproductive:number,
+    neutral:number,
+    idle:number,
+    working: number,
+    date:string,
+    startTime:string,
+    endTime: string,
   }
 const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:boolean}> = ({datas,showIdleTimeData}) => {
+    
+    const TotalWorkingTime = (productivityData:productivityDataProps) => {
+        let totalWorkingTime = 0;
+        if(showIdleTimeData) {
+            totalWorkingTime = productivityData.productive+productivityData.unproductive+productivityData.neutral+productivityData.idle;
+        } else {
+            totalWorkingTime = productivityData.productive+productivityData.unproductive+productivityData.neutral
+        }
+        const totalWorkingTimeInMilliSeconds = totalWorkingTime / 1e6;
+        return totalWorkingTimeInMilliSeconds;
+    }
+
     return (
         <>
             {/* <div className="ProductivityDataContainer">
@@ -36,28 +49,28 @@ const DataContainer: React.FC<{datas:productivityDataProps[],showIdleTimeData:bo
                 {
                     datas!==null ? datas.map((value) => (
                         <div className="col-2">
-                            <div className={value.Working>0 ? "dateFieldDesign" : "dateFieldDesign noData"}>
+                            <div className={value.working>0 ? "dateFieldDesign" : "dateFieldDesign noData"}>
                                 <div className="col-1">
                                     <div className="dayField">
-                                        <p>{moment(value.StartTime).format("dddd")}</p>
+                                        <p>{moment(value.date).format("dddd")}</p>
                                     </div>
                                     <div className="dateField">
-                                        <p>{moment(value.StartTime).format("D-MMM")}</p>
+                                        <p>{moment(value.date).format("D-MMM")}</p>
                                     </div>
                                 </div>
                             </div>
                             {
-                                value.Working>0 ? 
+                                value.working>0 ? 
                                 <>
                                     <div className="productivityChart">
-                                        <StackedBar Productive={milliSecTOSeconds(value.Productive)} Unproductive={milliSecTOSeconds(value.Unproductive)} 
-                                        Neutral={milliSecTOSeconds(value.Neutral)} Idle={milliSecTOSeconds(value.Idle)} showIdleTimeData={showIdleTimeData}/>
+                                        <StackedBar Productive={nanoSecTOSeconds(value.productive)} Unproductive={nanoSecTOSeconds(value.unproductive)} 
+                                        Neutral={nanoSecTOSeconds(value.neutral)} Idle={nanoSecTOSeconds(value.idle)} showIdleTimeData={showIdleTimeData}/>
                                     </div>
                                     <div className="StartEndTime">
-                                        <p>{moment(value.StartTime).format('LT')+"-"+moment(value.EndTime).format('LT')}</p>
+                                        <p>{moment(value.startTime).format('LT')+"-"+moment(value.endTime).format('LT')}</p>
                                     </div>
                                     <div className="TotalWorkingHours">
-                                            <p>{moment.utc(value.Working).format('H[h] m[m] s[s]')}</p>
+                                            <p>{moment.utc(TotalWorkingTime(value)).format('H[h] m[m] s[s]')}</p>
                                     </div>
                                 </> : <p className='NoContent'>No data to display</p>
                             }

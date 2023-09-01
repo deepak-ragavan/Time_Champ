@@ -1,10 +1,7 @@
-import moment from "moment";
 import CardData from "./cardData";
 import './todayDataContainer.scss'
-import { useEffect, useState } from "react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useSelector, useDispatch } from "react-redux";
-import { selectTokenProfile } from "../store/reducer/reducerToken";
+import { useSelector } from "react-redux";
+import { selectUserDataReducer } from "../store/reducer/reducerUserData";
 
 type dashData ={
         id: number,
@@ -37,26 +34,10 @@ function getFormattedDate() {
      
  }
   
-const TodayDataContainer = () => {
-    const [todayData,setTodayData] = useState<dashData>()
-    const axiosPrivate = useAxiosPrivate();
-    const userId = useSelector(selectTokenProfile).id;
+const TodayDataContainer: React.FC<{todayData:dashData | null}> = ({todayData}) => {
+    
+    const userId = useSelector(selectUserDataReducer).id;
     const today =getFormattedDate();
-    useEffect(() => {
-        async function fetchData() {
-          try {
-            const response = await axiosPrivate.get('/user-attendance/getUserAttendanceDetails',{params:{userId:userId,date:today}});
-            console.log(response.data)
-            setTodayData(response.data)
-            // setData(response.data);
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-        }
-      
-        fetchData();
-         
-      }, []);
 
     // /user-attendance/getUserAttendanceDetails?userId=1&date=2023-08-10
 

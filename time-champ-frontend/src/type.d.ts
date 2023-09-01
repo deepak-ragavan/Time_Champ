@@ -31,13 +31,8 @@ type screenshotChart = {
 }
 
 interface ScreenshotNavProps {
-  handleBackwardDate: () => void;
-  verifiedCurrentDate: boolean;
   presentMoment: string;
-  handleForwardDate: () => void;
-  calanderView: () => void;
-  calnderShow: boolean;
-  calanderToDateChange: (date: Date) => void;
+  setPresentMoment:(value:string) => void;
   setUserID: (event: ChangeEvent<HTMLSelectElement>) => void;
   userDetails: userList[];
   setChartView: React.Dispatch<SetStateAction<{ showChart: boolean; chartType: string; }>>
@@ -48,4 +43,27 @@ interface ScreenshotContentProps {
   hourIntervel: string;
   handleBackwardTime: () => void;
   modifiedScreenshotData: Imagedata[];
+}
+
+interface DatePickerProps {
+  presentMoment: string;
+  setPresentMoment:(value:string) => void;
+}
+
+
+type attendaceData = {
+  id: number,
+  name:string,
+  startTime: string,
+  endTime: string,
+  idle: number,
+  working: number,
+  nonWorking: number,
+  breakTime: number,
+  totalTime: number,
+  productive: number,
+  unproductive: number,
+  neutral: number,
+  deskTime: number,
+  userActivity: userActivity[]
 }

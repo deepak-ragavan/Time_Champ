@@ -5,8 +5,8 @@ import logo from '../../../time_tracer.png'
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useDispatch, useSelector } from "react-redux";
-import { removeToken, selectTokenProfile } from "../../store/reducer/reducerToken";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { selectUserDataReducer } from "../../store/reducer/reducerUserData"; 
+import { removeToken } from "../../store/reducer/reducerToken";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 export const SideNav = () => {
@@ -14,7 +14,7 @@ export const SideNav = () => {
     const [userName,setUserName] = useState("")
     const [userEmail,setUserEmail] = useState("")
     const axiosPrivate = useAxiosPrivate();
-    const userId = useSelector(selectTokenProfile).id;
+    const userId = useSelector(selectUserDataReducer).id;
     const navigate = useNavigate();
     const dispatch = useDispatch();
 

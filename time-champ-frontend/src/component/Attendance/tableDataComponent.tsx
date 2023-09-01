@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { formatTimeForAttendaceTable } from '../helper/helper';
 
 
 
@@ -58,7 +59,7 @@ const TableDataComponent:React.FC<{columns:Column[],rows:any[],lastRow:any}> = (
                       const value = row[column.id as keyof typeof row];
                       return (
                         <TableCell key={index} align={column.align}>
-                          {value}
+                          {(column.id==='ID' || column.id==='Name' ? value : formatTimeForAttendaceTable(value))}
                         </TableCell>
                       );
                     })}
@@ -70,7 +71,7 @@ const TableDataComponent:React.FC<{columns:Column[],rows:any[],lastRow:any}> = (
                       const value = lastRow[column.id as keyof typeof lastRow];
                       return (
                         <TableCell id={column.id} key={index} align={column.align}>
-                          {value}
+                          {(column.id==='ID' || column.id==='Name' ? value : formatTimeForAttendaceTable(value))}
                         </TableCell>
                       );
                 })}

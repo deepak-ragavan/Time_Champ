@@ -1,14 +1,33 @@
-.Dashboardcard {
-    width: 100%;
-    height: 200px;
-    max-width: 18%;
-    display: flex;
-    flex-direction: column;
-    padding: 3% 2% ;
-    box-shadow: 0 4px 7px rgba(0,0,0,0.1);
-    justify-content: space-between;
-    img {
-        width:80%;
-        height:50%
+.DashboardDataContainer {
+    .Dashboardcard {
+        width: 100%;
+        height: 200px;
+        max-width: 18%;
+        display: flex;
+        flex-direction: column;
+        padding: 3% 2% ;
+        box-shadow: 0 4px 7px rgba(0,0,0,0.1);
+        justify-content: space-between;
+        img {
+            width:80%;
+            height:50%
+        }
     }
 }
+
+
+.todayDataContainer {
+    .Dashboardcard {
+        width: 100%;
+        max-width: calc(33.08% - 20px);
+        display: flex;
+        flex-direction: column;
+        padding: 3% 2% ;
+        box-shadow: 0 4px 7px rgba(0,0,0,0.1);
+        justify-content: space-between;
+        img {
+            width:80px;
+        }
+    }
+}
+

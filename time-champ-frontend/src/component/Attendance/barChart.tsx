@@ -1,66 +1,63 @@
-import ReactApexChart from "react-apexcharts";
-import './barchart.scss'
+import React, { useState } from 'react';
+import './barchart.scss';
+import Avatar from '@mui/material/Avatar/Avatar';
+import { deepOrange } from '@mui/material/colors';
+import Tooltip from '@mui/material/Tooltip';
+import { formatTime } from '../helper/helper';
 
-const BarChart = () => {
-    const series = [{
-        name: 'Working Hours',
-        data: [null,null,44, 55, 41, 67, 22, 43]
-      }, {
-        name: 'Idle',
-        data: [null,null,13, 23, 20, 8, 13, 27]
-      }]
+type userActivity = {
+  activity_status: string;
+  end_time: string;
+  spent_time: number;
+  start_time: string;
+  user_AtId: number;
+}
 
-      const options: ApexCharts.ApexOptions = {
-        chart: {
-          type: 'bar',
-          height: 350,
-          stacked: true,
-          toolbar: {
-            show: false
-          },
-          zoom: {
-            enabled: true
-          }
-        },
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0
-            }
-          }
-        }],
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            borderRadius: 10,
-            dataLabels: {
-              total: {
-                enabled: true,
-                style: {
-                  fontSize: '13px',
-                  fontWeight: 900
-                }
+
+
+function convertNanosecondsToHours(nanoseconds: number): number {
+    return Math.ceil(((nanoseconds / 3600000000000)/24)*100); // 1 hour = 3,600,000,000,000 nanoseconds
+}
+
+const ChartComponent:React.FC<{data : userActivity[] | undefined}> = ({data}) => {
+  const [isShowTooltip,setIsShowTooltip] = useState<boolean>(false);
+  console.log(data)
+  return <div className='attendanceChartContainer'>
+          <div className='timingsColumn'>
+            <div><p>6:00</p><p>AM</p></div>
+            <div><p>8:00</p><p>AM</p></div>
+            <div><p>10:00</p><p>AM</p></div>
+            <div><p>12:00</p><p>AM</p></div>
+            <div><p>2:00</p><p>PM</p></div>
+            <div><p>4:00</p><p>PM</p></div>
+            <div><p>6:00</p><p>PM</p></div>
+            <div><p>8:00</p><p>PM</p></div>
+            <div><p>10:00</p><p>PM</p></div>
+            <div><p>12:00</p><p>PM</p></div>
+            <div><p>2:00</p><p>AM</p></div>
+            <div><p>4:00</p><p>AM</p></div>
+            <div><p>6:00</p><p>AM</p></div>
+          </div>
+          <div className='timingsRow Working'>
+              { data &&
+                data.map((value,index) => {
+                  const style:any = {
+                    "--width":convertNanosecondsToHours(value.spent_time)+"%"
+                  }
+                  return <abbr title={formatTime(value.spent_time)} style={style} className={"chartData "+(value.activity_status==="Idle(Break)" ? "Break" : value.activity_status)}></abbr>
+                })
               }
-            }
-          },
-        },
-        xaxis: {
-          type: 'category',
-          categories: ['06 AM - 08 AM', '08 AM - 10 AM', '10 AM - 12 PM', '12 PM - 14 PM',
-          '14 PM - 16 PM', '16 PM - 18 PM', '18 PM - 20 PM', '20 PM - 22 PM', '22 PM - 00 AM',
-          '00 AM - 02 AM', '02 AM - 04 AM', '04 AM - 06 AM',
-          ],
-        },
-        fill: {
-          opacity: 1
-        }
-      }
-    return <div id="chart">
-    <ReactApexChart options={options} series={series} type="bar" height={350} />
+          </div>
+          {
+            data &&   <div className='legendContainer'>
+            <div className='legendData'><p className='legend Offline'></p><span>Offline</span></div>
+            <div className='legendData'><p className='legend Break'></p><span>Break</span></div>
+            <div className='legendData'><p className='legend Working'></p><span>Working</span></div>
+        </div>
+          }
+        
+    
   </div>
 }
 
-export default BarChart;
+export default ChartComponent;

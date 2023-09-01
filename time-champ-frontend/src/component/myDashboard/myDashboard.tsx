@@ -1,17 +1,17 @@
 import { Button } from '@mui/material';
-import DateRangePickerComponent from './DateRangePicker';
 import './myDashboard.scss'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FilterNav from '../navbar/filternav/filterNav';
-import { Range } from 'react-date-range';
 import TodayDataContainer from './todayDataContainer';
 import KeyStrokeChart from './keyStrokeChart';
 import AppListChart from './appListChart'
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { useSelector } from 'react-redux';
+import { selectUserDataReducer } from '../store/reducer/reducerUserData';
+import moment from 'moment';
+import DatePicker from '../common/datePicker';
 
-type filterOptions = {
-    label:string,
-    value:string
-} 
+
 const initalState = {
     productive: 0,
     unproductive: 0,
@@ -19,29 +19,87 @@ const initalState = {
     deskTime: 0,
 }
 
+type userProps = {
+    id: number,
+    name: string,
+    role: string
+}
+
+const initialUser = {
+    id:0,
+    name:"",
+    role:""
+}
+
+type dashData ={
+    id: number,
+    startTime: string,
+    endTime: string,
+    idle: number,
+    working: number,
+    breakTime: number,
+    totalTime: number,
+    productive: number,
+    unproductive: number,
+    neutral: number,
+    deskTime: number
+}
+
+
 const MyDashboard = () => {
-    const [range, setRange] = useState<Range[]>([
-        {
-          startDate: new Date(),
-          endDate: new Date(),
-          key: 'selection'
-        }
-    ]);
     const [selectedDepartment, setSelectedDepartment] = useState<string>('');
     const [isOpen,setIsOpen] = useState<boolean>(false);
-    console.log(isOpen)
+    const [selectedUser,setSelectedUser] = useState<userProps>(initialUser);
+    const [users,setUser] = useState<userProps[]>([]);
+    const [todayData,setTodayData] = useState<dashData | null>(null)
+    const axiosPrivate = useAxiosPrivate();
+    const userId = useSelector(selectUserDataReducer).id;
+    const [isFirstLoad,setIsFirstLoad] = useState<boolean>(true)
+    const [presentMoment, setPresentMoment] = useState(moment().format("ddd, MMM DD, YYYY"));
+    const fetchData = async () => {
+        try {
+          const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
+          const response = await axiosPrivate.get('/user-attendance/getUserAttendanceDetails',{params:{userId:selectedUserId,date:moment(new Date(presentMoment)).format("YYYY-MM-DD")}});
+          console.log(response.data)
+          setTodayData(response.data)
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    }
+
+    const getUserDataForFilter = async () => {
+        try {
+            const response = await axiosPrivate.get("/users",{params:{userId:userId}});
+            const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
+            setSelectedUser(response.data.find((users:userProps)=> users.id===selectedUserId))
+            setUser(response.data);
+            console.log(selectedUser)
+        } catch(error) {
+            setUser([])
+        }
+    }
+
+    useEffect(() => {
+        if(isFirstLoad) {
+            getUserDataForFilter()
+            setIsFirstLoad(false)
+        }
+        fetchData();
+         
+      }, [presentMoment,selectedUser]);
+
     return <div className="dashboard">
         <div className='filterContainer'>
             <div className='filterButtonContainer'>
-                <DateRangePickerComponent range={range} setRange={setRange}/>
+                <DatePicker  presentMoment={presentMoment} setPresentMoment={setPresentMoment}  />
                 <Button onClick={() => setIsOpen(true)} className='filterButton' variant="contained">Filter</Button>
             </div>
-            <FilterNav isOpen={isOpen} setIsOpen={setIsOpen} selectedDepartment={selectedDepartment} setSelectedDepartment={setSelectedDepartment}  />
+            <FilterNav isOpen={isOpen} setIsOpen={setIsOpen} selectedDepartment={selectedDepartment} setSelectedDepartment={setSelectedDepartment} selectedUser={selectedUser} setSelectedUser={setSelectedUser} users={users} />
         </div>
        
         <div className='dashMain'>
         <div className='dashCardContainer'>
-            <TodayDataContainer/>
+             <TodayDataContainer todayData={todayData}/> 
         </div>
         <KeyStrokeChart/>
         <AppListChart  heading="Top 5 Websites & Applications" headingClassName="chartheading1" data={initalState} topFiveApp={[]}/>

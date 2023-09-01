@@ -2,7 +2,7 @@ import ReactApexChart from "react-apexcharts";
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useSelector } from "react-redux";
-import { selectTokenProfile } from "../store/reducer/reducerToken";
+import { selectUserDataReducer } from "../store/reducer/reducerUserData"; 
 import NoDataFound from '../../2953962.jpg'
 // type activityData ={
 
@@ -34,7 +34,7 @@ const checkinTimeFormater = (inputDateString: string) => {
 
 const KeyStrokeChart = () => {
   const axiosPrivate = useAxiosPrivate();
-  const userId = useSelector(selectTokenProfile).id;
+  const userId = useSelector(selectUserDataReducer).id;
   const today = getFormattedDate();
   const [keyStroke, setKeyStroke] = useState([])
   const [mouseMovement, setMouseMovement] = useState([])

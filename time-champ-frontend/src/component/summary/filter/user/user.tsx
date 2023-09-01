@@ -22,14 +22,16 @@ const User: React.FC<{selectedUser:userProps | null,setSelectedUser:(val:userPro
         <div className="userContainer">
             <div className="userDropdown">
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Users</InputLabel>
                     <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={selectedUser?.id}
+                    value={selectedUser===null ? "" : selectedUser?.id}
                     onChange={(e) => handleSelected(e)}
-                    label="Users"
+                    displayEmpty
                     >
+                    <MenuItem value="">
+                        <em className='placeholder'>Users</em>
+                    </MenuItem>
                     {
                         users && users.map((value)=> (
                             <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>

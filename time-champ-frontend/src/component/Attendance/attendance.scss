@@ -1,3 +1,6 @@
+.attendance {
+    overflow: auto;
+}
 
 .filterButtonContainer {
     display: flex;
@@ -34,5 +37,4 @@
 
 .chartData {
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
-    margin: 10px;
 }

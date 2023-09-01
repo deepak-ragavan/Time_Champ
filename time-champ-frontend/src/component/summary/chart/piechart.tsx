@@ -9,7 +9,7 @@ import NoDataFound from '../../../2953962.jpg'
 type summaryData = {
     appName:string,
     spentTime:number,
-    appIconUrl:string,
+    appIcon:string,
 }
 
 type dataProps = {

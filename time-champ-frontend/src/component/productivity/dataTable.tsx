@@ -3,13 +3,14 @@ import "./dataTable.scss"
 import DataContainer from "./datacontainer"
 
 type productivityDataProps = {
-    Productive:number,
-    Unproductive:number,
-    Neutral:number,
-    Idle:number,
-    Working: number,
-    StartTime:string,
-    EndTime: string,
+    productive:number,
+    unproductive:number,
+    neutral:number,
+    idle:number,
+    working: number,
+    date:string,
+    startTime:string,
+    endTime: string,
 }
 type productivityProps = {
     name:string,
@@ -31,7 +32,7 @@ const DataTable : React.FC<{datas:productivityProps[],showIdleTimeData:boolean,s
             return test.productivity
         }
         return []
-    },[selectedUserDropDown])
+    },[selectedUserDropDown,datas])
 
     return (
         <div className="productivityData">

@@ -1,15 +1,15 @@
 import './productivity.scss'
 import WeeklyCalendar from "./weeklyDataFilter/weeklyDataFilter"
-import Role from '../summary/filter/role/role'
 import { useEffect, useState } from 'react'
 import User from '../summary/filter/user/user'
 import LineManager from './lineManager'
 import DataTable from './dataTable'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { useSelector } from 'react-redux'
-import { selectTokenProfile } from '../store/reducer/reducerToken'
+import { selectUserDataReducer } from '../store/reducer/reducerUserData'
 import moment from 'moment'
 import ShowData from '../summary/filter/showData/showData'
+import MultiSelectDropDown from '../common/multiSelectDropDown'
 
 type productivity = {
     name:string,
@@ -18,13 +18,14 @@ type productivity = {
 }
 
 type productivityDataType = {
-    Productive:number,
-    Unproductive:number,
-    Neutral:number,
-    Idle:number,
-    Working: number,
-    StartTime:string,
-    EndTime: string,
+    productive:number,
+    unproductive:number,
+    neutral:number,
+    idle:number,
+    working: number,
+    date:string,
+    startTime:string,
+    endTime: string,
 }
 
 type userProps = {
@@ -38,47 +39,49 @@ type filterOptions = {
     value:string
 }
 
+const roleOptions = [
+    { label: "Super Admin", value: "Super-Admin" },
+    { label: "Manager", value: "Manager" },
+    { label: "Admin", value: "Admin" },
+    { label: "Team Lead", value: "Team-Lead" },
+    { label: "User", value: "User" },
+];
+
 const Productivity = () => {
     const [currentWeek, setCurrentWeek] = useState(moment());
     const [filterDropdown, setFilterDropdown] = useState<Array<boolean>>([false,false,false])
     const axiosPrivate = useAxiosPrivate();
-    const userId = useSelector(selectTokenProfile).id;
+    const userId = useSelector(selectUserDataReducer).id;
     const [data,setData] = useState<productivity[] | null>(null)
     const [showIdleTimeData,setShowIdleTimeData] = useState(false);
     const [selectedUser,setSelectedUser] = useState<userProps | null>(null);
-    const [selectedRole, setSelectedRole] = useState<filterOptions[]>([]);
+    const [selectedRole, setSelectedRole] = useState<string>('');
     const [selectedLineManager,setSelectedLineManager] = useState<filterOptions[]>([]);
     const [user,setUser] = useState<userProps[] | null>(null);
+    const childUserIds = useSelector(selectUserDataReducer).childUsers;
+    const [isFirstLoad,setIsFirstLoad] = useState<boolean>(true);
     
 
     useEffect(()=> {
-        getProductivityData()
-        console.log("insideUseEffevct")
-    },[currentWeek])
-
-
-    const getArrayOfWeekDates = () => {
-        const fromDate = currentWeek.clone().startOf('week')
-        const toDate = currentWeek.clone().endOf('week')
-        const datesOfWeek:string[] = [];
-        let currentDate = fromDate;
-        while (currentDate <= toDate) {
-          datesOfWeek.push(currentDate.format('YYYY-MM-DD').toString());
-          currentDate = currentDate.clone().add(1, 'day');
+        if(isFirstLoad) {
+            getUserDataForFilter()
+            setIsFirstLoad(false);
+        } else {
+            getProductivityData()
         }
-        return datesOfWeek;
-      }
-      
+    },[currentWeek])
       
 
     const getUserDataForFilter = async () => {
         try {
             const response = await axiosPrivate.get("/users",{params:{userId:userId}});
-            setSelectedUser(response.data.find((users:userProps)=> users.id===userId))
+            const selectedUserId = selectedUser !== null ? selectedUser.id : userId;
+            setSelectedUser(response.data.find((users:userProps)=> users.id===selectedUserId))
             setUser(response.data);
         } catch(error) {
             setUser(null)
         }
+        getProductivityData()
     }
 
     const showIdleTime = () => {
@@ -88,15 +91,13 @@ const Productivity = () => {
 
     const getProductivityData = async () => {
         try {
-             const selectedUserId = selectedUser!==null?selectedUser.id:userId;
-             const weekDatesArray = getArrayOfWeekDates().toString();
-             const response = await axiosPrivate.get("/user-attendance/productivity",{params:{userId:selectedUserId,weekDates:weekDatesArray}});
+             const selectedUserId = childUserIds.toString();
+             const response = await axiosPrivate.get("/user-attendance/productivity",{params:{userIds:selectedUserId,fromDate:currentWeek.clone().startOf('week').format('YYYY-MM-DD'),toDate:currentWeek.clone().endOf('week').format('YYYY-MM-DD')}});
              const productivityData = response?.data
              setData(productivityData);
        } catch(error) {
             setData(null);
        }
-       getUserDataForFilter()
     }
 
     const selectDropDown = (selctedOne?: number) => {
@@ -120,7 +121,7 @@ const Productivity = () => {
                                 <span className="material-icons-round dropdown">arrow_drop_down</span>
                                 <span className="navtext">Role</span>
                         </button>
-                        {(filterDropdown[0] === true) && <Role  selectedRole={selectedRole} setSelectedRole={setSelectedRole}/>}
+                        {(filterDropdown[0] === true) && <MultiSelectDropDown  selectedOption={selectedRole} setSelectedOption={setSelectedRole} options={roleOptions} isShowLabel={false} placeholder="Role" />}
                     </li>
                     <li className="filterlist">
                         <button onClick={() => selectDropDown(1)} className='downarrow'>
@@ -155,7 +156,7 @@ const Productivity = () => {
         </div>
         <div className="filterDateContainer">
                     <div className="showfilterdata">
-                        <ShowData dataKey="Role" value={selectedRole.map((val: filterOptions) => val.value).toString()} setSelected={setSelectedRole} />
+                        <ShowData dataKey="Role" value={selectedRole} setSelected={setSelectedRole} />
                         <ShowData dataKey="LineManager" value={selectedLineManager.map((val: filterOptions) => val.value).toString()} setSelected={setSelectedLineManager} />
                     </div>
                 </div> 

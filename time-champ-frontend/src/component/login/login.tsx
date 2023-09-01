@@ -1,17 +1,18 @@
 import { useState,useRef } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import './login.scss'
 import { Link } from "react-router-dom"
 import { LoginApi } from "../service/loginApi"
 import { saveToken } from "../store/reducer/reducerToken"
 import { AxiosError } from "axios";
-import loginImage from '../../loginImage.svg'
+import loginImage from '../../loginScreen.svg'
 import logo from '../../time_tracer.png'
 import Button from "@mui/material/Button"
 import GoogleIcon from '@mui/icons-material/Google';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TextField from "@mui/material/TextField"
+import { setUserId } from "../store/reducer/reducerUserData"
 type msgType =  {
     Error : string
 }
@@ -30,6 +31,7 @@ const Login = () => {
         try {
             const response = await LoginApi({Email:email,Password:password})
             dispatch(saveToken(response))
+            dispatch(setUserId(response.data))
             setEmail('')
             setPassword('')
             navigate("/summary")
@@ -48,7 +50,6 @@ const Login = () => {
             if(errRef.current) errRef.current.focus()
             console.log(err.message)
         }
-        
     }
 
     return <div className="rootlogin">

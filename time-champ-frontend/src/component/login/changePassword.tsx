@@ -1,10 +1,10 @@
 import Button from "@mui/material/Button";
-import loginImage from '../../loginImage.svg'
+import loginImage from '../../loginScreen.svg'
 import logo from '../../time_tracer.png'
 import { useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { useSelector } from "react-redux";
-import { selectUserEmailReducer } from "../store/reducer/reducerUserEmail";
+import { selectUserDataReducer } from "../store/reducer/reducerUserData";
 import { ChangePasswordApi } from "../service/loginApi";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ const ChangePassword = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const[errmsg,setErrmsg] = useState('')
-    const email = useSelector(selectUserEmailReducer)
+    const email = useSelector(selectUserDataReducer).email
     const navigate = useNavigate();
 
     const handleSubmit = async (e:any) => {

@@ -7,7 +7,7 @@ import { AxiosError } from "axios"
 import logo from '../../time_tracer.png'
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
-import loginImage from '../../loginImage.svg'
+import loginImage from '../../loginScreen.svg'
 import GoogleIcon from '@mui/icons-material/Google';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 

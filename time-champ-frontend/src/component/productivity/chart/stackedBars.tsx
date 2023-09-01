@@ -40,7 +40,7 @@ const StackedBar : React.FC<{Productive:number,Unproductive:number,Neutral:numbe
           "<span>" +
           w.globals.labels[seriesIndex] +
           ": " +
-          formatTime(Number(data*1000)) +
+          formatTime(Number(data*1000000000)) +
           "</span>" +
           "</div>"
         );

@@ -7,12 +7,12 @@ import { Range } from 'react-date-range';
 import TodayDataContainer from './todayDataContainer';
 import BarChart from './barChart';
 import { useSelector } from 'react-redux';
-import { selectTokenProfile } from '../store/reducer/reducerToken';
+import { selectUserDataReducer } from '../store/reducer/reducerUserData'; 
 import TableDataComponent from './tableDataComponent';
 import moment from 'moment';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import { Value } from 'sass';
-import { formatTimeForAttendaceTable } from '../helper/helper';
+import { getAttendanceChartData } from '../helper/helper';
+
 
 type dateRangeData = {
     id: number,
@@ -35,14 +35,11 @@ interface Column {
 }
 
 type userActivity = {
-    id: number,
-    startTime: string,
-    endTime: string,
-    spentTime: number,
-    reason: string,
-    workingStatus: string,
-    activityStatus: string,
-    status: string
+    activity_status: string;
+    end_time: string;
+    spent_time: number;
+    start_time: string;
+    user_AtId: number;
 }
 
 type userProps = {
@@ -56,17 +53,15 @@ type userProps = {
 type attendaceData = {
     id: number,
     name:string,
+    employeeId:string,
     startTime: string,
     endTime: string,
     idle: number,
     working: number,
     nonWorking: number,
-    breakTime: number,
-    totalTime: number,
     productive: number,
     unproductive: number,
     neutral: number,
-    deskTime: number,
     userActivity: userActivity[]
 }
 
@@ -119,7 +114,7 @@ const getDateRangeArray = (dateRangeData:dateRangeData[],setComlumns:(value:Colu
         })
         rowDataObject["ID"] = emp.id;
         rowDataObject["Name"] = emp.name;
-        rowDataObject["Expected_Hours"] = emp.timeLine.length*8;
+        rowDataObject["Expected_Hours"] = emp.timeLine.length*8*1000000;
         rowDataObject["Actual_Hours"] = totalActualTime > 0 ? totalActualTime : 0;
         attendaceRowData.push(rowDataObject);
         isFirstTime = false
@@ -156,11 +151,11 @@ const Timesheet = () => {
     ]);
     const [selectedDepartment, setSelectedDepartment] = useState<string>('');
     const [isOpen,setIsOpen] = useState<boolean>(false);
-    const userId = useSelector(selectTokenProfile).id;
+    const userId = useSelector(selectUserDataReducer).id;
     const [data,setData] = useState<attendaceData[] | null>(null)
     const [dateRangeData,setDateRangeData] = useState<dateRangeData[]>([])
     const [selectedUser,setSelectedUser] = useState<userProps>(initialUser);
-    const [user,setUser] = useState<userProps[]>([]);
+    const [users,setUser] = useState<userProps[]>([]);
     const [columns,setComlumns] = useState<Column[]>([]);
     const [rows,setRows] = useState<any[]>([]);
     const [lastRow,setLastRow] = useState<any>({});
@@ -168,28 +163,65 @@ const Timesheet = () => {
         return range[0].startDate?.toDateString()===range[0].endDate?.toDateString();
     },[range])
     const axiosPrivate = useAxiosPrivate();
+    const childUserIds = useSelector(selectUserDataReducer).childUsers;
+    const [isFirstLoad,setIsFirstLoad] = useState<boolean>(true);
+
+    const getDateRangeData = async () => {
+        try {
+            const response = await axiosPrivate.get("/user-attendance/monthly-attendance",{params:{fromDate:moment(range[0].startDate).format("YYYY-MM-DD"),toDate:moment(range[0].endDate).format("YYYY-MM-DD"),activity:"working",userId:"1,2,3"}})
+            getDateRangeArray(response.data,setComlumns,setRows,setLastRow)
+        } catch(error) {
+            setDateRangeData([])
+        }
+    }
+
+    const getOneDayData = async () => {
+        try {
+            const response = await axiosPrivate.get("/user-attendance/report",{params:{fromDate:moment(range[0].startDate).format("YYYY-MM-DD"),userId:childUserIds.toString()}})
+            setData(response.data)
+            getAttendanceChartData(response.data);
+        } catch(error) {
+            setData([]);
+        }
+    }
+
+    const getUserDataForFilter = async () => {
+        try {
+            const response = await axiosPrivate.get("/users",{params:{userId:userId}});
+            const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
+            setSelectedUser(response.data.find((users:userProps)=> users.id===selectedUserId))
+            setUser(response.data);
+        } catch(error) {
+            setUser([])
+        }
+    }
+
+    const selectedUserActivityData = useMemo(()=> {
+        const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
+        const selectedUserAttendanceData = data?.find((value:attendaceData) => value.id===selectedUserId);
+        console.log("userActivity",selectedUserAttendanceData,selectedUserId,data)
+        return selectedUserAttendanceData;
+    },[selectedUser.id,range,data])
+
 
     useEffect(()=> {
-        const getDateRangeData = async () => {
-            try {
-                const response = await axiosPrivate.get("/user-attendance/monthly-attendance",{params:{fromDate:moment(range[0].startDate).format("YYYY-MM-DD"),toDate:moment(range[0].endDate).format("YYYY-MM-DD"),activity:"working",userId:"1,2,3"}})
-                getDateRangeArray(response.data,setComlumns,setRows,setLastRow)
-            } catch(error) {
-                setDateRangeData([])
-            }
+        if(isFirstLoad) {
+            getUserDataForFilter()
+            setIsFirstLoad(false)
         }
-        if(range[0].startDate!==range[0].endDate) {
+        if(range[0].startDate?.getDate()!==range[0].endDate?.getDate()) {
             getDateRangeData();
+        } else {
+            getOneDayData();
         }
-        
     },[range])
-    return <div className="timesheet">
+    return <div className="attendance">
         <div className='filterContainer'>
             <div className='filterButtonContainer'>
                 <DateRangePickerComponent range={range} setRange={setRange}/>
                 <Button onClick={() => setIsOpen(true)} className='filterButton' variant="contained">Filter</Button>
             </div>
-            <FilterNav isOpen={isOpen} setIsOpen={setIsOpen} selectedDepartment={selectedDepartment} setSelectedDepartment={setSelectedDepartment}  />
+            <FilterNav isOpen={isOpen} setIsOpen={setIsOpen} selectedDepartment={selectedDepartment} setSelectedDepartment={setSelectedDepartment} selectedUser={selectedUser} setSelectedUser={setSelectedUser} users={users} />
         </div>
         <div className='attendanceContainer'>
             {
@@ -198,7 +230,7 @@ const Timesheet = () => {
                         <h4>Users</h4>
                         {
                             data && data.map((value) => (
-                                <div className="users" id={value.id.toString()} onClick={()=>{setSelectedUser(user.find((user:userProps)=>user.id===value.id)!)}}>
+                                <div className="users" id={value.id.toString()} onClick={()=>{setSelectedUser(users.find((user:userProps)=>user.id===value.id)!)}}>
                                     <button className={value.name===selectedUser.name ? "usersButton Active" : "usersButton inActive" } >{value.name}</button>
                                 </div>
                             ))
@@ -209,10 +241,10 @@ const Timesheet = () => {
                 {
                     isNotDateRange
                                 ? ( <>
-                                        <TodayDataContainer/>
                                         <div className='chartData'>
-                                            <BarChart />
+                                            <BarChart data={selectedUserActivityData?.userActivity}/>
                                         </div>
+                                        <TodayDataContainer todayData={selectedUserActivityData}/>
                                     </> ) 
                                 : (
                                     <TableDataComponent columns={columns} rows={rows} lastRow={lastRow} />

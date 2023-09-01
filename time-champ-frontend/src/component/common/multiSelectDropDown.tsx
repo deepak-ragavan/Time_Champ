@@ -38,7 +38,6 @@ const MultiSelectDropDown: React.FC<{selectedOption:string,setSelectedOption:(va
               value={selectedOption===""?[]:selectedOption.split(',')}
               onChange={(e)=>setSelectedOption(e.target.value.toString())}
               renderValue={(selected) => {
-                console.log(selected.length)
                 if (selected.length === 0) {
                   return <em>{placeholder}</em>;
                 } 

@@ -14,3 +14,64 @@
         }
     }
 }
+
+.chartData {
+    padding: 10px;
+    & .Offline {
+        background-color: #eee
+    }
+    & .Working {
+        background-color: #21d65d
+    }
+    & .Break {
+        background-color: #ff0
+    }
+    width: var(--width);
+}
+
+.timingsColumn {
+    display: grid;
+    grid-template-columns: repeat(13,1fr);
+    height: fit-content;
+    width: 100%;
+    text-align: center;
+}
+
+.timingsRow {
+    display: flex;
+    height: 30px;
+}
+
+
+
+.attendanceChartContainer {
+    width: 100%;
+}
+
+.legendContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.legendData {
+    display: flex;
+    flex-direction: column;
+    gap:2px;
+    align-items: center;
+}
+
+.legend {
+    width: 15px;
+    height: 15px;
+    & .Offline {
+        background-color: #eee
+    }
+    & .Working {
+        background-color: #21d65d
+    }
+    & .Break {
+        background-color: #ff0
+    }
+ }

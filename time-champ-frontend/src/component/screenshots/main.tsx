@@ -3,7 +3,7 @@ import moment from "moment";
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { selectTokenProfile } from "../store/reducer/reducerToken";
+import { selectUserDataReducer } from '../store/reducer/reducerUserData'; 
 import ScreenshotNav from "./screenshotNav/screensotNav";
 import ScreenshotContent from "./screenshotContent/content";
 import ScreenshotChart from "./screenshotChart/screenshotChart";
@@ -14,40 +14,17 @@ import ScreenshotChart from "./screenshotChart/screenshotChart";
 const Screenshots: React.FC = () => {
 
   const [presentMoment, setPresentMoment] = useState(moment().format("ddd, MMM DD, YYYY"));
-  const [calnderShow, setCalanderShow] = useState(false);
   const [screenshotData, setScreenshotData] = useState<Imagedata[]>([]);
   const [modifiedScreenshotData, setmodifiedScreenshotData] = useState<Imagedata[]>([]);
   const [hourIntervel, setHourIntervel] = useState('');
   const axiosPrivate = useAxiosPrivate();
-  const [userId, setUserId] = useState<number | string>(useSelector(selectTokenProfile).id);
+  const [userId, setUserId] = useState<number | string>(useSelector(selectUserDataReducer).id);
   const currentDate = moment(new Date(presentMoment)).format("YYYY-MM-DD");
   const [userDetails, setUserDetails] = useState([]);
-  const [verifiedCurrentDate, setVerifiedCurrentDate] = useState(false);
   const [chartView, setChartView] = useState({ showChart: false, chartType: 'bar' });
   const [chartData, setChartData] = useState<screenshotChartData[]>([]);
 
-
-
-  const handleBackwardDate = () => {
-    const date = moment(new Date(presentMoment)).subtract(1, "days").format("ddd, MMM DD, YYYY");
-    setPresentMoment(date);
-  };
-
-  const handleForwardDate = () => {
-    if (!verifiedCurrentDate) {
-      const date = moment(new Date(presentMoment)).add(1, "days").format("ddd, MMM DD, YYYY");
-      setPresentMoment(date);
-    }
-  };
-
-  const calanderView = () => {
-    setCalanderShow(!calnderShow);
-  };
-
-  const calanderToDateChange = (selectedDate: Date) => {
-    const date = moment(selectedDate).format("ddd, MMM DD, YYYY");
-    setPresentMoment(date);
-  };
+ 
 
   const handleBackwardTime = () => {
     const hourIntervelEnd = hourIntervel.split('-')[0];
@@ -111,15 +88,6 @@ const Screenshots: React.FC = () => {
     }
   }
 
-  const verifyCurrentDate = () => {
-    if (new Date().setHours(0, 0, 0, 0) === new Date(presentMoment).setHours(0, 0, 0, 0)) {
-      setVerifiedCurrentDate(true);
-    }
-    else {
-      setVerifiedCurrentDate(false);
-    }
-  }
-
   const setUserID = (e: ChangeEvent<HTMLSelectElement>) => {
     setUserId(e.target.value);
     getIamgeItems(e.target.value);
@@ -145,22 +113,15 @@ const Screenshots: React.FC = () => {
   useEffect(() => {
     getIamgeItems(userId);
     getChartDatas(userId);
-    verifyCurrentDate();
   }, [presentMoment])
-
 
   return (
 
     <div className="screenshotContainer">
       <h2>Screenshots</h2>
       <ScreenshotNav
-        handleBackwardDate={handleBackwardDate}
-        verifiedCurrentDate={verifiedCurrentDate}
         presentMoment={presentMoment}
-        handleForwardDate={handleForwardDate}
-        calanderView={calanderView}
-        calnderShow={calnderShow}
-        calanderToDateChange={calanderToDateChange}
+        setPresentMoment={setPresentMoment}
         setUserID={setUserID}
         userDetails={userDetails}
         setChartView={setChartView}

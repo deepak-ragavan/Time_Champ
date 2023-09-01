@@ -1,49 +1,12 @@
 import React from 'react'
-import { Calendar } from "react-date-range";
-import moment from 'moment';
 import "./screenshotNav.scss";
+import DatePicker from '../../common/datePicker';
 
 const ScreenshotNav: React.FC<ScreenshotNavProps> = (props: ScreenshotNavProps) => {
-    const { handleBackwardDate, verifiedCurrentDate, presentMoment, handleForwardDate, calanderView, calnderShow, calanderToDateChange, setUserID, userDetails, setChartView } = props
+    const { presentMoment, setPresentMoment, setUserID, userDetails, setChartView } = props
     return (
         <div className="ScreenshotDetailsNav">
-            <div className="ScreenshotTime">
-                <div className="arrowBox">
-                    <span
-                        className="material-icons-outlined"
-                        onClick={handleBackwardDate}
-                    >
-                        arrow_back
-                    </span>
-                </div>
-                <div className={verifiedCurrentDate ? "arrowBox boxdisable " : "arrowBox"} onClick={handleForwardDate} >
-                    <span
-                        className="material-icons-outlined"
-                    >
-                        arrow_forward
-                    </span>
-                </div>
-                <div className="dateConatiner">
-                    <div>{presentMoment}</div>
-                    <div>
-                        <span className="material-icons-outlined" onClick={calanderView}>
-                            calendar_month
-                        </span>
-                        {calnderShow && (
-                            <Calendar
-                                date={moment(new Date(presentMoment)).toDate()}
-                                onChange={calanderToDateChange}
-                                className="calenderContainer"
-                            />
-                        )}
-                    </div>
-                </div>
-                <div className="timeContainer">
-                    <select className="timeSelect">
-                        <option value="Asia/Kolkata">IST</option>
-                    </select>
-                </div>
-            </div>
+            <DatePicker  presentMoment={presentMoment} setPresentMoment={setPresentMoment}  />
             <div className="ScreenshotUser">
                 <span className="material-icons-outlined iconSize" onClick={() => setChartView({
                     "showChart": true,

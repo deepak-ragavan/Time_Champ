@@ -2,24 +2,21 @@ import DateRangePickerComp from "./filter/datepicker/dateRangePicker"
 import { useEffect, useState } from "react";
 import './summary.scss'
 import { Range } from 'react-date-range';
-import Branch from "./filter/branch/branch";
-import Role from "./filter/role/role";
 import User from "./filter/user/user";
 import Piechart from "./chart/piechart";
 import CardView from "./cardview/cardview";
 import { useSelector, useDispatch } from "react-redux";
-import Department from "./filter/department/department";
 import ShowData from "./filter/showData/showData";
 import moment from"moment";
 import Search from "./filter/search/search";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { selectTokenProfile } from "../store/reducer/reducerToken";
+import { selectUserDataReducer, setUserChildData } from "../store/reducer/reducerUserData";
 import MultiSelectDropDown from "../common/multiSelectDropDown";
 
 type summaryData = {
     appName:string,
     spentTime:number,
-    appIconUrl:string,
+    appIcon:string,
 }
 
 type summaryTotalProductivity = {
@@ -83,7 +80,7 @@ const Summary = () => {
     const [selectedRole, setSelectedRole] = useState<string>('');
     const [selectedDepartment, setSelectedDepartment] = useState<string>('');
     const [searchtext,setSearchText] = useState("")
-    const userId = useSelector(selectTokenProfile).id;
+    const userId = useSelector(selectUserDataReducer).id;
     const [productiveData,setProductiveData] = useState<summaryData[]>([]);
     const [unProductiveData,setUnProductiveData] = useState<summaryData[]>([]);
     const [neturalData,setNeturalData] = useState<summaryData[]>([]);
@@ -91,14 +88,15 @@ const Summary = () => {
     const [chartData,setChartData] = useState<summaryTotalProductivity>(initalState)
     const [selectedUser,setSelectedUser] = useState<userProps | null>(null);
     const [user,setUser] = useState<userProps[] | null>(null);
-    const dispatch = useDispatch();
     const axiosPrivate = useAxiosPrivate();
+    const [isFirstTime,setIsFirstTime] = useState<boolean>(true);
+    const dispatch = useDispatch();
+    const childUserIds = useSelector(selectUserDataReducer).childUsers;
 
     const fetchSummaryData = async () => {
         try {
-            // const userIds = user?.map((value)=> value.id)
-            // userIds?.toString()
-            const response = await axiosPrivate.get("/app-activity/status",{params:{userIds:userId,fromDate:moment(range[0].startDate).format('YYYY-MM-DD'), toDate:moment(range[0].endDate).format('YYYY-MM-DD') ,searchText:searchtext}});
+            const selectedUserId = selectedUser!==null?selectedUser.id:childUserIds.toString();
+            const response = await axiosPrivate.get("/app-activity/status",{params:{userIds:selectedUserId,fromDate:moment(range[0].startDate).format('YYYY-MM-DD'), toDate:moment(range[0].endDate).format('YYYY-MM-DD') ,searchText:searchtext}});
             setProductiveData(response?.data?.productive || []);
             setUnProductiveData(response?.data?.unproductive || []);
             setNeturalData(response?.data?.neutral || []);
@@ -114,7 +112,8 @@ const Summary = () => {
 
     const fetchSummaryTotalProductivityData = async () => {
         try {
-            const selectedUserId = selectedUser!==null?selectedUser.id:userId;
+            console.log(childUserIds)
+            const selectedUserId = selectedUser!==null?selectedUser.id:childUserIds.toString();
             const response = await axiosPrivate.get("/app-activity/total-app-activity",{params:{userIds:selectedUserId,fromDate:moment(range[0].startDate).format('YYYY-MM-DD'), toDate:moment(range[0].endDate).format('YYYY-MM-DD')}});
             let chartDataObject = {
                 productive : response?.data.productive === null ? 0 : response?.data.productive,
@@ -135,12 +134,28 @@ const Summary = () => {
         } catch(error) {
             setUser(null)
         }
+        getChildUsersIds();
+    }
+
+    const getChildUsersIds =async () => {
+        try {
+            const response = await axiosPrivate.get("/user/getMyTeamMemberIds",{params:{userId:userId}});
+            console.log(response.data)
+            dispatch(setUserChildData(response.data));
+        } catch(error) {
+           console.log(error)
+        }
         fetchSummaryData();
     }
 
     useEffect(()=> {
-        getUserDataForFilter();
-    },[range,selectedUser,searchtext])
+        if(isFirstTime) {
+            getUserDataForFilter()
+            setIsFirstTime(false)
+        } else {
+            fetchSummaryData()
+        }        
+    },[range,selectedUser,searchtext,childUserIds])
 
     const changefiltericon = () => {
         let icontag = document.getElementById("filtericon")

@@ -1,6 +1,6 @@
 import './verifyotp.scss'
 import Button from "@mui/material/Button";
-import loginImage from '../../loginImage.svg'
+import loginImage from '../../loginScreen.svg'
 import logo from '../../time_tracer.png'
 import OtpInput from 'react-otp-input';
 import { useEffect, useRef, useState } from "react";
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { selectOtpTimerReducer, setTimer } from '../store/reducer/reducerOtpTimer';
 import { AxiosError } from 'axios';
 import { ForgotPasswordApi, VerifyOtpAndChangePassword } from '../service/loginApi';
-import { selectUserEmailReducer } from '../store/reducer/reducerUserEmail';
+import { selectUserDataReducer } from '../store/reducer/reducerUserData';
 type msgType =  {
     Error : string
 }
@@ -18,7 +18,7 @@ const VerifyOtp = () => {
     const[errmsg,setErrmsg] = useState('')
     const [otp, setOtp] = useState('');
     const seconds = useSelector(selectOtpTimerReducer)
-    const email = useSelector(selectUserEmailReducer)
+    const email = useSelector(selectUserDataReducer).email
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isFirstLoad,setIsFirstLoad] = useState(true);

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import loginImage from '../../loginImage.svg'
+import loginImage from '../../loginScreen.svg'
 import logo from '../../time_tracer.png'
 import './forgotPassword.scss'
 import TextField from "@mui/material/TextField";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { ForgotPasswordApi } from "../service/loginApi";
 import { useDispatch } from "react-redux";
-import { setUserEmail } from "../store/reducer/reducerUserEmail";
+import { setUserEmail } from "../store/reducer/reducerUserData";
 type msgType =  {
     error : string
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080"
+const BASE_URL = "http://192.168.3.112:8088"
 
 export default axios.create({
   // Later read this URL from an environment variable
