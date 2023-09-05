@@ -10,7 +10,7 @@ import ShowData from "./filter/showData/showData";
 import moment from"moment";
 import Search from "./filter/search/search";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { selectUserDataReducer, setUserChildData } from "../store/reducer/reducerUserData";
+import { selectUserDataReducer, setChildUserDetailsList, setUserChildData } from "../store/reducer/reducerUserData";
 import MultiSelectDropDown from "../common/multiSelectDropDown";
 
 type summaryData = {
@@ -80,18 +80,19 @@ const Summary = () => {
     const [selectedRole, setSelectedRole] = useState<string>('');
     const [selectedDepartment, setSelectedDepartment] = useState<string>('');
     const [searchtext,setSearchText] = useState("")
-    const userId = useSelector(selectUserDataReducer).id;
     const [productiveData,setProductiveData] = useState<summaryData[]>([]);
     const [unProductiveData,setUnProductiveData] = useState<summaryData[]>([]);
     const [neturalData,setNeturalData] = useState<summaryData[]>([]);
     const [topFiveWebsite,setTopFiveWebsite] = useState<summaryData[]>([]);
     const [chartData,setChartData] = useState<summaryTotalProductivity>(initalState)
     const [selectedUser,setSelectedUser] = useState<userProps | null>(null);
-    const [user,setUser] = useState<userProps[] | null>(null);
     const axiosPrivate = useAxiosPrivate();
     const [isFirstTime,setIsFirstTime] = useState<boolean>(true);
     const dispatch = useDispatch();
-    const childUserIds = useSelector(selectUserDataReducer).childUsers;
+    const userData = useSelector(selectUserDataReducer);
+    const childUserIds = userData.childUsers;
+    const userId = userData.id;
+    const users = userData.childUsersDetails
 
     const fetchSummaryData = async () => {
         try {
@@ -130,9 +131,8 @@ const Summary = () => {
     const getUserDataForFilter = async () => {
         try {
             const response = await axiosPrivate.get("/users",{params:{userId:userId}});
-            setUser(response.data);
+            dispatch(setChildUserDetailsList(response.data))
         } catch(error) {
-            setUser(null)
         }
         getChildUsersIds();
     }
@@ -242,7 +242,7 @@ const Summary = () => {
                                 <span className="material-icons-round dropdown">arrow_drop_down</span>
                                 <span className="navtext">User</span>
                             </button>
-                            {(filterDropdown[4] === true && user ) &&   <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} users={user}/>}
+                            {(filterDropdown[4] === true && users ) &&   <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} users={users}/>}
                         </li>
                         <li className="filterlist">
                             <button onClick={() => selectDropDown(5)} className='downarrow'>

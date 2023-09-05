@@ -2,9 +2,7 @@ import moment from "moment";
 
 
 export const formatTime = (spentTime:number) => {
-  console.log("stackedData"+spentTime)
   const spentTimeMilliSecond = spentTime / 1e6;  
-  console.log("stackedDataMilli"+spentTimeMilliSecond)
   if (spentTimeMilliSecond > 0 && spentTimeMilliSecond <= 60000) {
       // Format as seconds
       return moment.utc(spentTimeMilliSecond).format('s[s]');
@@ -19,7 +17,6 @@ export const formatTime = (spentTime:number) => {
 
 
 export const nanoSecTOSeconds = (nanoseconds:number) => {
-  console.log(Math.floor(nanoseconds / 1000000000))
     return Math.floor(nanoseconds / 1000000000);
 }
 
@@ -41,46 +38,6 @@ export const verifyCurrentDate = (presentMoment:string, setVerifiedCurrentDate:(
   else {
     setVerifiedCurrentDate(false);
   }
-}
-
-export const getAttendanceChartData = (data:attendaceData[]) => {
-  const timings = getTimingsArray()
-  const workingHoursArray = Array(timings.length).fill(0);
-  const idleHoursArray = Array(timings.length).fill(0);
-
-  data.map((value)=> {
-    value.userActivity.forEach(activity => {
-        const startTime = new Date(activity.start_time);
-        const endTime = new Date(activity.end_time);
-        const spentTimeMilliSecond = activity.spent_time / 1e6;  
-        const spentTimeHours = spentTimeMilliSecond / (1000 * 60); // Convert milliseconds to hours
-
-        for (let i = 0; i < timings.length; i++) {
-      const [startTimeStr, endTimeStr] = timings[i].split(' - ');
-      const [startHour, startMin] = startTimeStr.split(':');
-      const [endHour, endMin] = endTimeStr.split(':');
-      
-      const intervalStart = new Date(startTime);
-      intervalStart.setHours(parseInt(startHour));
-      intervalStart.setMinutes(parseInt(startMin));
-
-      const intervalEnd = new Date(endTime);
-      intervalEnd.setHours(parseInt(endHour));
-      intervalEnd.setMinutes(parseInt(endMin));
-
-      if (startTime >= intervalStart && endTime <= intervalEnd) {
-          if (activity.activity_status === 'Working') {
-              workingHoursArray[i] += spentTimeHours;
-          } else if (activity.activity_status === 'Idle' || activity.activity_status === 'Idle(Break)') {
-              idleHoursArray[i] += spentTimeHours;
-          }
-          break; // No need to check other intervals
-      }
-        }
-    });
-    console.log('Working Hours Array:', workingHoursArray);
-    console.log('Idle Hours Array:', idleHoursArray);
-})
 }
 
 export const getTimingsArray = () => {

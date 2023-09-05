@@ -50,12 +50,12 @@ const MyDashboard = () => {
     const [selectedDepartment, setSelectedDepartment] = useState<string>('');
     const [isOpen,setIsOpen] = useState<boolean>(false);
     const [selectedUser,setSelectedUser] = useState<userProps>(initialUser);
-    const [users,setUser] = useState<userProps[]>([]);
     const [todayData,setTodayData] = useState<dashData | null>(null)
     const axiosPrivate = useAxiosPrivate();
-    const userId = useSelector(selectUserDataReducer).id;
-    const [isFirstLoad,setIsFirstLoad] = useState<boolean>(true)
     const [presentMoment, setPresentMoment] = useState(moment().format("ddd, MMM DD, YYYY"));
+    const userData = useSelector(selectUserDataReducer);
+    const users = userData.childUsersDetails;
+    const userId = userData.id;
     const fetchData = async () => {
         try {
           const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
@@ -67,25 +67,8 @@ const MyDashboard = () => {
         }
     }
 
-    const getUserDataForFilter = async () => {
-        try {
-            const response = await axiosPrivate.get("/users",{params:{userId:userId}});
-            const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
-            setSelectedUser(response.data.find((users:userProps)=> users.id===selectedUserId))
-            setUser(response.data);
-            console.log(selectedUser)
-        } catch(error) {
-            setUser([])
-        }
-    }
-
     useEffect(() => {
-        if(isFirstLoad) {
-            getUserDataForFilter()
-            setIsFirstLoad(false)
-        }
         fetchData();
-         
       }, [presentMoment,selectedUser]);
 
     return <div className="dashboard">

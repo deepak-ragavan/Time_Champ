@@ -51,38 +51,20 @@ const Productivity = () => {
     const [currentWeek, setCurrentWeek] = useState(moment());
     const [filterDropdown, setFilterDropdown] = useState<Array<boolean>>([false,false,false])
     const axiosPrivate = useAxiosPrivate();
-    const userId = useSelector(selectUserDataReducer).id;
     const [data,setData] = useState<productivity[] | null>(null)
     const [showIdleTimeData,setShowIdleTimeData] = useState(false);
     const [selectedUser,setSelectedUser] = useState<userProps | null>(null);
     const [selectedRole, setSelectedRole] = useState<string>('');
     const [selectedLineManager,setSelectedLineManager] = useState<filterOptions[]>([]);
-    const [user,setUser] = useState<userProps[] | null>(null);
-    const childUserIds = useSelector(selectUserDataReducer).childUsers;
-    const [isFirstLoad,setIsFirstLoad] = useState<boolean>(true);
-    
+    const userData = useSelector(selectUserDataReducer);
+    const childUserIds = userData.childUsers;
+    const users = userData.childUsersDetails
+    const userId = userData.id;
 
     useEffect(()=> {
-        if(isFirstLoad) {
-            getUserDataForFilter()
-            setIsFirstLoad(false);
-        } else {
-            getProductivityData()
-        }
+        getProductivityData()
     },[currentWeek])
       
-
-    const getUserDataForFilter = async () => {
-        try {
-            const response = await axiosPrivate.get("/users",{params:{userId:userId}});
-            const selectedUserId = selectedUser !== null ? selectedUser.id : userId;
-            setSelectedUser(response.data.find((users:userProps)=> users.id===selectedUserId))
-            setUser(response.data);
-        } catch(error) {
-            setUser(null)
-        }
-        getProductivityData()
-    }
 
     const showIdleTime = () => {
         console.log("insideeeshowIdle")
@@ -98,6 +80,9 @@ const Productivity = () => {
        } catch(error) {
             setData(null);
        }
+        const selectedUserId = selectedUser && selectedUser.id !== 0 ? selectedUser.id : userId;
+        const selected = users.find((user)=>user.id===selectedUserId);
+        setSelectedUser(selected !== undefined ? selected : null)
     }
 
     const selectDropDown = (selctedOne?: number) => {
@@ -133,7 +118,7 @@ const Productivity = () => {
                         <button onClick={() => selectDropDown(2)} className='downarrow'>
                                 <span className="navtext">User</span>
                         </button>
-                        {(filterDropdown[2] === true && user ) &&   <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} users={user}/>}
+                        {(filterDropdown[2] === true && users ) &&   <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} users={users}/>}
                     </li>
                 </ul>  
             </div>
@@ -161,7 +146,7 @@ const Productivity = () => {
                     </div>
                 </div> 
         <div className='productivityDataContainer'>
-             {data && selectedUser && user ? <DataTable datas={data} showIdleTimeData={showIdleTimeData} selectedUserDropDown={selectedUser} setSelectedUserDropDown={setSelectedUser} users={user} /> : <div>Loading...</div>}
+             {data && selectedUser && users ? <DataTable datas={data} showIdleTimeData={showIdleTimeData} selectedUserDropDown={selectedUser} setSelectedUserDropDown={setSelectedUser} users={users} /> : <div>Loading...</div>}
         </div>
 
     </div>

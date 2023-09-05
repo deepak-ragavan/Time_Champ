@@ -38,14 +38,14 @@ const ChartComponent:React.FC<{data : userActivity[] | undefined}> = ({data}) =>
             <div><p>4:00</p><p>AM</p></div>
             <div><p>6:00</p><p>AM</p></div>
           </div>
-          <div className='timingsRow Working'>
-              { data &&
-                data.map((value,index) => {
+          <div className='timingsRow'>
+              { data ?
+                (data.map((value,index) => {
                   const style:any = {
                     "--width":convertNanosecondsToHours(value.spent_time)+"%"
                   }
                   return <abbr title={formatTime(value.spent_time)} style={style} className={"chartData "+(value.activity_status==="Idle(Break)" ? "Break" : value.activity_status)}></abbr>
-                })
+                })) : ( <p className='NoAttendanceChartData'>Absent</p> )
               }
           </div>
           {

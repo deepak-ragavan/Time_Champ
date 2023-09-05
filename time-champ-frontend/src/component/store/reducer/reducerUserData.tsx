@@ -5,12 +5,14 @@ export interface userDataProfile {
   id:number
   email:string,
   childUsers:Array<string>
+  childUsersDetails:Array<userProps>
 }
 
 const initialState: userDataProfile = {
   id:0,
   email: "",
-  childUsers:[]
+  childUsers:[],
+  childUsersDetails:[]
 }
 
 const ReducerUserData = createSlice({
@@ -25,12 +27,15 @@ const ReducerUserData = createSlice({
        },
        setUserChildData : (state,action) => {
         state.childUsers = action.payload
-     }
+      },
+      setChildUserDetailsList : (state,action) => {
+        state.childUsersDetails = action.payload
+      }
     }
 })
 
 export const selectUserDataReducer = (state: RootState) =>
   state.userDataReducer;
 
-export const { setUserId,setUserEmail,setUserChildData } = ReducerUserData.actions;
+export const { setUserId,setUserEmail,setUserChildData,setChildUserDetailsList } = ReducerUserData.actions;
 export default ReducerUserData.reducer;

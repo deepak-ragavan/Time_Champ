@@ -11,7 +11,6 @@ import { selectUserDataReducer } from '../store/reducer/reducerUserData';
 import TableDataComponent from './tableDataComponent';
 import moment from 'moment';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import { getAttendanceChartData } from '../helper/helper';
 
 
 type dateRangeData = {
@@ -119,11 +118,9 @@ const getDateRangeArray = (dateRangeData:dateRangeData[],setComlumns:(value:Colu
         attendaceRowData.push(rowDataObject);
         isFirstTime = false
     })
-    console.log(attendaceRowData)
     setRows(attendaceRowData)
     setComlumns(columns)
     getLastTotalRowValue(attendaceRowData,setLastRow)
-    console.log(attendaceRowData)
 }
 
 
@@ -151,11 +148,9 @@ const Timesheet = () => {
     ]);
     const [selectedDepartment, setSelectedDepartment] = useState<string>('');
     const [isOpen,setIsOpen] = useState<boolean>(false);
-    const userId = useSelector(selectUserDataReducer).id;
     const [data,setData] = useState<attendaceData[] | null>(null)
     const [dateRangeData,setDateRangeData] = useState<dateRangeData[]>([])
     const [selectedUser,setSelectedUser] = useState<userProps>(initialUser);
-    const [users,setUser] = useState<userProps[]>([]);
     const [columns,setComlumns] = useState<Column[]>([]);
     const [rows,setRows] = useState<any[]>([]);
     const [lastRow,setLastRow] = useState<any>({});
@@ -163,8 +158,10 @@ const Timesheet = () => {
         return range[0].startDate?.toDateString()===range[0].endDate?.toDateString();
     },[range])
     const axiosPrivate = useAxiosPrivate();
-    const childUserIds = useSelector(selectUserDataReducer).childUsers;
-    const [isFirstLoad,setIsFirstLoad] = useState<boolean>(true);
+    const userData = useSelector(selectUserDataReducer);
+    const childUserIds = userData.childUsers;
+    const userId = userData.id;
+    const users = userData.childUsersDetails
 
     const getDateRangeData = async () => {
         try {
@@ -179,42 +176,29 @@ const Timesheet = () => {
         try {
             const response = await axiosPrivate.get("/user-attendance/report",{params:{fromDate:moment(range[0].startDate).format("YYYY-MM-DD"),userId:childUserIds.toString()}})
             setData(response.data)
-            getAttendanceChartData(response.data);
         } catch(error) {
             setData([]);
-        }
-    }
-
-    const getUserDataForFilter = async () => {
-        try {
-            const response = await axiosPrivate.get("/users",{params:{userId:userId}});
-            const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
-            setSelectedUser(response.data.find((users:userProps)=> users.id===selectedUserId))
-            setUser(response.data);
-        } catch(error) {
-            setUser([])
         }
     }
 
     const selectedUserActivityData = useMemo(()=> {
         const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
         const selectedUserAttendanceData = data?.find((value:attendaceData) => value.id===selectedUserId);
-        console.log("userActivity",selectedUserAttendanceData,selectedUserId,data)
         return selectedUserAttendanceData;
     },[selectedUser.id,range,data])
 
 
     useEffect(()=> {
-        if(isFirstLoad) {
-            getUserDataForFilter()
-            setIsFirstLoad(false)
-        }
         if(range[0].startDate?.getDate()!==range[0].endDate?.getDate()) {
             getDateRangeData();
         } else {
             getOneDayData();
         }
+        const selectedUserId = selectedUser.id !== 0 ? selectedUser.id : userId;
+        const selected = users.find((user)=>user.id===selectedUserId);
+        setSelectedUser(selected !== undefined ? selected : initialUser)
     },[range])
+    console.log(users)
     return <div className="attendance">
         <div className='filterContainer'>
             <div className='filterButtonContainer'>

@@ -67,3 +67,9 @@ type attendaceData = {
   deskTime: number,
   userActivity: userActivity[]
 }
+
+type userProps = {
+  id: number,
+  name: string,
+  role: string
+}
