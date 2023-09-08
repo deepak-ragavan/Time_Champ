@@ -93,6 +93,12 @@ export const SideNav = () => {
                                 <span className="navdiscription">HR</span>
                             </div>
                         </CustomLink>
+                        <CustomLink to="/timeclaim">
+                            <div className="navitems">    
+                                <span className="material-icons-round vertical">manage_history</span>
+                                <span className="navdiscription">Time Claim</span>
+                            </div>                           
+                        </CustomLink>
                     </ul>
                     <ul onClick={()=>setIsShowDetailedNav(true)}>
                         <li className="list">

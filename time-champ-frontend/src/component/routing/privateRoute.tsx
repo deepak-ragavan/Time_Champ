@@ -7,6 +7,7 @@ import Productivity from "../productivity/productivity"
 import MyDashboard from "../myDashboard/myDashboard"
 import SideNav from "../navbar/sidebar/sidenav"
 import Screenshots from "../screenshots/main"
+import TimeClaim from "../timeClaim/timeClaim"
 
 const PrivateRoute = () => {
     return (
@@ -20,6 +21,7 @@ const PrivateRoute = () => {
                     <Route path="/productivity" element={<Productivity />} />
                     <Route path="/mydashboard" element={<MyDashboard />} />
                     <Route path="/screenshots" element={<Screenshots />} />
+                    <Route path="/timeclaim" element={<TimeClaim />} />
                 </Route>    
             </Routes>
         </>

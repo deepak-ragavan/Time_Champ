@@ -1,11 +1,14 @@
 import './content.scss'
-import React, { Suspense, useMemo } from "react";
+import React from "react";
 import Loading from '../loading'
+import NoDataConatiner from './noDataConatiner';
+import ScreenshotImage from './imagedatacontainer'
+import { convertTo12HourFormat } from '../../helper/helper';
 
 
 const ScreenshotContent: React.FC<ScreenshotContentProps> = (props: ScreenshotContentProps) => {
-  const { handleBackwardTime, hourIntervel, handleForwardTime, modifiedScreenshotData } = props;
-  const ScreenshotImage = useMemo(() => React.lazy(()=>import("./imagedatacontainer")), [modifiedScreenshotData]) 
+  const { screenshotData,handleBackwardTime,handleForwardTime,isLoading,fromTime,toTime } = props;
+
   return (
     <div className="screenshotContent">
       <div className="Time">
@@ -14,19 +17,25 @@ const ScreenshotContent: React.FC<ScreenshotContentProps> = (props: ScreenshotCo
           <span className="material-icons-outlined" onClick={handleBackwardTime}>
             arrow_back
           </span>
-          <p className="hourTimePeriod">{hourIntervel}</p>
+          <p className="hourTimePeriod">{`${convertTo12HourFormat(fromTime)} - ${convertTo12HourFormat(toTime)}`}</p>
           <span
             className="material-icons-outlined"
             onClick={handleForwardTime}
           >
             arrow_forward
           </span>
-          <p className="totalTimeWorked">total time worked:</p>
         </div>
       </div>
-      <Suspense fallback={<Loading/>}>
-      <ScreenshotImage  modifiedScreenshotData={modifiedScreenshotData} />
-      </Suspense>
+      {/* { (screenshotData && screenshotData.length !== 0) ? isLoading ? <Loading/> :
+        <ScreenshotImage screenshotData={screenshotData} />
+        :
+      <NoDataConatiner/>
+      } */}
+      { isLoading? <Loading/> :(screenshotData && screenshotData.length !== 0) ?
+        <ScreenshotImage screenshotData={screenshotData} />
+        :
+      <NoDataConatiner/>
+      }
     </div>
   )
 }

@@ -3,7 +3,7 @@ import moment from "moment";
 
 export const formatTime = (spentTime:number) => {
   const spentTimeMilliSecond = spentTime / 1e6;  
-  if (spentTimeMilliSecond > 0 && spentTimeMilliSecond <= 60000) {
+  if (spentTimeMilliSecond >= 0 && spentTimeMilliSecond <= 60000) {
       // Format as seconds
       return moment.utc(spentTimeMilliSecond).format('s[s]');
     } else if (spentTimeMilliSecond > 60000 && spentTimeMilliSecond <= 60000 * 60) {
@@ -38,6 +38,14 @@ export const verifyCurrentDate = (presentMoment:string, setVerifiedCurrentDate:(
   else {
     setVerifiedCurrentDate(false);
   }
+}
+
+export const convertTo12HourFormat=(time24:string)=>{
+  const [hours,minutes]=time24.split(':');
+  const period = Number(hours) >= 12 ? 'PM' : 'AM';
+  const hours12 = (Number(hours)%12) || 12;
+  const time12 = `${hours12}:${minutes} ${period}`;
+  return time12;
 }
 
 export const getTimingsArray = () => {

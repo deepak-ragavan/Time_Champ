@@ -5,13 +5,19 @@ type userList = {
   }
 
 
-type Imagedata = {
+type ScreenshotDetailsObject = {
     id: number;
     name: string;
     screenshot: string;
     startTime:string;
     user:Object;
     userId:number;
+}
+
+type ImageItems = {
+  startTime:string;
+  endTime:string;
+  screenshotDetails:ScreenshotDetailsObject[]
 }
 
 type screenshotChartData = {
@@ -33,16 +39,19 @@ type screenshotChart = {
 interface ScreenshotNavProps {
   presentMoment: string;
   setPresentMoment:(value:string) => void;
-  setUserID: (event: ChangeEvent<HTMLSelectElement>) => void;
-  userDetails: userList[];
+  setUserID:  React.Dispatch<SetStateAction<string | number>>;
+  userID:number|string;
   setChartView: React.Dispatch<SetStateAction<{ showChart: boolean; chartType: string; }>>
 }
 
 interface ScreenshotContentProps {
   handleForwardTime: () => void;
-  hourIntervel: string;
+  // hourIntervel: string;
+  fromTime:string;
+  toTime:string;
   handleBackwardTime: () => void;
-  modifiedScreenshotData: Imagedata[];
+  screenshotData: Imagedata[] | null;
+  isLoading:boolean
 }
 
 interface DatePickerProps {

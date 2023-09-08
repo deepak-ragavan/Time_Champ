@@ -3,9 +3,13 @@ import "./screenshotNav.scss";
 import DatePicker from '../../common/datePicker';
 import SideBarFilter from '../sideBarFilter';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { selectUserDataReducer } from '../../store/reducer/reducerUserData';
+
 
 const ScreenshotNav: React.FC<ScreenshotNavProps> = (props: ScreenshotNavProps) => {
-    const { presentMoment, setPresentMoment, setUserID, userDetails, setChartView } = props
+    const userDetails = useSelector(selectUserDataReducer).childUsersDetails
+    const { presentMoment, setPresentMoment, setUserID,userID, setChartView } = props
     return (
         <div className="ScreenshotDetailsNav">
             <DatePicker  presentMoment={presentMoment} setPresentMoment={setPresentMoment}  />
@@ -28,8 +32,8 @@ const ScreenshotNav: React.FC<ScreenshotNavProps> = (props: ScreenshotNavProps) 
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                onChange={setUserID}
-        
+                                onChange={(e)=>setUserID(e.target.value)}
+                                value={userID}
                                 label="Users"
                             >
                                 {

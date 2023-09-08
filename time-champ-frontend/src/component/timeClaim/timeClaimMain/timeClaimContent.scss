@@ -1,0 +1,35 @@
+.timeCliamTable{
+   width: 100%;
+    border-collapse: collapse;
+   th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+  }
+  tr:hover{
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  thead {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+  }
+  tfoot {
+    position: sticky;
+    bottom: 0;
+    background-color: #ffffff;
+  }
+
+}
+.dateRow {
+    display: flex;
+    gap:10px;
+}
+
+.rotateUpsightDown {
+    transform: rotate(90deg);
+}
+
+.expandableRows{
+    
+}

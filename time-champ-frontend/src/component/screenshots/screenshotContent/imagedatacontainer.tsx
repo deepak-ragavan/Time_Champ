@@ -1,15 +1,16 @@
 import moment from "moment";
 import { createPortal } from "react-dom";
 import {  useState } from "react";
-import NoDataFound from '../../../2953962.jpg'
 import FullScreen from "../fullScreen/fullScreen";
 
 
 const ScreenshotImage = (props: any) => {
-    const { modifiedScreenshotData } = props
+  
+   
+    const { screenshotData } = props
     const [showImageFullScreen, setShowImageFullScreen] = useState<Boolean>(false);
     const [fullScreenImageDatum, setFullScreenImageDatum] = useState('');
-  
+
 
     const fullscreenImage = (e: any) => {
         if (e.target.className === "closeFullScreenButton") {
@@ -18,11 +19,11 @@ const ScreenshotImage = (props: any) => {
         setFullScreenImageDatum(e.target.src)
         setShowImageFullScreen(true);
     }
- 
+
     return (
-        <div className={modifiedScreenshotData.length !== 0 ? 'imageContainer' : 'imageContainer noBorder'}>
-            {modifiedScreenshotData.length !== 0 ?
-                modifiedScreenshotData.map((item: Imagedata, r: number) => {
+        <div className='imageContainer' >
+            {
+                screenshotData?.map((item: ScreenshotDetailsObject, r: number) => {
                     return (
                         <div key={r} className="imageChild">
                             <div>
@@ -32,7 +33,7 @@ const ScreenshotImage = (props: any) => {
                                 <div className="screenshotImage" onClick={fullscreenImage}>
                                     <img
                                         src={`data:image/jpeg;base64,${item.screenshot}`}
-                                        alt=""
+                                        alt="Screenshot"
                                         className="imageStyle"
                                     ></img>
                                 </div>
@@ -43,8 +44,8 @@ const ScreenshotImage = (props: any) => {
                         </div>
                     )
                 })
-                : <div className="noDataContainer"><img src={NoDataFound} alt='No data Found....' className="Nodata" /></div>}
-            {createPortal(showImageFullScreen && <FullScreen modifiedScreenshotData={modifiedScreenshotData} fullScreenImageDatum={fullScreenImageDatum} fullscreenImage={fullscreenImage}/>,document.body)}
+            }
+            {createPortal(showImageFullScreen && <FullScreen screenshotData={screenshotData} fullScreenImageDatum={fullScreenImageDatum} fullscreenImage={fullscreenImage} />, document.body)}
         </div>
     )
 }

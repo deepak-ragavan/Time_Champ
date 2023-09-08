@@ -1,0 +1,16 @@
+.mainOuterConatainer{
+    background: #f4f5f6;
+    margin: 10px 0px;
+    height:calc(100% - 92px);
+    overflow: auto;
+}
+
+.mainInnerContainer{
+    box-shadow: -4px 8px 25px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    height: calc(100% - 60px);
+    margin: 30px;
+    border-radius: 10px;
+    min-width: 950px;
+    overflow: auto;
+}

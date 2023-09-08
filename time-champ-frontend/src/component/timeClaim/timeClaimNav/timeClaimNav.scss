@@ -1,0 +1,28 @@
+.navHeaderContainer {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+
+.navHeaderChild1 {
+    align-self: center;
+}
+.navHeaderChild3{
+    justify-self: end;
+    display: flex;
+    gap:30px;
+    cursor: pointer;
+}
+
+#restart_alt,#filter_alt{
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#restart_alt:hover,#filter_alt:hover{
+    background: rgba(0,0,0,.14);
+    border-radius:20px ;
+}

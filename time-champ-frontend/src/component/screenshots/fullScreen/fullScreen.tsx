@@ -2,11 +2,11 @@ import './fullScreen.scss'
 interface FullScreenProps {
     fullscreenImage:any;
     fullScreenImageDatum:any;
-    modifiedScreenshotData:any;
+    screenshotData:any;
 }
 
 const FullScreen = (props:FullScreenProps) => {
-    const{fullscreenImage,fullScreenImageDatum,modifiedScreenshotData}=props;
+    const{fullscreenImage,fullScreenImageDatum,screenshotData}=props;
    
   return (
     <div className="fullScreenImageOverlay">
@@ -14,12 +14,12 @@ const FullScreen = (props:FullScreenProps) => {
     <div className="fullScreenImage">
         <img
             src={fullScreenImageDatum}
-            alt=""
+            alt="Screenshot"
             className="imageStyle"
         ></img>
     </div>
     <div className="bottomImageContainer">
-        {modifiedScreenshotData.length !==0 && modifiedScreenshotData.map((item: Imagedata, r: number) => {
+        {screenshotData.length !==0 && screenshotData.map((item: ScreenshotDetailsObject, r: number) => {
             return (
                 <div key={r} onClick={fullscreenImage} className="bottomImageList" >
                     <img
